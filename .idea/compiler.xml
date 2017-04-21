@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="sitexa-api" />
+        <module name="sitexa-sample" />
+        <module name="sitexa-web" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel target="1.8">
+      <module name="sitexa" target="1.8" />
+      <module name="sitexa-api" target="1.8" />
+      <module name="sitexa-api_main" target="1.8" />
+      <module name="sitexa-api_test" target="1.8" />
+      <module name="sitexa-sample" target="1.8" />
+      <module name="sitexa-sample_main" target="1.8" />
+      <module name="sitexa-sample_test" target="1.8" />
+      <module name="sitexa-web" target="1.8" />
+      <module name="sitexa-web_main" target="1.8" />
+      <module name="sitexa-web_test" target="1.8" />
+      <module name="sitexa_main" target="1.8" />
+      <module name="sitexa_test" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>
