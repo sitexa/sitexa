@@ -18,7 +18,7 @@
         <dependency>
             <groupId>org.jetbrains.exposed</groupId>
             <artifactId>exposed</artifactId>
-            <version>0.7.6</version>
+            <version>${exposed.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>log4j</groupId>
@@ -37,17 +37,17 @@
         <dependency>
             <groupId>org.mariadb.jdbc</groupId>
             <artifactId>mariadb-java-client</artifactId>
-            <version>1.5.9</version>
+            <version>${mariadb-java-client.version}</version>
         </dependency>
         <dependency>
             <groupId>com.zaxxer</groupId>
             <artifactId>HikariCP</artifactId>
-            <version>2.6.0</version>
+            <version>${hikariCP.version}</version>
         </dependency>
         <dependency>
             <groupId>org.ehcache</groupId>
             <artifactId>ehcache</artifactId>
-            <version>3.0.0.m4</version>
+            <version>${ehcache.version}</version>
         </dependency>
 
 
@@ -55,12 +55,12 @@
         <dependency>
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
-            <version>2.9.2</version>
+            <version>${joda-time.version}</version>
         </dependency>
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
-            <version>2.3.1</version>
+            <version>${gson.version}</version>
         </dependency>
 
         <dependency>
