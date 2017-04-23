@@ -54,4 +54,4 @@ If your local branch didn't have any unique commits, Git will instead perform a 
 
 ##  Pushing to a remote
 
->   $ git push  <REMOTENAME> <BRANCHNAME> 
+>   $ git push  origin master
