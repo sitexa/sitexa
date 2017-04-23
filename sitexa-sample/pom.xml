@@ -81,6 +81,11 @@
             <artifactId>ktor-locations</artifactId>
             <version>${ktor.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.jetbrains.ktor</groupId>
+            <artifactId>ktor-websockets</artifactId>
+            <version>${ktor.version}</version>
+        </dependency>
 
     </dependencies>
 </project>

@@ -19,6 +19,7 @@
             <nav class="nav">
                 <ul class="nav-list">
                     <li class="nav-item"><a class="pure-button" href="/">home</a></li>
+                    <li class="nav-item"><a class="pure-button" href="/chat">Chat</a></li>
                     <#if user??>
                         <li class="nav-item"><a class="pure-button" href="/user/${user.userId}">my timeline</a></li>
                         <li class="nav-item"><a class="pure-button" href="/sweet-new">New sweet</a></li>

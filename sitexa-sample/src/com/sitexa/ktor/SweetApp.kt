@@ -5,10 +5,7 @@ import com.google.gson.GsonBuilder
 import com.sitexa.ktor.dao.DAOFacade
 import com.sitexa.ktor.dao.DAOFacadeCache
 import com.sitexa.ktor.dao.DAOFacadeDatabase
-import com.sitexa.ktor.handler.indexHandler
-import com.sitexa.ktor.handler.staticHandler
-import com.sitexa.ktor.handler.sweetHandler
-import com.sitexa.ktor.handler.userHandler
+import com.sitexa.ktor.handler.*
 import com.sitexa.ktor.model.User
 import com.zaxxer.hikari.HikariDataSource
 import freemarker.cache.ClassTemplateLoader
@@ -29,12 +26,10 @@ import org.jetbrains.ktor.request.host
 import org.jetbrains.ktor.request.port
 import org.jetbrains.ktor.response.respondRedirect
 import org.jetbrains.ktor.routing.Routing
-import org.jetbrains.ktor.sessions.SessionCookieTransformerMessageAuthentication
-import org.jetbrains.ktor.sessions.SessionCookiesSettings
-import org.jetbrains.ktor.sessions.withCookieByValue
-import org.jetbrains.ktor.sessions.withSessions
+import org.jetbrains.ktor.sessions.*
 import org.jetbrains.ktor.transform.transform
 import org.jetbrains.ktor.util.hex
+import org.jetbrains.ktor.util.nextNonce
 import java.io.File
 import java.net.URI
 import java.util.concurrent.TimeUnit
@@ -84,13 +79,19 @@ class SweetApp : AutoCloseable {
                     TextContent(gson.toJson(value.data), ContentType.Application.Json)
                 }
             }
+            //for chat
+            if (call.sessionOrNull<Session>() == null) {
+                //call.session(Session(nextNonce()))
+                //call.redirect(Login())
+            }
         }
 
         install(Routing) {
             staticHandler()
             indexHandler(dao)
-            userHandler(dao,hashFunction)
-            sweetHandler(dao,hashFunction)
+            userHandler(dao, hashFunction)
+            sweetHandler(dao, hashFunction)
+            chatHandler()
         }
     }
 
