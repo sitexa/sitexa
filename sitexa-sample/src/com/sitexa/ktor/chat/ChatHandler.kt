@@ -1,7 +1,8 @@
-package com.sitexa.ktor.handler
+package com.sitexa.ktor.chat
 
 import com.sitexa.ktor.Session
 import com.sitexa.ktor.chat.ChatServer
+import com.sitexa.ktor.handler.Login
 import com.sitexa.ktor.redirect
 import org.jetbrains.ktor.application.call
 import org.jetbrains.ktor.content.resolveClasspathWithPath
@@ -20,7 +21,6 @@ import java.time.Duration
  * Created by open on 23/04/2017.
  *
  */
-//data class ChatSession(val id:String)
 
 @location("/chat") class Chat
 
@@ -50,14 +50,12 @@ fun Route.chatHandler(){
     }
 
     get<Chat> {
-        //call.respond(FreeMarkerContent("chat.ftl",mapOf("user" to "xnpeng"),"1001"))
         val session = call.sessionOrNull<Session>()
         if(session == null) call.redirect(Login())
         call.respond(FreeMarkerContent("chat/chat.ftl",mapOf("user" to "xnpeng"),"1001"))
     }
 
     get<ChatJs>{
-        //call.respond(call.resolveClasspathWithPath("", "chat.js")!!)
         call.respond(call.resolveClasspathWithPath("", "templates/chat/main.js")!!)
     }
 }
@@ -73,7 +71,8 @@ private suspend fun receivedMessage(id: String, command: String) {
             when {
                 newName.isEmpty() -> server.sendTo(id, "server::help", "/user [newName]")
                 newName.length > 50 -> server.sendTo(id, "server::help", "new name is too long: 50 characters limit")
-                //else -> server.memberRenamed(id, newName) //don't change username
+                else -> server.sendTo(id,"server:help","don't change your name.")
+            //else -> server.memberRenamed(id, newName) //don't change username
             }
         }
         command.startsWith("/help") -> server.help(id)

@@ -2,6 +2,7 @@ package com.sitexa.ktor
 
 
 import com.google.gson.GsonBuilder
+import com.sitexa.ktor.chat.chatHandler
 import com.sitexa.ktor.dao.DAOFacade
 import com.sitexa.ktor.dao.DAOFacadeCache
 import com.sitexa.ktor.dao.DAOFacadeDatabase
