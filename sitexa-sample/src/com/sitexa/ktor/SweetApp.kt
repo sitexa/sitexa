@@ -30,7 +30,6 @@ import org.jetbrains.ktor.routing.Routing
 import org.jetbrains.ktor.sessions.*
 import org.jetbrains.ktor.transform.transform
 import org.jetbrains.ktor.util.hex
-import org.jetbrains.ktor.util.nextNonce
 import java.io.File
 import java.net.URI
 import java.util.concurrent.TimeUnit

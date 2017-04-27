@@ -16,7 +16,7 @@ class MainCss
 fun Route.staticHandler() {
 
     get<MainCss>{
-        call.respond(call.resolveClasspathWithPath("", "sweet.css")!!)
+        call.respond(call.resolveResource("sweet.css")!!)
     }
 
 }

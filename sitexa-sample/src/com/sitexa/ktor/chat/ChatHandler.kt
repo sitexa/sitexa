@@ -1,20 +1,16 @@
 package com.sitexa.ktor.chat
 
 import com.sitexa.ktor.Session
-import com.sitexa.ktor.chat.ChatServer
 import com.sitexa.ktor.handler.Login
 import com.sitexa.ktor.redirect
 import org.jetbrains.ktor.application.call
-import org.jetbrains.ktor.content.resolveClasspathWithPath
+import org.jetbrains.ktor.content.resolveResource
 import org.jetbrains.ktor.freemarker.FreeMarkerContent
 import org.jetbrains.ktor.locations.get
 import org.jetbrains.ktor.locations.location
 import org.jetbrains.ktor.routing.Route
 import org.jetbrains.ktor.sessions.sessionOrNull
-import org.jetbrains.ktor.websocket.CloseReason
-import org.jetbrains.ktor.websocket.Frame
-import org.jetbrains.ktor.websocket.readText
-import org.jetbrains.ktor.websocket.webSocket
+import org.jetbrains.ktor.websocket.*
 import java.time.Duration
 
 /**
@@ -40,7 +36,7 @@ fun Route.chatHandler(){
 
         handle { frame ->
             if (frame is Frame.Text) {
-                receivedMessage(session.userId, frame.readText())
+                receivedMessage(session.userId, frame.readText(),this)
             }
         }
 
@@ -56,14 +52,14 @@ fun Route.chatHandler(){
     }
 
     get<ChatJs>{
-        call.respond(call.resolveClasspathWithPath("", "templates/chat/main.js")!!)
+        call.respond(call.resolveResource("chat/main.js", "templates")!!)
     }
 }
 
 
 private val server = ChatServer()
 
-private suspend fun receivedMessage(id: String, command: String) {
+private suspend fun receivedMessage(id: String, command: String,ws:WebSocket) {
     when {
         command.startsWith("/who") -> server.who(id)
         command.startsWith("/user") -> {
@@ -77,6 +73,7 @@ private suspend fun receivedMessage(id: String, command: String) {
         }
         command.startsWith("/help") -> server.help(id)
         command.startsWith("/") -> server.sendTo(id, "server::help", "Unknown command ${command.takeWhile { !it.isWhitespace() }}")
+        command.startsWith("/bye") -> server.memberLeft(id,ws)//todo...
         else -> server.message(id, command)
     }
 }
