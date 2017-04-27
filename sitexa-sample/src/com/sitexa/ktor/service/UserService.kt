@@ -50,9 +50,6 @@ interface UserApi {
 
     @GET("/sweet/{id}")
     fun sweet2(@Path("id") id: Int): Call<Sweet>
-
-
-
 }
 
 fun login(userId: String, password: String): User? {
@@ -186,17 +183,5 @@ fun getUserPage2(userId: String): List<Sweet> {
     val sitexaApi = retrofit.create(UserApi::class.java)
     val call = sitexaApi.userPage2(userId)
     return  call.execute().body()
-}
-
-fun main(vararg: Array<String>) {
-    //val user = login("xnpeng", "pop007")
-    //println(user)
-
-
-    val sweet = getSweet2(9)
-    println(sweet)
-
-    //val sweets = getUserPage2("xnpeng")
-    //sweets.forEach { item -> println(item) }
 }
 
