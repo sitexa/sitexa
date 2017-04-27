@@ -9,3 +9,5 @@ import java.io.Serializable
  */
 
 data class Sweet(val id: Int, val userId: String, val text: String, val date: DateTime, val replyTo: Int?) : Serializable
+
+data class SweetBag(val sweet: Sweet, val replies: List<Sweet>, val medias: List<Media>)
