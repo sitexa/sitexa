@@ -1,6 +1,7 @@
 package com.sitexa.ktor
 
 import com.google.gson.GsonBuilder
+import com.google.gson.LongSerializationPolicy
 import com.sitexa.ktor.dao.DAOFacade
 import com.sitexa.ktor.dao.DAOFacadeCache
 import com.sitexa.ktor.dao.DAOFacadeDatabase
@@ -30,6 +31,8 @@ import org.jetbrains.ktor.sessions.withCookieByValue
 import org.jetbrains.ktor.sessions.withSessions
 import org.jetbrains.ktor.transform.transform
 import org.jetbrains.ktor.util.hex
+import org.joda.time.DateTime
+import sun.jvm.hotspot.debugger.cdbg.IntType
 import java.io.File
 import java.net.URI
 import java.util.*
@@ -78,7 +81,10 @@ class SweetApi : AutoCloseable {
 
         val hashFunction = { s: String -> hash(s) }
 
-        val gson = GsonBuilder().create()
+        val gson = GsonBuilder()
+                .registerTypeAdapter(DateTime::class.java, JodaDateAdapter())
+                .setLongSerializationPolicy(LongSerializationPolicy.STRING)
+                .create()
         intercept(ApplicationCallPipeline.Infrastructure) { call ->
             if (call.request.acceptItems().any { it.value == "application/json" }) {
                 call.transform.register<JsonResponse> { value ->

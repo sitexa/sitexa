@@ -78,10 +78,10 @@ fun Route.userHandler(dao: DAOFacade, hashFunction: (String) -> String) {
         }
 
         if (login == null) {
-            call.respond(JsonResponse(mapOf("user" to "", "error" to "Invalid username or password")))
+            call.respond(JsonResponse(mapOf("result" to -1)))
         } else {
-            call.session(Session(login.userId))
-            call.respond(JsonResponse(mapOf("user" to login, "error" to it.error)))
+            //call.session(Session(login.userId))
+            call.respond(JsonResponse(mapOf("user" to login, "result" to 1)))
         }
     }
     get<Logout> {

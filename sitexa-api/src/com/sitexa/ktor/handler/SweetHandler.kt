@@ -122,6 +122,9 @@ fun Route.sweetHandler(dao: DAOFacade, hashFunction: (String) -> String){
             Media(med!!.id, med.refId, med.fileName, med.fileType, med.title, med.sortOrder)
         }.toList()
 
+        val data = mapOf("sweet" to sweet,"replies" to replies,"medias" to medias)
+
+        call.respond(JsonResponse(sweet))
         //call.respond(FreeMarkerContent("sweet-view.ftl", mapOf("user" to user, "sweet" to sweet, "replies" to replies, "date" to date, "code" to code, "medias" to medias), etag.toString()))
     }
     post<Upload> {
