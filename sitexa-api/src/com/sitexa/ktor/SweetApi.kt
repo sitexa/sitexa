@@ -2,6 +2,7 @@ package com.sitexa.ktor
 
 import com.google.gson.GsonBuilder
 import com.google.gson.LongSerializationPolicy
+import com.sitexa.ktor.common.JodaGsonAdapter
 import com.sitexa.ktor.dao.DAOFacade
 import com.sitexa.ktor.dao.DAOFacadeCache
 import com.sitexa.ktor.dao.DAOFacadeDatabase
@@ -32,10 +33,8 @@ import org.jetbrains.ktor.sessions.withSessions
 import org.jetbrains.ktor.transform.transform
 import org.jetbrains.ktor.util.hex
 import org.joda.time.DateTime
-import sun.jvm.hotspot.debugger.cdbg.IntType
 import java.io.File
 import java.net.URI
-import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
@@ -48,7 +47,6 @@ import javax.crypto.spec.SecretKeySpec
 class JsonResponse(val data: Any)
 
 data class Session(val userId: String)
-
 
 class SweetApi : AutoCloseable {
 
@@ -82,7 +80,7 @@ class SweetApi : AutoCloseable {
         val hashFunction = { s: String -> hash(s) }
 
         val gson = GsonBuilder()
-                .registerTypeAdapter(DateTime::class.java, JodaDateAdapter())
+                .registerTypeAdapter(DateTime::class.java, JodaGsonAdapter())
                 .setLongSerializationPolicy(LongSerializationPolicy.STRING)
                 .create()
         intercept(ApplicationCallPipeline.Infrastructure) { call ->
@@ -112,7 +110,7 @@ class SweetApi : AutoCloseable {
 
 }
 
-//this function does not work. why?
+//todo:this function does not work. why?
 suspend fun ApplicationCall.respondJson(data: Any) = respond(JsonResponse(data))
 
 suspend fun ApplicationCall.redirect(location: Any) {
@@ -133,4 +131,9 @@ fun ApplicationCall.verifyCode(date: Long, user: User, code: String, hashFunctio
 fun ApplicationCall.refererHost() = request.header(HttpHeaders.Referrer)?.let { URI.create(it).host }
 
 
+fun ApplicationCall.signVCode(date: Long, vcode: String, hashFunction: (String) -> String) =
+        hashFunction("$date:$vcode:${request.host()}:${refererHost()}")
 
+fun ApplicationCall.testVCode(date: Long, vcode: String, sign: String, hashFunction: (String) -> String) =
+        signVCode(date, vcode, hashFunction) == sign
+                && (System.currentTimeMillis() - date).let { it > 0 && it < TimeUnit.MILLISECONDS.convert(5, TimeUnit.MINUTES) }

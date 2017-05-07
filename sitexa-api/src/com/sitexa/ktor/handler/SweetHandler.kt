@@ -27,8 +27,9 @@ class Upload()
 @location("/media/{name}/{type}")
 data class MediaView(val name: String, val type: String)
 
-@location("/sweet/{id}")
-data class SweetView(val id: Int)
+@location("/sweet/{id}") data class SweetView(val id: Int)
+
+@location("/sweet-bag/{id}") data class SweetBag(val id: Int)
 
 @location("/sweet-new")
 data class SweetNew(val text: String = "", val date: Long = 0L, val code: String = "")
@@ -42,7 +43,7 @@ data class SweetUpd(val id: Int = 0, val text: String = "", val date: Long = 0L,
 @location("/sweet-reply")
 data class SweetReply(val replyTo: Int = 0, val text: String = "", val date: Long = 0L, val code: String = "")
 
-fun Route.sweetHandler(dao: DAOFacade, hashFunction: (String) -> String){
+fun Route.sweetHandler(dao: DAOFacade, hashFunction: (String) -> String) {
     get<SweetNew> {
         val user = call.sessionOrNull<Session>()?.let { dao.user(it.userId) }
 
@@ -112,6 +113,15 @@ fun Route.sweetHandler(dao: DAOFacade, hashFunction: (String) -> String){
     get<SweetView> {
         val user = call.sessionOrNull<Session>()?.let { dao.user(it.userId) }
         val sweet = dao.getSweet(it.id)
+        val date = System.currentTimeMillis()
+        val code = if (user != null) call.securityCode(date, user, hashFunction) else null
+        val etagString = date.toString() + "," + user?.userId + "," + sweet.id.toString()
+        val etag = etagString.hashCode()
+        call.respond(JsonResponse(sweet))
+    }
+    get<SweetBag> {
+        val user = call.sessionOrNull<Session>()?.let { dao.user(it.userId) }
+        val sweet = dao.getSweet(it.id)
         val replies = dao.getReplies(it.id).map { dao.getSweet(it) }
         val date = System.currentTimeMillis()
         val code = if (user != null) call.securityCode(date, user, hashFunction) else null
@@ -122,10 +132,9 @@ fun Route.sweetHandler(dao: DAOFacade, hashFunction: (String) -> String){
             Media(med!!.id, med.refId, med.fileName, med.fileType, med.title, med.sortOrder)
         }.toList()
 
-        val data = mapOf("sweet" to sweet,"replies" to replies,"medias" to medias)
+        val data = mapOf("sweet" to sweet, "replies" to replies, "medias" to medias)
 
-        call.respond(JsonResponse(sweet))
-        //call.respond(FreeMarkerContent("sweet-view.ftl", mapOf("user" to user, "sweet" to sweet, "replies" to replies, "date" to date, "code" to code, "medias" to medias), etag.toString()))
+        call.respond(JsonResponse(data))
     }
     post<Upload> {
         val user = call.sessionOrNull<Session>()?.let { it.userId }
@@ -189,7 +198,7 @@ fun Route.sweetHandler(dao: DAOFacade, hashFunction: (String) -> String){
     }
     post<SweetUpd> {
         val user = call.sessionOrNull<Session>()?.let { dao.user(it.userId) }
-        if (user == null || !call.verifyCode(it.date, user, it.code, hashFunction)) {
+        if (user == null || !call.verifyCode(it.date, user, it.code,  hashFunction)) {
             call.redirect(Login())
         } else {
             dao.updateSweet(user.userId, it.id, it.text, null)
@@ -201,7 +210,7 @@ fun Route.sweetHandler(dao: DAOFacade, hashFunction: (String) -> String){
         val sweet = dao.getSweet(it.replyTo)
         val date = System.currentTimeMillis()
         if (user != null) {
-            val code = call.securityCode(date, user, hashFunction)
+            val code = call.securityCode(date, user,  hashFunction)
             val etagString = date.toString() + "," + user.userId + "," + sweet.id.toString()
             val etag = etagString.hashCode()
             //call.respond(FreeMarkerContent("sweet-reply.ftl", mapOf("user" to user, "sweet" to sweet, "date" to date, "code" to code), etag.toString()))

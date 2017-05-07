@@ -33,4 +33,5 @@ interface DAOFacade : Closeable {
     fun userByEmail(email: String): User?
     fun userByMobile(mobile: String): User?
     fun createUser(user: User)
+    fun updateUser(user: User)
 }

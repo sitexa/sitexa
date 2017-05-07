@@ -7,4 +7,4 @@ import java.io.Serializable
  *
  */
 
-data class User(val userId: String, val mobile: String, val email: String, val displayName: String, val passwordHash: String) : Serializable
+data class User(val userId: String, var mobile: String, var email: String, var displayName: String, var passwordHash: String) : Serializable

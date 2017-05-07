@@ -7,7 +7,6 @@ import org.jetbrains.exposed.sql.SchemaUtils.create
 import org.joda.time.*
 
 
-
 class DAOFacadeDatabase(val db: Database) : DAOFacade {
 
     override fun init() {
@@ -130,6 +129,18 @@ class DAOFacadeDatabase(val db: Database) : DAOFacade {
             it[Users.passwordHash] = user.passwordHash
         }
         Unit
+    }
+
+    override fun updateUser(user: User) {
+        transaction {
+            Users.update({ Users.id eq user.userId }) {
+                it[Users.displayName] = user.displayName
+                it[Users.email] = user.email
+                it[Users.mobile] = user.mobile
+                it[Users.passwordHash] = user.passwordHash
+            }
+            Unit
+        }
     }
 
     override fun topSweets(count: Int): List<Int> = transaction {

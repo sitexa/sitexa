@@ -157,6 +157,12 @@ class DAOFacadeCache(val delegate: DAOFacade, val storagePath: File) : DAOFacade
         usersCache.put(user.userId, user)
     }
 
+    override fun updateUser(user: User) {
+        delegate.updateUser(user)
+        usersCache.remove(user.userId)
+    }
+
+
     override fun topSweets(count: Int): List<Int> {
         return delegate.topSweets(count)
     }
