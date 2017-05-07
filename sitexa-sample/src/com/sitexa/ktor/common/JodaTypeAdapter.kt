@@ -1,4 +1,4 @@
-package com.sitexa.ktor.service
+package com.sitexa.ktor.common
 
 import com.google.gson.*
 import com.squareup.moshi.FromJson
@@ -10,7 +10,7 @@ import java.lang.reflect.Type
  * Created by open on 21/04/2017.
  *
  */
-class JodaTimeAdapter {
+class JodaMoshiAdapter {
     @ToJson
     fun toJson(date: DateTime) = date.millis
 
@@ -18,7 +18,7 @@ class JodaTimeAdapter {
     fun fromJson(json: Long) = DateTime(json)
 }
 
-class JodaTypeAdapter : JsonSerializer<DateTime>, JsonDeserializer<DateTime> {
+class JodaGsonAdapter : JsonSerializer<DateTime>, JsonDeserializer<DateTime> {
     override fun serialize(src: DateTime, srcType: Type, context: JsonSerializationContext): JsonElement {
         //return JsonPrimitive(src.toString())
         return JsonPrimitive(src.millis)
