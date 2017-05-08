@@ -120,7 +120,7 @@ fun Route.userHandler(dao: DAOFacade, hashFunction: (String) -> String) {
     }
     post<ChangePassword> {
         var result:ApiResult
-        val user = dao.user(it.userId, hashFunction(it.password))
+        val user:User? = dao.user(it.userId, hashFunction(it.password))
         if (user == null) {
             result = ApiResult(code=0,desc="用户不存在")
         } else if (it.newPassword.length < 6) {
@@ -160,7 +160,6 @@ fun Route.userHandler(dao: DAOFacade, hashFunction: (String) -> String) {
     }
 
     post<VCode> {
-        println("\npost:${it.date}:${it.vcode}:${it.sign}")
         val result = if (call.testVCode(it.date, it.vcode, it.sign, hashFunction))
             ApiResult(code = 1) else ApiResult(code = 0)
         call.respond(JsonResponse(result))

@@ -51,7 +51,7 @@ fun test2() {
     """
     val us = ApiResult(json)
     val typeToken = object : TypeToken<List<Sweet>>() {}.type
-    val sweetList = us.dataList<List<Sweet>>(typeToken)!!
+    val sweetList = us.data<List<Sweet>>(typeToken)!!
 
     println()
     sweetList.forEach { it -> println("s:id=${it.id}:$it") }

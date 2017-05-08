@@ -1,6 +1,10 @@
 package com.sitexa.ktor.handler
 
+import com.google.gson.GsonBuilder
+import com.google.gson.LongSerializationPolicy
 import com.sitexa.ktor.*
+import com.sitexa.ktor.common.ApiResult
+import com.sitexa.ktor.common.JodaGsonAdapter
 import com.sitexa.ktor.dao.DAOFacade
 import com.sitexa.ktor.model.Media
 import org.jetbrains.ktor.application.call
@@ -14,6 +18,7 @@ import org.jetbrains.ktor.request.PartData
 import org.jetbrains.ktor.request.isMultipart
 import org.jetbrains.ktor.routing.Route
 import org.jetbrains.ktor.sessions.sessionOrNull
+import org.joda.time.DateTime
 import java.io.File
 
 /**
@@ -31,6 +36,8 @@ data class MediaView(val name: String, val type: String)
 
 @location("/sweet-bag/{id}") data class SweetBag(val id: Int)
 
+@location("/sweet-component/{id}") data class SweetComponent(val id:Int)
+
 @location("/sweet-new")
 data class SweetNew(val text: String = "", val date: Long = 0L, val code: String = "")
 
@@ -44,6 +51,10 @@ data class SweetUpd(val id: Int = 0, val text: String = "", val date: Long = 0L,
 data class SweetReply(val replyTo: Int = 0, val text: String = "", val date: Long = 0L, val code: String = "")
 
 fun Route.sweetHandler(dao: DAOFacade, hashFunction: (String) -> String) {
+    val gson = GsonBuilder()
+            .registerTypeAdapter(DateTime::class.java, JodaGsonAdapter())
+            .setLongSerializationPolicy(LongSerializationPolicy.STRING)
+            .create()
     get<SweetNew> {
         val user = call.sessionOrNull<Session>()?.let { dao.user(it.userId) }
 
@@ -135,6 +146,18 @@ fun Route.sweetHandler(dao: DAOFacade, hashFunction: (String) -> String) {
         val data = mapOf("sweet" to sweet, "replies" to replies, "medias" to medias)
 
         call.respond(JsonResponse(data))
+    }
+    get<SweetComponent>{
+        val sweet = dao.getSweet(it.id)
+        val replies = dao.getReplies(it.id).map { dao.getSweet(it) }
+        val medias = dao.getMedias(sweet.id).map {
+            val med = dao.getMedia(it)
+            Media(med!!.id, med.refId, med.fileName, med.fileType, med.title, med.sortOrder)
+        }.toList()
+        val data = mapOf("sweet" to gson.toJson(sweet),"replies" to gson.toJson(replies),"medias" to gson.toJson(medias))
+        val data_json = gson.toJson(data)
+        val result = ApiResult(data = data_json)
+        call.respond(JsonResponse(result))
     }
     post<Upload> {
         val user = call.sessionOrNull<Session>()?.let { it.userId }

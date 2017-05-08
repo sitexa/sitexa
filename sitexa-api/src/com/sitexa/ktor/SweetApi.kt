@@ -62,6 +62,10 @@ class SweetApi : AutoCloseable {
 
     val hmacKey = SecretKeySpec(hashKey, "HmacSHA1")
     val dao: DAOFacade = DAOFacadeCache(DAOFacadeDatabase(Database.connect(datasource)), File(dir.parentFile, "ehcache"))
+    val gson = GsonBuilder()
+            .registerTypeAdapter(DateTime::class.java, JodaGsonAdapter())
+            .setLongSerializationPolicy(LongSerializationPolicy.STRING)
+            .create()
 
     fun Application.install() {
         dao.init()
@@ -79,10 +83,6 @@ class SweetApi : AutoCloseable {
 
         val hashFunction = { s: String -> hash(s) }
 
-        val gson = GsonBuilder()
-                .registerTypeAdapter(DateTime::class.java, JodaGsonAdapter())
-                .setLongSerializationPolicy(LongSerializationPolicy.STRING)
-                .create()
         intercept(ApplicationCallPipeline.Infrastructure) { call ->
             if (call.request.acceptItems().any { it.value == "application/json" }) {
                 call.transform.register<JsonResponse> { value ->
