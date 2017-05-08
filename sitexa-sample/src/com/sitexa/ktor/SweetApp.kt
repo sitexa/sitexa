@@ -2,7 +2,9 @@ package com.sitexa.ktor
 
 
 import com.google.gson.GsonBuilder
+import com.google.gson.LongSerializationPolicy
 import com.sitexa.ktor.chat.chatHandler
+import com.sitexa.ktor.common.JodaGsonAdapter
 import com.sitexa.ktor.dao.DAOFacade
 import com.sitexa.ktor.dao.DAOFacadeCache
 import com.sitexa.ktor.dao.DAOFacadeDatabase
@@ -30,6 +32,7 @@ import org.jetbrains.ktor.routing.Routing
 import org.jetbrains.ktor.sessions.*
 import org.jetbrains.ktor.transform.transform
 import org.jetbrains.ktor.util.hex
+import org.joda.time.DateTime
 import java.io.File
 import java.net.URI
 import java.util.concurrent.TimeUnit
@@ -51,7 +54,13 @@ class SweetApp : AutoCloseable {
     val datasource = getDataSource()
 
     val hmacKey = SecretKeySpec(hashKey, "HmacSHA1")
+
     val dao: DAOFacade = DAOFacadeCache(DAOFacadeDatabase(Database.connect(datasource)), File(dir.parentFile, "ehcache"))
+
+    val gson = GsonBuilder()
+            .registerTypeAdapter(DateTime::class.java, JodaGsonAdapter())
+            .setLongSerializationPolicy(LongSerializationPolicy.STRING)
+            .create()
 
     fun Application.install() {
         dao.init()
@@ -72,7 +81,6 @@ class SweetApp : AutoCloseable {
 
         val hashFunction = { s: String -> hash(s) }
 
-        val gson = GsonBuilder().create()
         intercept(ApplicationCallPipeline.Infrastructure) { call ->
             if (call.request.acceptItems().any { it.value == "application/json" }) {
                 call.transform.register<JsonResponse> { value ->

@@ -6,6 +6,7 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonParser
 import com.google.gson.reflect.TypeToken
+import com.sitexa.ktor.BASE_URL
 import com.sitexa.ktor.common.ApiResult
 import com.sitexa.ktor.common.JodaGsonAdapter
 import com.sitexa.ktor.common.JodaMoshiAdapter
@@ -20,7 +21,6 @@ import org.slf4j.LoggerFactory
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.*
 
 
@@ -29,7 +29,6 @@ import retrofit2.http.*
  *
  */
 
-val BASE_URL = "http://localhost:8080"
 val HEADERS = Headers.Builder().add("Accept", "application/json").build()
 
 val headerInterceptor = Interceptor { chain ->
@@ -67,7 +66,7 @@ interface UserApi {
     @FormUrlEncoded @POST("/cpwd")
     fun changePassword(@Field("userId") userId: String,
                        @Field("password") password: String,
-                       @Field("newPassword") newPassword: String): Call<ResponseBody>
+                       @Field("newPassword") newPassword: String): Call<ApiResult>
 
     @GET("/vcode")
     fun sendVCode(@Query("mobile") mobile: String): Call<ApiResult>
@@ -78,7 +77,11 @@ interface UserApi {
 }
 
 open class ApiService {
-    val gson = GsonBuilder().registerTypeAdapter(DateTime::class.java, JodaGsonAdapter()).create()
+    protected val gson = GsonBuilder()
+            .registerTypeAdapter(DateTime::class.java, JodaGsonAdapter())
+            .setPrettyPrinting()
+            .create()
+    protected val moshi = Moshi.Builder().add(JodaMoshiAdapter()).build()
 
     val okClient = OkHttpClient().newBuilder()
             .addInterceptor(HeaderInterceptor())
@@ -96,14 +99,13 @@ open class ApiService {
 class UserService : ApiService() {
 
     private val userApi: UserApi = retrofit.create(UserApi::class.java)
-    private val moshi = Moshi.Builder().add(JodaMoshiAdapter()).build()
     private val sweetListType = object : TypeToken<List<Sweet>>() {}.type
 
     fun getUserPageApiResult(userId: String): List<Sweet>? {
         val call = userApi.userPage(userId)
         val response = call.execute().body().string()
         val response_apiResult = ApiResult(data = response)
-        val response_apiResult_dataList = response_apiResult.dataList<List<Sweet>>(sweetListType)
+        val response_apiResult_dataList = response_apiResult.data<List<Sweet>>(sweetListType)
         return response_apiResult_dataList
     }
 
@@ -173,21 +175,13 @@ class UserService : ApiService() {
         return user
     }
 
-    fun changePassword(userId: String, password: String, newPassword: String): String {
+    fun changePassword(userId: String, password: String, newPassword: String): ApiResult {
         val call = userApi.changePassword(userId, password, newPassword)
-        val response = call.execute().body().string()
-
-        val result = JsonParser().parse(response).obj["result"].asString
-        if (result != "") {
-            log.error(result)
-        }
-        return result
+        return call.execute().body()
     }
 
     fun sendVCode(mobile: String): ApiResult = userApi.sendVCode(mobile).execute().body()
 
-    fun testVCode(vcode: String, date: Long, sign: String): ApiResult {
-        return userApi.testVCode(vcode, date, sign).execute().body()
-    }
+    fun testVCode(vcode: String, date: Long, sign: String) = userApi.testVCode(vcode, date, sign).execute().body()
 
 }

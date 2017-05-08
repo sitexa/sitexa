@@ -9,7 +9,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import org.joda.time.DateTime
 
 
-class DAOFacadeDatabase(val db: Database) : DAOFacade {
+class DAOFacadeNetwork(/**val db: Database */) : DAOFacade {
 
     override fun init() {
         transaction {

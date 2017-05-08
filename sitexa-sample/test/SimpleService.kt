@@ -1,5 +1,4 @@
-package com.sitexa.ktor.service
-
+import com.sitexa.ktor.service.loggingInterceptor
 import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Retrofit

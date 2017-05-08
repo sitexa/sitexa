@@ -1,5 +1,8 @@
 package com.sitexa.ktor
 
+import okhttp3.Headers
+import okhttp3.Interceptor
+import okhttp3.logging.HttpLoggingInterceptor
 import org.jetbrains.ktor.util.hex
 import java.io.File
 
@@ -21,5 +24,7 @@ val dbConfig = mapOf("driver" to "org.mariadb.jdbc.Driver",
 val hashKey = hex("6819b57a326945c1968f45236589")
 val dir = File("target/db")
 
+
+val BASE_URL = "http://localhost:8888"
 
 
