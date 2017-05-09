@@ -15,14 +15,14 @@ import java.io.Closeable
 interface DAOFacade : Closeable {
     fun init()
     fun countReplies(id: Int): Int
-    fun createSweet(user: String, text: String, replyTo: Int? = null, date: DateTime = DateTime.now()): Int
+    fun createSweet(user: String, text: String, replyTo: Int? = null): Int
     fun deleteSweet(id: Int)
-    fun updateSweet(user: String, id: Int, text: String, replyTo: Int? = null, date: DateTime = DateTime.now())
+    fun updateSweet(id: Int, text: String)
     fun getSweet(id: Int): Sweet
     fun getReplies(id: Int): List<Int>
     fun userSweets(userId: String): List<Int>
 
-    fun createMedia(refId: Int? = -1, fileName: String, fileType: String? = "unknown", title: String? = null, sortOrder: Int? = 0): Int
+    fun createMedia(refId: Int = -1, fileName: String, fileType: String? = null, title: String? = null, sortOrder: Int = 0): Int
     fun deleteMedia(id: Int)
     fun getMedia(id: Int): Media?
     fun getMedias(refId: Int): List<Int>

@@ -25,13 +25,12 @@ class DAOFacadeDatabase(val db: Database) : DAOFacade {
         }
     }
 
-    override fun createSweet(user: String, text: String, replyTo: Int?, date: DateTime): Int {
+    override fun createSweet(user: String, text: String, replyTo: Int?): Int {
         return transaction {
             Sweets.insert {
                 it[Sweets.user] = user
-                it[Sweets.date] = date
-                it[Sweets.replyTo] = replyTo
                 it[Sweets.text] = text
+                it[Sweets.replyTo] = replyTo
             } get Sweets.id
         }
     }
@@ -42,13 +41,10 @@ class DAOFacadeDatabase(val db: Database) : DAOFacade {
         }
     }
 
-    override fun updateSweet(user: String, id: Int, text: String, replyTo: Int?, date: DateTime) {
+    override fun updateSweet(id: Int, text: String) {
         transaction {
             Sweets.update({ Sweets.id eq id }) {
-                it[Sweets.user] = user
-                it[Sweets.date] = date
                 it[Sweets.text] = text
-                it[Sweets.replyTo] = replyTo
             }
         }
     }
@@ -68,7 +64,7 @@ class DAOFacadeDatabase(val db: Database) : DAOFacade {
                 .orderBy(Sweets.date, false).limit(100).map { it[Sweets.id] }
     }
 
-    override fun createMedia(refId: Int?, fileName: String, fileType: String?, title: String?, sortOrder: Int?): Int {
+    override fun createMedia(refId: Int, fileName: String, fileType: String?, title: String?, sortOrder: Int): Int {
         return transaction {
             Medias.insert {
                 it[Medias.refId] = refId

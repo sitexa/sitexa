@@ -131,11 +131,11 @@ fun Route.sweetHandler(dao: DAOFacade, hashFunction: (String) -> String){
         if (user == null) {
             call.redirect(Login())
         } else {
-            var refId: Int? = 0
+            var refId: Int = 0
             var fileName: String = ""
             var fileType: String? = ""
             var title: String? = ""
-            var sortOrder: Int? = 0
+            var sortOrder: Int = 0
 
             val multipart = call.request.receive<MultiPartData>()
 
@@ -191,7 +191,7 @@ fun Route.sweetHandler(dao: DAOFacade, hashFunction: (String) -> String){
         if (user == null || !call.verifyCode(it.date, user, it.code, hashFunction)) {
             call.redirect(Login())
         } else {
-            dao.updateSweet(user.userId, it.id, it.text, null)
+            dao.updateSweet(it.id, it.text)
             call.redirect(SweetView(it.id))
         }
     }

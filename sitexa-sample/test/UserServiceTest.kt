@@ -8,21 +8,25 @@ import com.sitexa.ktor.service.UserService
 
 fun main(vararg: Array<String>) {
 
-    testGetUserPageApiResult()
+    //testGetUserPageApiResult()
 
-    testSendVCode()
+    //testSendVCode()
 
-    testVCode()
+    //testVCode()
 
-    testChangePwd()
+    //testChangePwd()
 
-    testLogin()
+    //testLogin()
 
-    testRegisterUser()
+    //testRegisterUser()
 
-    testGetUserPageGson()
+    //testGetUserPageGson()
 
-    testGetUserPageMoshi()
+    //testGetUserPageMoshi()
+
+    //testGetUserPage()
+
+    testGetUserInfo()
 }
 
 fun testSendVCode() {
@@ -74,4 +78,18 @@ fun testGetUserPageMoshi() {
     println("\n###########testGetUserPageMoshi")
     val user2 = UserService().getUserPageMoshi("xnpeng")
     user2?.forEach { it -> println("\nuserPageMoshi:$it") }
+}
+
+
+fun testGetUserPage() {
+    println("\n###########testGetUserPage")
+    val user2 = UserService().getUserPage("xnpeng")
+    user2.forEach { it -> println("\nuserPage:$it") }
+}
+
+fun testGetUserInfo(){
+    println("\n###########testGetUserInfo")
+    val userInfo = UserService().getUserInfo("xnpeng")
+    println("\nuserInfo:$userInfo")
+
 }

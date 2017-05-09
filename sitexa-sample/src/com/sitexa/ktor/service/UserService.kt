@@ -47,6 +47,8 @@ class HeaderInterceptor(val name: String = "Accept", val value: String = "applic
 
 //todo 接口返回类型研究：Call<Any>,Call<ResponseBody>,Call<Sweet>,Call<List<Any>> Call<List<Sweet>>
 interface UserApi {
+    @GET("/user-info/{userId}")fun userInfo(@Path("userId")userId:String):Call<User>
+
     @GET("/user/{userId}")
     fun userPage(@Path("userId") userId: String): Call<ResponseBody>
 
@@ -85,7 +87,7 @@ open class ApiService {
 
     val okClient = OkHttpClient().newBuilder()
             .addInterceptor(HeaderInterceptor())
-            //.addInterceptor(loggingInterceptor)
+            .addInterceptor(loggingInterceptor)
             .build()
 
     val retrofit = Retrofit.Builder()
@@ -101,6 +103,7 @@ class UserService : ApiService() {
     private val userApi: UserApi = retrofit.create(UserApi::class.java)
     private val sweetListType = object : TypeToken<List<Sweet>>() {}.type
 
+    @Deprecated("use getUserPage")
     fun getUserPageApiResult(userId: String): List<Sweet>? {
         val call = userApi.userPage(userId)
         val response = call.execute().body().string()
@@ -109,6 +112,7 @@ class UserService : ApiService() {
         return response_apiResult_dataList
     }
 
+    @Deprecated("use getUserPage")
     fun getUserPageMoshi(userId: String): List<Sweet>? {
         val call = userApi.userPage(userId)
         val response = call.execute().body().string()
@@ -117,7 +121,13 @@ class UserService : ApiService() {
         return sweetsAdapter.fromJson(response)
     }
 
+    @Deprecated("use getUserPage")
     fun getUserPageGson(userId: String): List<Sweet>? {
+        val call = userApi.userPage2(userId)
+        return call.execute().body()
+    }
+
+    fun getUserPage(userId:String):List<Sweet>{
         val call = userApi.userPage2(userId)
         return call.execute().body()
     }
@@ -184,4 +194,5 @@ class UserService : ApiService() {
 
     fun testVCode(vcode: String, date: Long, sign: String) = userApi.testVCode(vcode, date, sign).execute().body()
 
+    fun getUserInfo(userId:String):User = userApi.userInfo(userId).execute().body()
 }

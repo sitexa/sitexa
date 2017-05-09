@@ -8,10 +8,18 @@ import com.sitexa.ktor.service.SweetService
 
 fun main(vararg: Array<String>) {
     //getSingleSweet()
+    //getSweetComponent()
+    //testGetTopSweet()
+    //testGetLatestSweet()
+    //testCountReplies()
 
-    getSweetComponent()
+    //testCreateSweet()
+    //testUpdateSweet()
+    //testDeleteSweet()
 
-    //getSweetBag()
+    //testCreateMedia()
+    //testDeleteMedia()
+    //testGetMedia()
 }
 
 fun getSingleSweet() {
@@ -20,29 +28,6 @@ fun getSingleSweet() {
 
     val sweetSingle = SweetService().getSweetSingle(9)
     println("\nsweetSingle:$sweetSingle")
-
-    //val sweetMoshi = SweetService().getSingleSweetMoshi(9)
-    //println("\nsweetMoshi:\n$sweetMoshi")
-
-    //val sweetGson = SweetService().getSingleSweetGson(9)
-    //println("\nsweetGson:\n$sweetGson")
-
-}
-
-fun getSweetBag() {
-
-    println("\n#################getSweetBag")
-
-    val sweet = SweetService().getSweetBagResponseBody(9)
-    val s = sweet["sweet"] as Sweet
-    val r = sweet["replies"] as List<*>
-    val m = sweet["medias"] as List<*>
-
-    println("\nsweet:$s")
-    println("\nrs:$r")
-    r.forEach { it -> println("r:${it as Sweet}") }
-    m.forEach { it -> println("m:${it as Media}") }
-
 }
 
 fun getSweetComponent() {
@@ -58,5 +43,77 @@ fun getSweetComponent() {
 
     val medias = sweetComponent["medias"] as List<*>
     medias.forEach { println("media:$it") }
+
+}
+
+fun testGetTopSweet() {
+    println("\n#################testGetTopSweet")
+    val sweets = SweetService().getTopSweet(10)
+    sweets.forEach { println(it) }
+}
+
+fun testGetLatestSweet() {
+    println("\n#################testGetLatestSweet")
+    val sweets = SweetService().getLatestSweet(10)
+    sweets.forEach { println(it) }
+}
+
+fun testCountReplies(){
+    println("\n#################testCountReplies")
+    val count = SweetService().countReplies(90)
+    println("\ncount:$count")
+}
+
+fun testCreateSweet(){
+    println("\n#################testCreateSweet")
+
+    val user ="xnpeng"
+    val text = "test create sweet again"
+    val replyTo = 9
+
+    val id = SweetService().createSweet(user,text)
+    println("\nid:$id")
+}
+
+fun testUpdateSweet(){
+    println("\n#################testUpdateSweet")
+    val id = 23
+    val text = "test create reply to 9"
+
+    val res = SweetService().updateSweet(id,text)
+    println("\nresult:$res")
+}
+
+fun testDeleteSweet(){
+    println("\n#################testDeleteSweet")
+    val res = SweetService().deleteSweet(24)
+    println("\nresult:$res")
+}
+
+fun testCreateMedia(){
+    println("\n#################testCreateMedia")
+    val refId = 9
+    val fileName = ""
+    val fileType = ""
+    val title = null
+    val sortOrder = null
+
+    val id = SweetService().createMedia(refId,fileName,fileType)
+    println("\nid:$id")
+}
+
+fun testDeleteMedia(){
+    println("\n#################testDeleteMedia")
+    val res = SweetService().deleteMedia(5)
+    println("\nres:$res")
+}
+
+fun testGetMedia(){
+    println("\n#################testGetMedia")
+    val media = SweetService().getMedia(4)
+    println("\nmedia:$media")
+}
+
+fun testViewMedia(){
 
 }

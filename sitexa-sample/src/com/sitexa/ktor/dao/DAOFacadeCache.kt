@@ -58,9 +58,9 @@ class DAOFacadeCache(val delegate: DAOFacade, val storagePath: File) : DAOFacade
         return delegate.countReplies(id)
     }
 
-    override fun createSweet(user: String, text: String, replyTo: Int?, date: DateTime): Int {
-        val id = delegate.createSweet(user, text, replyTo, date)
-        val sweet = Sweet(id, user, text, date, replyTo)
+    override fun createSweet(user: String, text: String,replyTo:Int?): Int {
+        val id = delegate.createSweet(user, text,replyTo)
+        val sweet = delegate.getSweet(id)
         sweetsCache.put(id, sweet)
         return id
     }
@@ -70,8 +70,8 @@ class DAOFacadeCache(val delegate: DAOFacade, val storagePath: File) : DAOFacade
         sweetsCache.remove(id)
     }
 
-    override fun updateSweet(user: String, id: Int, text: String, replyTo: Int?, date: DateTime) {
-        delegate.updateSweet(user, id, text, replyTo, date)
+    override fun updateSweet(id: Int, text: String) {
+        delegate.updateSweet(id, text)
         sweetsCache.remove(id)
     }
 
@@ -95,7 +95,7 @@ class DAOFacadeCache(val delegate: DAOFacade, val storagePath: File) : DAOFacade
         return delegate.userSweets(userId)
     }
 
-    override fun createMedia(refId: Int?, fileName: String, fileType: String?, title: String?, sortOrder: Int?): Int {
+    override fun createMedia(refId: Int, fileName: String, fileType: String?, title: String?, sortOrder: Int): Int {
         val id = delegate.createMedia(refId, fileName, fileType, title, sortOrder)
         val media = Media(id, refId, fileName, fileType, title, sortOrder)
         mediasCache.put(id, media)

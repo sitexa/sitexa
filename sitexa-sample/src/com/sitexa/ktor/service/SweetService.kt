@@ -1,26 +1,14 @@
 package com.sitexa.ktor.service
 
 import com.github.salomonbrys.kotson.fromJson
-import com.github.salomonbrys.kotson.obj
-import com.google.gson.GsonBuilder
-import com.google.gson.JsonObject
-import com.google.gson.JsonParser
 import com.google.gson.reflect.TypeToken
-import com.sitexa.ktor.BASE_URL
+import com.sitexa.ktor.common.ApiCode
 import com.sitexa.ktor.common.ApiResult
-import com.sitexa.ktor.common.JodaGsonAdapter
-import com.sitexa.ktor.common.JodaMoshiAdapter
 import com.sitexa.ktor.model.Media
 import com.sitexa.ktor.model.Sweet
-import com.squareup.moshi.Moshi
-import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
-import org.joda.time.DateTime
 import retrofit2.Call
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.GET
-import retrofit2.http.Path
+import retrofit2.http.*
 
 /**
  * Created by open on 04/05/2017.
@@ -28,69 +16,29 @@ import retrofit2.http.Path
  */
 
 interface SweetApi {
-    @GET("/sweet/{id}")
-    fun singleSweetResponseBody(@Path("id") id: Int): Call<ResponseBody>
+    @GET("/sweet/{id}") fun singleSweet(@Path("id") id: Int): Call<Sweet>
+    @GET("/sweet-component/{id}") fun sweetComponent(@Path("id") id: Int): Call<ApiResult>
+    @GET("/sweet-top/{num}") fun topSweet(@Path("num") num: Int): Call<List<Sweet>>
+    @GET("/sweet-latest/{num}") fun latestSweet(@Path("num") num: Int): Call<List<Sweet>>
+    @GET("/sweet-reply-count/{id}") fun countSweetReplies(@Path("id") id: Int): Call<Int>
 
-    @GET("/sweet/{id}")
-    fun singleSweet(@Path("id") id: Int): Call<Sweet>
+    @FormUrlEncoded @POST("/sweet-new") fun createSweet(@Field("user") user: String, @Field("text") text: String, @Field("replyTo") replyTo: Int?): Call<ApiResult>
+    @GET("/sweet-del") fun deleteSweet(@Query ("id") id: Int): Call<ApiResult>
+    @FormUrlEncoded @POST("/sweet-upd") fun updateSweet(@Field("id") id: Int, @Field("text") text: String): Call<ApiResult>
 
-    /**
-     * 该接口转换成功。
-     */
-    @GET("/sweet-bag/{id}")
-    fun sweetBagResponseBody(@Path("id") id: Int): Call<ResponseBody>
-
-    /**
-     * 该接口转换不成功。不论是Call<Map<String,Any>>还是Call<Map<String,String>>,
-     * 都得不到有效的JsonObject,无法直接转换。
-     */
-    @GET("/sweet-component/{id}")
-    fun sweetComponent(@Path("id") id: Int): Call<ApiResult>
+    @FormUrlEncoded @POST("/media-new") fun createMedia(@Field("refId") refId: Int, @Field("fileName") fileName: String, @Field("fileType") fileType: String?, @Field("title") title: String?, @Field("sortOrder") sortOrder: Int?): Call<ApiResult>
+    @GET("/media-del") fun deleteMedia(@Query("id") id: Int): Call<ApiResult>
+    @GET("/media/{name}/{type}") fun viewMedia(@Path("name") name: String, @Path("type") type: String): Call<ResponseBody>
+    @GET("/media/{id}") fun getMedia(@Path("id") id: Int): Call<Media>
 }
 
 class SweetService : ApiService() {
     private val sweetApi = retrofit.create(SweetApi::class.java)
 
-    @Deprecated("use getSweetSingle")
-    fun getSingleSweetMoshi(id: Int): Sweet {
-        val call = sweetApi.singleSweetResponseBody(id)
-        val response = call.execute().body()
-        val jsonString = response.string()
-        val sweetAdapter = moshi.adapter<Sweet>(Sweet::class.java).lenient()
-        return sweetAdapter.fromJson(jsonString)
-    }
-
-    @Deprecated("use getSweetSingle")
-    fun getSingleSweetGson(id: Int): Sweet {
-        val call = sweetApi.singleSweet(id)
-        return call.execute().body()
-    }
-
-    @Deprecated("use getSweetComponent")
-    fun getSweetBagResponseBody(id: Int): Map<String, Any> {
-        val call = sweetApi.sweetBagResponseBody(id)
-        val response = call.execute().body()
-        val jsonString = response.string()
-
-        val sweetJson = JsonParser().parse(jsonString).obj["sweet"]
-        val repliesJson = JsonParser().parse(jsonString).obj["replies"]
-        val mediaJson = JsonParser().parse(jsonString).obj["medias"]
-
-        val sweet = gson.fromJson<Sweet>(sweetJson)
-        val replies = gson.fromJson<List<Sweet>>(repliesJson, object : TypeToken<List<Sweet>>() {}.type)
-        val medias = gson.fromJson<List<Media>>(mediaJson, object : TypeToken<List<Media>>() {}.type)
-
-        val result = mapOf("sweet" to sweet, "replies" to replies, "medias" to medias)
-        return result
-    }
-
-    fun getSweetSingle(id: Int): Sweet {
-        val call = sweetApi.singleSweet(id)
-        return call.execute().body()
-    }
+    fun getSweetSingle(id: Int): Sweet = sweetApi.singleSweet(id).execute().body()
 
     fun getSweetComponent(id: Int): Map<String, Any> {
-        val map = HashMap<String,Any>()
+        val map = HashMap<String, Any>()
         val call = sweetApi.sweetComponent(id)
         val apiResult = call.execute().body()
 
@@ -99,16 +47,65 @@ class SweetService : ApiService() {
         data!!.forEach { k, v ->
             if (k == "sweet") {
                 val sweet = gson.fromJson<Sweet>(v.toString())
-                map.put("sweet",sweet)
+                map.put("sweet", sweet)
             } else if (k == "replies") {
                 val replies = gson.fromJson<List<Sweet>>(v.toString(), object : TypeToken<List<Sweet>>() {}.type)
-                map.put("replies",replies)
+                map.put("replies", replies)
             } else if (k == "medias") {
                 val medias = gson.fromJson<List<Media>>(v.toString(), object : TypeToken<List<Media>>() {}.type)
-                map.put("medias",medias)
+                map.put("medias", medias)
             }
         }
         return map
     }
 
+    fun getTopSweet(num: Int): List<Sweet> = sweetApi.topSweet(num).execute().body()
+
+    fun getLatestSweet(num: Int): List<Sweet> = sweetApi.latestSweet(num).execute().body()
+
+    fun countReplies(id: Int): Int = sweetApi.countSweetReplies(id).execute().body()
+
+
+    fun createSweet(user: String, text: String, replyTo: Int?=null): Int {
+        var id: Int = -1
+        val apiResult = sweetApi.createSweet(user, text, replyTo).execute().body()
+        val code = apiResult.code()
+        if (code == ApiCode.OK) {
+            id = apiResult.data(Int::class.java)!!
+        }
+        return id
+    }
+
+    fun deleteSweet(id: Int): Boolean {
+        val apiResult = sweetApi.deleteSweet(id).execute().body()
+        return (apiResult.code() == ApiCode.OK)
+    }
+
+    fun updateSweet(id: Int, text: String): Boolean {
+        val apiResult = sweetApi.updateSweet(id, text).execute().body()
+        return (apiResult.code() == ApiCode.OK)
+    }
+
+
+    fun createMedia(refId: Int, fileName: String, fileType: String? = "unknown", title: String? = null, sortOrder: Int? = null): Int {
+        var id: Int = -1
+        val apiResult = sweetApi.createMedia(refId, fileName, fileType, title, sortOrder).execute().body()
+        val code = apiResult.code()
+        if (code == ApiCode.OK) {
+            id = apiResult.data(Int::class.java)!!
+        }
+        return id
+    }
+
+    fun deleteMedia(id: Int): Boolean {
+        val apiResult = sweetApi.deleteMedia(id).execute().body()
+        return (apiResult.code() == ApiCode.OK)
+    }
+
+    fun viewMedia(name: String, type: String) {
+        val call = sweetApi.viewMedia(name, type)
+        val response = call.execute().body()
+    }
+
+    fun getMedia(id: Int): Media = sweetApi.getMedia(id).execute().body()
 }
