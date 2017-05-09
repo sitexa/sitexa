@@ -30,9 +30,9 @@ import org.joda.time.DateTime
  *
  */
 
+@location("/user-info/{user}") data class UserInfo(val user: String)
 
-@location("/user/{user}")
-data class UserPage(val user: String)
+@location("/user/{user}") data class UserPage(val user: String)
 
 @location("/register")
 data class Register(val userId: String = "", val mobile: String = "", val displayName: String = "", val email: String = "", val password: String = "", val error: String = "")
@@ -40,8 +40,7 @@ data class Register(val userId: String = "", val mobile: String = "", val displa
 @location("/login")
 data class Login(val userId: String = "", val password: String = "", val error: String = "")
 
-@location("/logout")
-class Logout
+@location("/logout") class Logout
 
 @location("/cpwd")
 data class ChangePassword(val userId: String = "", val password: String = "", val newPassword: String = "")
@@ -119,19 +118,19 @@ fun Route.userHandler(dao: DAOFacade, hashFunction: (String) -> String) {
         }
     }
     post<ChangePassword> {
-        var result:ApiResult
-        val user:User? = dao.user(it.userId, hashFunction(it.password))
+        var result: ApiResult
+        val user: User? = dao.user(it.userId, hashFunction(it.password))
         if (user == null) {
-            result = ApiResult(code=0,desc="用户不存在")
+            result = ApiResult(code = 0, desc = "用户不存在")
         } else if (it.newPassword.length < 6) {
-            result = ApiResult(code=0,desc="密码错误")
+            result = ApiResult(code = 0, desc = "密码错误")
         } else {
             user.passwordHash = hashFunction(it.newPassword)
             try {
                 dao.updateUser(user)
-                result = ApiResult(code=1,desc="修改密码成功")
+                result = ApiResult(code = 1, desc = "修改密码成功")
             } catch (e: Exception) {
-                result = ApiResult(code=0,desc=e.message!!)
+                result = ApiResult(code = 0, desc = e.message!!)
                 application.log.error(e)
             }
         }
@@ -165,5 +164,9 @@ fun Route.userHandler(dao: DAOFacade, hashFunction: (String) -> String) {
         call.respond(JsonResponse(result))
     }
 
+    get<UserInfo> {
+        val user: User? = dao.user(it.user)
+        call.respond(JsonResponse(user!!))
+    }
 }
 

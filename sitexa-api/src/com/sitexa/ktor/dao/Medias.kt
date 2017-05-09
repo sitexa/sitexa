@@ -9,9 +9,9 @@ import org.jetbrains.exposed.sql.Table
 
 object Medias : Table() {
     val id = integer("id").primaryKey().autoIncrement()
-    val refId = integer("ref_id")
+    val refId = integer("ref_id").nullable()
     val fileName = varchar("file_name", 50)
     val fileType = varchar("file_type", 20)
-    val title = varchar("title", 100)
-    val sortOrder = integer("sort_order").index()
+    val title = varchar("title", 100).nullable()
+    val sortOrder = integer("sort_order").index().nullable()
 }

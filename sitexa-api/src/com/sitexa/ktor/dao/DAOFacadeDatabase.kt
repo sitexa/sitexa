@@ -40,13 +40,10 @@ class DAOFacadeDatabase(val db: Database) : DAOFacade {
         }
     }
 
-    override fun updateSweet(user: String, id: Int, text: String, replyTo: Int?, date: DateTime) {
+    override fun updateSweet(id: Int, text: String) {
         transaction {
             Sweets.update({ Sweets.id eq id }) {
-                it[Sweets.user] = user
-                it[Sweets.date] = date
                 it[Sweets.text] = text
-                it[Sweets.replyTo] = replyTo
             }
         }
     }
