@@ -3,54 +3,63 @@ package com.sitexa.ktor.dao
 import com.sitexa.ktor.model.Media
 import com.sitexa.ktor.model.Sweet
 import com.sitexa.ktor.model.User
+import com.sitexa.ktor.service.SweetService
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SchemaUtils.create
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.joda.time.DateTime
 
 
-class DAOFacadeNetwork(/**val db: Database */) : DAOFacade {
+class DAOFacadeNetwork(val db: Database) : DAOFacade {
 
     override fun init() {
-        transaction {
+        /*transaction {
             create(Users, Sweets, Medias)
-        }
+        }*/
     }
 
     override fun countReplies(id: Int): Int {
-        return transaction {
+
+        return SweetService().countReplies(id)
+
+        /*return transaction {
             Sweets.slice(Sweets.id.count()).select {
                 Sweets.replyTo.eq(id)
             }.single()[Sweets.id.count()]
-        }
+        }*/
     }
 
-    override fun createSweet(user: String, text: String, replyTo: Int?, date: DateTime): Int {
-        return transaction {
+    override fun createSweet(user: String, text: String,replyTo:Int?): Int {
+        
+        return SweetService().createSweet(user,text,replyTo)
+        
+        /*return transaction {
             Sweets.insert {
                 it[Sweets.user] = user
                 it[Sweets.date] = date
                 it[Sweets.replyTo] = replyTo
                 it[Sweets.text] = text
             } get Sweets.id
-        }
+        }*/
     }
 
     override fun deleteSweet(id: Int) {
-        transaction {
+        SweetService().deleteSweet(id)
+        /*transaction {
             Sweets.deleteWhere { Sweets.id.eq(id) }
-        }
+        }*/
     }
 
-    override fun updateSweet(user: String, id: Int, text: String, replyTo: Int?, date: DateTime) {
-        transaction {
+    override fun updateSweet(id: Int, text: String) {
+       SweetService().updateSweet(id,text)
+        /*transaction {
             Sweets.update({ Sweets.id eq id }) {
                 it[Sweets.user] = user
                 it[Sweets.date] = date
                 it[Sweets.text] = text
                 it[Sweets.replyTo] = replyTo
             }
-        }
+        }*/
     }
 
     override fun getSweet(id: Int) = transaction {
@@ -68,7 +77,7 @@ class DAOFacadeNetwork(/**val db: Database */) : DAOFacade {
                 .orderBy(Sweets.date, false).limit(100).map { it[Sweets.id] }
     }
 
-    override fun createMedia(refId: Int?, fileName: String, fileType: String?, title: String?, sortOrder: Int?): Int {
+    override fun createMedia(refId: Int, fileName: String, fileType: String?, title: String?, sortOrder: Int): Int {
         return transaction {
             Medias.insert {
                 it[Medias.refId] = refId
