@@ -32,7 +32,7 @@ data class MediaView(val name: String, val type: String)
 data class SweetView(val id: Int)
 
 @location("/sweet-new")
-data class SweetNew(val text: String = "", val date: Long = 0L, val code: String = "")
+data class SweetNew(val text: String = "", val date: Long = System.currentTimeMillis(), val code: String = "")
 
 //set default values to the data class!!!
 @location("/sweet-del")
@@ -80,7 +80,7 @@ fun Route.sweetHandler(dao: DAOFacade, hashFunction: (String) -> String){
                         }
                     } else if (part is PartData.FileItem) {
                         val ext = File(part.originalFileName).extension
-                        val file = File(uploadDir, "upload-${System.currentTimeMillis()}-${user.userId.hashCode()}.$ext")
+                        val file = File(uploadDir, "${System.currentTimeMillis()}-${user.userId.hashCode()}.$ext")
                         part.streamProvider().use { instream ->
                             file.outputStream().buffered().use { outstream ->
                                 instream.copyTo(outstream)
