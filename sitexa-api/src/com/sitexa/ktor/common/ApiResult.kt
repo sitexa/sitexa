@@ -14,6 +14,7 @@ import java.lang.reflect.Type
  * data 2 : Class -> Json
  * data 3 : Map<String,String> -> Json, value -> Json. 如何系列化，就如何反系列化。
  */
+
 data class ApiResult(private var code: Int = 0, private var desc: String = "", private var data: String = "") : Serializable {
 
     constructor(json: String) : this() {

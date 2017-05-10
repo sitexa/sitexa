@@ -1,8 +1,5 @@
 package com.sitexa.ktor
 
-import okhttp3.Headers
-import okhttp3.Interceptor
-import okhttp3.logging.HttpLoggingInterceptor
 import org.jetbrains.ktor.util.hex
 import java.io.File
 

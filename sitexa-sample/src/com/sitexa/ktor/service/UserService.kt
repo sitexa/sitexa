@@ -8,19 +8,11 @@ import com.google.gson.JsonParser
 import com.google.gson.reflect.TypeToken
 import com.sitexa.ktor.BASE_URL
 import com.sitexa.ktor.common.ApiResult
-import com.sitexa.ktor.common.JodaGsonAdapter
-import com.sitexa.ktor.common.JodaMoshiAdapter
 import com.sitexa.ktor.model.Sweet
 import com.sitexa.ktor.model.User
-import com.squareup.moshi.Moshi
 import okhttp3.*
-import okhttp3.Headers
-import okhttp3.logging.HttpLoggingInterceptor
-import org.joda.time.DateTime
 import org.slf4j.LoggerFactory
 import retrofit2.Call
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
 
 
@@ -29,23 +21,6 @@ import retrofit2.http.*
  *
  */
 
-val HEADERS = Headers.Builder().add("Accept", "application/json").build()
-
-val headerInterceptor = Interceptor { chain ->
-    chain.proceed(chain.request().newBuilder().addHeader("Accept", "application/json").build())
-}
-val loggingInterceptor = HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY }
-
-internal val log = LoggerFactory.getLogger("UserService")
-
-class HeaderInterceptor(val name: String = "Accept", val value: String = "application/json") : Interceptor {
-    override fun intercept(chain: Interceptor.Chain): Response {
-        val request = chain.request().newBuilder().addHeader(name, value).build()
-        return chain.proceed(request)
-    }
-}
-
-//todo 接口返回类型研究：Call<Any>,Call<ResponseBody>,Call<Sweet>,Call<List<Any>> Call<List<Sweet>>
 interface UserApi {
     @GET("/user-info/{userId}")fun userInfo(@Path("userId")userId:String):Call<User>
 
@@ -75,26 +50,6 @@ interface UserApi {
 
     @FormUrlEncoded @POST("/vcode")
     fun testVCode(@Field("vcode") vcode: String, @Field("date") date: Long, @Field("sign") sign: String): Call<ApiResult>
-
-}
-
-open class ApiService {
-    protected val gson = GsonBuilder()
-            .registerTypeAdapter(DateTime::class.java, JodaGsonAdapter())
-            .setPrettyPrinting()
-            .create()
-    protected val moshi = Moshi.Builder().add(JodaMoshiAdapter()).build()
-
-    val okClient = OkHttpClient().newBuilder()
-            .addInterceptor(HeaderInterceptor())
-            .addInterceptor(loggingInterceptor)
-            .build()
-
-    val retrofit = Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .client(okClient)
-            .addConverterFactory(GsonConverterFactory.create(gson))
-            .build()
 
 }
 
@@ -172,7 +127,7 @@ class UserService : ApiService() {
 
         val client = OkHttpClient()
         val formBody = FormBody.Builder().add("userId", userId).add("password", password).build()
-        val request = Request.Builder().url(LOGIN_URL).headers(HEADERS).post(formBody).build()
+        val request = Request.Builder().url(LOGIN_URL).headers(HEADERS_JSON).post(formBody).build()
         val response = client.newCall(request).execute()
 
         val jsonStr = response.body().string()
