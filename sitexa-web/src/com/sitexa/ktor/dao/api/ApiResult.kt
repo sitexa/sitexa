@@ -1,8 +1,10 @@
-package com.sitexa.ktor.common
+package com.sitexa.ktor.dao.api
 
 import com.github.salomonbrys.kotson.obj
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonParser
+import com.sitexa.ktor.common.ApiCode
+import com.sitexa.ktor.common.JodaGsonAdapter
 import org.joda.time.DateTime
 import java.io.Serializable
 import java.lang.reflect.Type

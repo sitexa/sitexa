@@ -2,7 +2,6 @@ package com.sitexa.ktor.dao.api
 
 import com.sitexa.ktor.apiBaseUrl
 import com.sitexa.ktor.common.ApiCode
-import com.sitexa.ktor.common.ApiResult
 import com.sitexa.ktor.uploadDir
 import okhttp3.*
 import retrofit2.Call
@@ -29,7 +28,7 @@ interface FileApi {
     fun download(@Query("id") id: Int): Call<ResponseBody>
 }
 
-class FileApiImpl {
+class FileService {
 
     private val okHttpClient = OkHttpClient()
             .newBuilder()

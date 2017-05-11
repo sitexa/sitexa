@@ -1,7 +1,7 @@
 package com.sitexa.ktor.dao
 
-import com.sitexa.ktor.dao.api.SweetApiImpl
-import com.sitexa.ktor.dao.api.UserApiImpl
+import com.sitexa.ktor.dao.api.SweetService
+import com.sitexa.ktor.dao.api.UserService
 import com.sitexa.ktor.model.Media
 import com.sitexa.ktor.model.Sweet
 import com.sitexa.ktor.model.User
@@ -12,50 +12,50 @@ class DAOFacadeNetwork : DAOFacade {
     override fun init() {
     }
 
-    override fun countReplies(id: Int): Int = SweetApiImpl().countReplies(id)
+    override fun countReplies(id: Int): Int = SweetService().countReplies(id)
 
-    override fun createSweet(user: String, text: String, replyTo: Int?): Int = SweetApiImpl().createSweet(user, text, replyTo)
+    override fun createSweet(user: String, text: String, replyTo: Int?): Int = SweetService().createSweet(user, text, replyTo)
 
     override fun deleteSweet(id: Int) {
-        SweetApiImpl().deleteSweet(id)
+        SweetService().deleteSweet(id)
     }
 
     override fun updateSweet(id: Int, text: String) {
-        SweetApiImpl().updateSweet(id, text)
+        SweetService().updateSweet(id, text)
     }
 
-    override fun getSweet(id: Int): Sweet = SweetApiImpl().getSweetSingle(id)
+    override fun getSweet(id: Int): Sweet = SweetService().getSweetSingle(id)
 
-    override fun getReplies(id: Int): List<Int> = SweetApiImpl().getReplies(id)
+    override fun getReplies(id: Int): List<Int> = SweetService().getReplies(id)
 
-    override fun userSweets(userId: String): List<Int> = SweetApiImpl().getUserSweets(userId)
+    override fun userSweets(userId: String): List<Int> = SweetService().getUserSweets(userId)
 
     override fun createMedia(refId: Int, fileName: String, fileType: String?, title: String?, sortOrder: Int): Int
-            = SweetApiImpl().createMedia(refId, fileName, fileType, title, sortOrder)
+            = SweetService().createMedia(refId, fileName, fileType, title, sortOrder)
 
     override fun deleteMedia(id: Int) {
-        SweetApiImpl().deleteMedia(id)
+        SweetService().deleteMedia(id)
     }
 
-    override fun getMedia(id: Int): Media? = SweetApiImpl().getMedia(id)
+    override fun getMedia(id: Int): Media? = SweetService().getMedia(id)
 
-    override fun getMedias(refId: Int): List<Int> = SweetApiImpl().getMediasBySweet(refId)
+    override fun getMedias(refId: Int): List<Int> = SweetService().getMediasBySweet(refId)
 
-    override fun login(userId: String, password: String): User? = UserApiImpl().login(userId, password)
+    override fun login(userId: String, password: String): User? = UserService().login(userId, password)
 
-    override fun user(userId: String): User? = UserApiImpl().getUserInfo(userId)
+    override fun user(userId: String): User? = UserService().getUserInfo(userId)
 
-    override fun userByMobile(mobile: String): User? = UserApiImpl().getUserByMobile(mobile)
+    override fun userByMobile(mobile: String): User? = UserService().getUserByMobile(mobile)
 
-    override fun userByEmail(email: String): User? = UserApiImpl().getUserByEmail(email)
+    override fun userByEmail(email: String): User? = UserService().getUserByEmail(email)
 
     override fun createUser(user: User) {
-        UserApiImpl().register(user)
+        UserService().register(user)
     }
 
-    override fun top(count: Int): List<Int> = SweetApiImpl().getTopSweet(count)
+    override fun top(count: Int): List<Int> = SweetService().getTopSweet(count)
 
-    override fun latest(count: Int): List<Int> = SweetApiImpl().getLatestSweet(count)
+    override fun latest(count: Int): List<Int> = SweetService().getLatestSweet(count)
 
     override fun close() {
     }
