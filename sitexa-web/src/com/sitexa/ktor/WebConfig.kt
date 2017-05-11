@@ -1,6 +1,7 @@
 package com.sitexa.ktor
 
 import org.jetbrains.ktor.util.hex
+import java.io.File
 
 /**
  * Created by open on 23/04/2017.
@@ -8,7 +9,9 @@ import org.jetbrains.ktor.util.hex
  */
 
 
-val uploadDir = "/Users/open/IdeaProjects/sitexa/uploads"
-
 val hashKey = hex("6819b57a326945c1968f45236589")
+val uploadDir = "/Users/open/IdeaProjects/sitexa/uploads"
+val cacheDir = File("target/webdb")
+val apiBaseUrl = "http://localhost:8888"
+
 

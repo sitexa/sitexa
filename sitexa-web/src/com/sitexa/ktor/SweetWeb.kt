@@ -1,9 +1,17 @@
 package com.sitexa.ktor
 
+
 import com.google.gson.GsonBuilder
+import com.google.gson.LongSerializationPolicy
 import com.sitexa.ktor.chat.chatHandler
+import com.sitexa.ktor.common.JodaGsonAdapter
+import com.sitexa.ktor.dao.DAOFacade
+import com.sitexa.ktor.dao.DAOFacadeCache
+import com.sitexa.ktor.dao.DAOFacadeNetwork
 import com.sitexa.ktor.handler.indexHandler
 import com.sitexa.ktor.handler.staticHandler
+import com.sitexa.ktor.handler.sweetHandler
+import com.sitexa.ktor.handler.userHandler
 import com.sitexa.ktor.model.User
 import freemarker.cache.ClassTemplateLoader
 import org.jetbrains.ktor.application.*
@@ -25,26 +33,36 @@ import org.jetbrains.ktor.routing.Routing
 import org.jetbrains.ktor.sessions.*
 import org.jetbrains.ktor.transform.transform
 import org.jetbrains.ktor.util.hex
+import org.joda.time.DateTime
+import java.io.File
 import java.net.URI
 import java.util.concurrent.TimeUnit
 import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
 
 /**
- * Created by open on 23/04/2017.
+ * Created by open on 05/04/2017.
  *
  */
+
 
 class JsonResponse(val data: Any)
 
 data class Session(val userId: String)
 
-class SweetWeb():AutoCloseable{
-
+class SweetWeb : AutoCloseable {
 
     val hmacKey = SecretKeySpec(hashKey, "HmacSHA1")
 
-    fun Application.install(){
+    val dao: DAOFacade = DAOFacadeCache(DAOFacadeNetwork(), File(cacheDir, "ehcache"))
+
+    val gson = GsonBuilder()
+            .registerTypeAdapter(DateTime::class.java, JodaGsonAdapter())
+            .setLongSerializationPolicy(LongSerializationPolicy.STRING)
+            .create()
+
+    fun Application.install() {
+        dao.init()
         install(DefaultHeaders)
         install(CallLogging)
         install(ConditionalHeaders)
@@ -62,21 +80,29 @@ class SweetWeb():AutoCloseable{
 
         val hashFunction = { s: String -> hash(s) }
 
-        val gson = GsonBuilder().create()
         intercept(ApplicationCallPipeline.Infrastructure) { call ->
             if (call.request.acceptItems().any { it.value == "application/json" }) {
                 call.transform.register<JsonResponse> { value ->
                     TextContent(gson.toJson(value.data), ContentType.Application.Json)
                 }
             }
+            //for chat
+            if (call.sessionOrNull<Session>() == null) {
+                //call.session(Session(nextNonce()))
+                //call.redirect(Login())
+            }
         }
 
         install(Routing) {
             staticHandler()
-            indexHandler()
+            indexHandler(dao)
+            userHandler(dao, hashFunction)
+            sweetHandler(dao, hashFunction)
             chatHandler()
         }
+    }
 
+    override fun close() {
     }
 
     fun hash(password: String): String {
@@ -85,13 +111,7 @@ class SweetWeb():AutoCloseable{
         return hex(hmac.doFinal(password.toByteArray(Charsets.UTF_8)))
     }
 
-
-    override fun close() {
-
-    }
-
 }
-
 
 suspend fun ApplicationCall.redirect(location: Any) {
     val host = request.host() ?: "localhost"
