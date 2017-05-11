@@ -1,15 +1,22 @@
 package com.sitexa.ktor.handler
 
 
-import com.sitexa.ktor.*
-import com.sitexa.ktor.dao.*
+import com.sitexa.ktor.Session
+import com.sitexa.ktor.dao.DAOFacade
 import com.sitexa.ktor.model.User
-import org.jetbrains.ktor.application.*
-import org.jetbrains.ktor.freemarker.*
-import org.jetbrains.ktor.http.*
-import org.jetbrains.ktor.locations.*
-import org.jetbrains.ktor.routing.*
-import org.jetbrains.ktor.sessions.*
+import com.sitexa.ktor.redirect
+import org.jetbrains.ktor.application.call
+import org.jetbrains.ktor.application.log
+import org.jetbrains.ktor.freemarker.FreeMarkerContent
+import org.jetbrains.ktor.http.HttpStatusCode
+import org.jetbrains.ktor.locations.get
+import org.jetbrains.ktor.locations.location
+import org.jetbrains.ktor.locations.post
+import org.jetbrains.ktor.routing.Route
+import org.jetbrains.ktor.routing.application
+import org.jetbrains.ktor.sessions.clearSession
+import org.jetbrains.ktor.sessions.session
+import org.jetbrains.ktor.sessions.sessionOrNull
 
 /**
  * Created by open on 03/04/2017.
@@ -87,11 +94,12 @@ fun Route.userHandler(dao: DAOFacade, hashFunction: (String) -> String) {
         }
     }
     post<Login> {
+        println("\nuserHandler:user:${it.userId}:${it.password}")
         val login = when {
             it.userId.length < 4 -> null
             it.password.length < 6 -> null
             !userNameValid(it.userId) -> null
-            else -> dao.user(it.userId, hashFunction(it.password))
+            else -> dao.login(it.userId, it.password)
         }
 
         if (login == null) {

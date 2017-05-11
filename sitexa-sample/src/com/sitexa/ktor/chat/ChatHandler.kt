@@ -22,7 +22,7 @@ import java.time.Duration
 
 @location("/js/chat.js") class ChatJs
 
-fun Route.chatHandler(){
+fun Route.chatHandler() {
     webSocket("/ws") {
         val session = call.sessionOrNull<Session>()
         if (session == null) {
@@ -36,7 +36,7 @@ fun Route.chatHandler(){
 
         handle { frame ->
             if (frame is Frame.Text) {
-                receivedMessage(session.userId, frame.readText(),this)
+                receivedMessage(session.userId, frame.readText(), this)
             }
         }
 
@@ -47,11 +47,11 @@ fun Route.chatHandler(){
 
     get<Chat> {
         val session = call.sessionOrNull<Session>()
-        if(session == null) call.redirect(Login())
-        call.respond(FreeMarkerContent("chat/chat.ftl",mapOf("user" to "xnpeng"),"1001"))
+        if (session == null) call.redirect(Login())
+        call.respond(FreeMarkerContent("chat/chat.ftl", mapOf("user" to "xnpeng"), "1001"))
     }
 
-    get<ChatJs>{
+    get<ChatJs> {
         call.respond(call.resolveResource("chat/main.js", "templates")!!)
     }
 }
@@ -59,7 +59,7 @@ fun Route.chatHandler(){
 
 private val server = ChatServer()
 
-private suspend fun receivedMessage(id: String, command: String,ws:WebSocket) {
+private suspend fun receivedMessage(id: String, command: String, ws: WebSocket) {
     when {
         command.startsWith("/who") -> server.who(id)
         command.startsWith("/user") -> {
@@ -67,13 +67,13 @@ private suspend fun receivedMessage(id: String, command: String,ws:WebSocket) {
             when {
                 newName.isEmpty() -> server.sendTo(id, "server::help", "/user [newName]")
                 newName.length > 50 -> server.sendTo(id, "server::help", "new name is too long: 50 characters limit")
-                else -> server.sendTo(id,"server:help","don't change your name.")
+                else -> server.sendTo(id, "server:help", "don't change your name.")
             //else -> server.memberRenamed(id, newName) //don't change username
             }
         }
         command.startsWith("/help") -> server.help(id)
         command.startsWith("/") -> server.sendTo(id, "server::help", "Unknown command ${command.takeWhile { !it.isWhitespace() }}")
-        command.startsWith("/bye") -> server.memberLeft(id,ws)//todo...
+        command.startsWith("/bye") -> server.memberLeft(id, ws)//todo...
         else -> server.message(id, command)
     }
 }

@@ -1,7 +1,7 @@
-package com.sitexa.ktor.service
+package com.sitexa.ktor.dao.api
 
 import com.google.gson.GsonBuilder
-import com.sitexa.ktor.BASE_URL
+import com.sitexa.ktor.apiBaseUrl
 import com.sitexa.ktor.common.JodaGsonAdapter
 import com.sitexa.ktor.common.JodaMoshiAdapter
 import com.squareup.moshi.Moshi
@@ -54,7 +54,7 @@ open class ApiService {
             .build()
 
     val retrofit = Retrofit.Builder()
-            .baseUrl(BASE_URL)
+            .baseUrl(apiBaseUrl)
             .client(okClient)
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()

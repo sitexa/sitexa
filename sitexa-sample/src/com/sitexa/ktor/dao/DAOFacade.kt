@@ -3,7 +3,6 @@ package com.sitexa.ktor.dao
 import com.sitexa.ktor.model.Media
 import com.sitexa.ktor.model.Sweet
 import com.sitexa.ktor.model.User
-import org.joda.time.DateTime
 import java.io.Closeable
 
 /**
@@ -27,7 +26,8 @@ interface DAOFacade : Closeable {
     fun getMedia(id: Int): Media?
     fun getMedias(refId: Int): List<Int>
 
-    fun user(userId: String, hash: String? = null): User?
+    fun login(userId: String, password: String): User?
+    fun user(userId: String): User?
     fun userByEmail(email: String): User?
     fun userByMobile(mobile: String): User?
     fun createUser(user: User)

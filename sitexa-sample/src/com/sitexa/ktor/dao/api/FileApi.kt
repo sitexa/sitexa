@@ -1,6 +1,6 @@
-package com.sitexa.ktor.service
+package com.sitexa.ktor.dao.api
 
-import com.sitexa.ktor.BASE_URL
+import com.sitexa.ktor.apiBaseUrl
 import com.sitexa.ktor.common.ApiCode
 import com.sitexa.ktor.common.ApiResult
 import com.sitexa.ktor.uploadDir
@@ -29,7 +29,7 @@ interface FileApi {
     fun download(@Query("id") id: Int): Call<ResponseBody>
 }
 
-class FileService {
+class FileApiImpl {
 
     private val okHttpClient = OkHttpClient()
             .newBuilder()
@@ -37,9 +37,8 @@ class FileService {
             .addInterceptor(loggingInterceptor)
             .build()
 
-    private val retrofit = Retrofit
-            .Builder()
-            .baseUrl(BASE_URL)
+    private val retrofit = Retrofit.Builder()
+            .baseUrl(apiBaseUrl)
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()

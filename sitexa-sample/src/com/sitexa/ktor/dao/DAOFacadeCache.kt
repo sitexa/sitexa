@@ -1,12 +1,15 @@
 package com.sitexa.ktor.dao
 
-import com.sitexa.ktor.model.*
-import org.ehcache.*
-import org.ehcache.config.*
-import org.ehcache.config.persistence.*
-import org.ehcache.config.units.*
-import org.joda.time.*
-import java.io.*
+import com.sitexa.ktor.model.Media
+import com.sitexa.ktor.model.Sweet
+import com.sitexa.ktor.model.User
+import org.ehcache.CacheManagerBuilder
+import org.ehcache.config.CacheConfigurationBuilder
+import org.ehcache.config.ResourcePoolsBuilder
+import org.ehcache.config.persistence.CacheManagerPersistenceConfiguration
+import org.ehcache.config.units.EntryUnit
+import org.ehcache.config.units.MemoryUnit
+import java.io.File
 
 
 /**
@@ -58,8 +61,8 @@ class DAOFacadeCache(val delegate: DAOFacade, val storagePath: File) : DAOFacade
         return delegate.countReplies(id)
     }
 
-    override fun createSweet(user: String, text: String,replyTo:Int?): Int {
-        val id = delegate.createSweet(user, text,replyTo)
+    override fun createSweet(user: String, text: String, replyTo: Int?): Int {
+        val id = delegate.createSweet(user, text, replyTo)
         val sweet = delegate.getSweet(id)
         sweetsCache.put(id, sweet)
         return id
@@ -120,7 +123,22 @@ class DAOFacadeCache(val delegate: DAOFacade, val storagePath: File) : DAOFacade
         return delegate.getMedias(refId)
     }
 
-    override fun user(userId: String, hash: String?): User? {
+    override fun login(userId: String, password: String): User? {
+        val cached = usersCache.get(userId)
+        val user = if (cached == null) {
+            val dbUser = delegate.login(userId, password)
+            if (dbUser != null) {
+                usersCache.put(userId, dbUser)
+            }
+            dbUser
+        } else {
+            cached
+        }
+
+        return user
+    }
+
+    override fun user(userId: String): User? {
         val cached = usersCache.get(userId)
         val user = if (cached == null) {
             val dbUser = delegate.user(userId)
@@ -132,12 +150,7 @@ class DAOFacadeCache(val delegate: DAOFacade, val storagePath: File) : DAOFacade
             cached
         }
 
-        return when {
-            user == null -> null
-            hash == null -> user
-            user.passwordHash == hash -> user
-            else -> null
-        }
+        return user
     }
 
     override fun userByMobile(mobile: String): User? {

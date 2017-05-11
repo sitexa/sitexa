@@ -1,4 +1,4 @@
-import com.sitexa.ktor.service.loggingInterceptor
+import com.sitexa.ktor.dao.api.loggingInterceptor
 import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Retrofit

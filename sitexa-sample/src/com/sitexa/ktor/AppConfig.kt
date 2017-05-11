@@ -8,19 +8,9 @@ import java.io.File
  *
  */
 
-val uploadDir = "/Users/open/IdeaProjects/sitexa/uploads"
-
-val dbConfig = mapOf("driver" to "org.mariadb.jdbc.Driver",
-        "url" to "jdbc:mysql://localhost:3306/sitexa",
-        "user" to "root",
-        "password" to "pop007",
-        "pool" to 20,
-        "autoCommit" to false,
-        "dialect" to "MysqlDialect")
-
 val hashKey = hex("6819b57a326945c1968f45236589")
-val dir = File("target/sampledb")
-
-val BASE_URL = "http://localhost:8888"
+val uploadDir = "/Users/open/IdeaProjects/sitexa/uploads"
+val cacheDir = File("target/sampledb")
+val apiBaseUrl = "http://localhost:8888"
 
 

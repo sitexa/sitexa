@@ -6,7 +6,9 @@ import com.sitexa.ktor.model.Media
 import org.jetbrains.ktor.application.call
 import org.jetbrains.ktor.application.receive
 import org.jetbrains.ktor.content.LocalFileContent
+import org.jetbrains.ktor.content.fromFilePath
 import org.jetbrains.ktor.freemarker.FreeMarkerContent
+import org.jetbrains.ktor.http.ContentType
 import org.jetbrains.ktor.locations.get
 import org.jetbrains.ktor.locations.location
 import org.jetbrains.ktor.locations.post
@@ -44,7 +46,7 @@ data class SweetUpd(val id: Int = 0, val text: String = "", val date: Long = 0L,
 @location("/sweet-reply")
 data class SweetReply(val replyTo: Int = 0, val text: String = "", val date: Long = 0L, val code: String = "")
 
-fun Route.sweetHandler(dao: DAOFacade, hashFunction: (String) -> String){
+fun Route.sweetHandler(dao: DAOFacade, hashFunction: (String) -> String) {
     get<SweetNew> {
         val user = call.sessionOrNull<Session>()?.let { dao.user(it.userId) }
 
@@ -65,6 +67,8 @@ fun Route.sweetHandler(dao: DAOFacade, hashFunction: (String) -> String){
             var date: Long = 0L
             var code: String = ""
             var text: String = ""
+            var fileName: String = ""
+            var fileType: String? = "unknown"
 
             val multipart = call.request.receive<MultiPartData>()
 
@@ -80,12 +84,14 @@ fun Route.sweetHandler(dao: DAOFacade, hashFunction: (String) -> String){
                         }
                     } else if (part is PartData.FileItem) {
                         val ext = File(part.originalFileName).extension
-                        val file = File(uploadDir, "${System.currentTimeMillis()}-${user.userId.hashCode()}.$ext")
+                        val file = File(uploadDir, "${System.currentTimeMillis()}${user.userId.hashCode()}.$ext")
                         part.streamProvider().use { instream ->
                             file.outputStream().buffered().use { outstream ->
                                 instream.copyTo(outstream)
                             }
                         }
+                        fileName = file.name
+                        fileType = ContentType.fromFilePath(file.path).firstOrNull()?.contentType
                     }
                     part.dispose()
                 }
@@ -95,7 +101,7 @@ fun Route.sweetHandler(dao: DAOFacade, hashFunction: (String) -> String){
                 call.redirect(Index())
             } else {
                 val id = dao.createSweet(user.userId, text)
-
+                val medId = dao.createMedia(id, fileName, fileType)
                 call.redirect(SweetView(id))
             }
         }
@@ -153,7 +159,7 @@ fun Route.sweetHandler(dao: DAOFacade, hashFunction: (String) -> String){
                         }
                     } else if (part is PartData.FileItem) {
                         val ext = File(part.originalFileName).extension
-                        val file = File(uploadDir, "upload-${System.currentTimeMillis()}-${user.hashCode()}.$ext")
+                        val file = File(uploadDir, "${System.currentTimeMillis()}${user.hashCode()}.$ext")
                         part.streamProvider().use { instream ->
                             file.outputStream().buffered().use { outstream ->
                                 instream.copyTo(outstream)

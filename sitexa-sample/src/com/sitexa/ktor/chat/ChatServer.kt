@@ -1,11 +1,13 @@
 package com.sitexa.ktor.chat
 
-import org.jetbrains.ktor.util.*
-import org.jetbrains.ktor.websocket.*
-import java.nio.*
+import org.jetbrains.ktor.util.buildByteBuffer
+import org.jetbrains.ktor.websocket.Frame
+import org.jetbrains.ktor.websocket.WebSocket
+import java.nio.ByteBuffer
 import java.util.*
-import java.util.concurrent.*
-import java.util.concurrent.atomic.*
+import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.CopyOnWriteArrayList
+import java.util.concurrent.atomic.AtomicInteger
 
 class ChatServer {
     val usersCounter = AtomicInteger()
@@ -15,7 +17,7 @@ class ChatServer {
 
     suspend fun memberJoin(member: String, socket: WebSocket) {
         //val name = memberNames.computeIfAbsent(member) { "user${usersCounter.incrementAndGet()}" }
-        val name = memberNames.computeIfAbsent(member){member}
+        val name = memberNames.computeIfAbsent(member) { member }
         val list = members.computeIfAbsent(member) { CopyOnWriteArrayList<WebSocket>() }
         list.add(socket)
 

@@ -1,4 +1,4 @@
-import com.sitexa.ktor.service.FileService
+import com.sitexa.ktor.dao.api.FileApiImpl
 
 
 /**
@@ -11,11 +11,11 @@ fun main(vararg: Array<String>) {
 }
 
 fun testUpload() {
-    val id = FileService().upload()
+    val id = FileApiImpl().upload()
 
     println(id)
 }
 
 fun testDownload() {
-    FileService().download(2)
+    FileApiImpl().download(2)
 }

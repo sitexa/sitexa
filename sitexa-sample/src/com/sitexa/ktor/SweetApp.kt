@@ -7,12 +7,13 @@ import com.sitexa.ktor.chat.chatHandler
 import com.sitexa.ktor.common.JodaGsonAdapter
 import com.sitexa.ktor.dao.DAOFacade
 import com.sitexa.ktor.dao.DAOFacadeCache
-import com.sitexa.ktor.dao.DAOFacadeDatabase
-import com.sitexa.ktor.handler.*
+import com.sitexa.ktor.dao.DAOFacadeNetwork
+import com.sitexa.ktor.handler.indexHandler
+import com.sitexa.ktor.handler.staticHandler
+import com.sitexa.ktor.handler.sweetHandler
+import com.sitexa.ktor.handler.userHandler
 import com.sitexa.ktor.model.User
-import com.zaxxer.hikari.HikariDataSource
 import freemarker.cache.ClassTemplateLoader
-import org.jetbrains.exposed.sql.Database
 import org.jetbrains.ktor.application.*
 import org.jetbrains.ktor.content.TextContent
 import org.jetbrains.ktor.features.ConditionalHeaders
@@ -51,11 +52,9 @@ data class Session(val userId: String)
 
 class SweetApp : AutoCloseable {
 
-    val datasource = getDataSource()
-
     val hmacKey = SecretKeySpec(hashKey, "HmacSHA1")
 
-    val dao: DAOFacade = DAOFacadeCache(DAOFacadeDatabase(Database.connect(datasource)), File(dir, "ehcache"))
+    val dao: DAOFacade = DAOFacadeCache(DAOFacadeNetwork(), File(cacheDir, "ehcache"))
 
     val gson = GsonBuilder()
             .registerTypeAdapter(DateTime::class.java, JodaGsonAdapter())
@@ -104,7 +103,6 @@ class SweetApp : AutoCloseable {
     }
 
     override fun close() {
-        datasource.close()
     }
 
     fun hash(password: String): String {
@@ -132,15 +130,3 @@ fun ApplicationCall.verifyCode(date: Long, user: User, code: String, hashFunctio
 
 fun ApplicationCall.refererHost() = request.header(HttpHeaders.Referrer)?.let { URI.create(it).host }
 
-
-fun getDataSource(): HikariDataSource {
-    val ds = HikariDataSource()
-    ds.maximumPoolSize = dbConfig["pool"].toString().toInt()
-    ds.driverClassName = dbConfig["driver"].toString()
-    ds.jdbcUrl = dbConfig["url"].toString()
-    ds.isAutoCommit = dbConfig["autoCommit"].toString().toBoolean()
-    ds.addDataSourceProperty("user", dbConfig["user"].toString())
-    ds.addDataSourceProperty("password", dbConfig["password"].toString())
-    ds.addDataSourceProperty("dialect", dbConfig["dialect"].toString())
-    return ds
-}
