@@ -5,7 +5,6 @@ import com.github.salomonbrys.kotson.obj
 import com.google.gson.Gson
 import com.google.gson.JsonParser
 import com.google.gson.reflect.TypeToken
-import com.sitexa.ktor.common.ApiResult
 import com.sitexa.ktor.model.Sweet
 import com.sitexa.ktor.model.User
 import okhttp3.FormBody
@@ -55,7 +54,7 @@ interface UserApi {
     @GET("/userByEmail/{email}") fun getUserByEmail(@Path("email") email: String): Call<User>
 }
 
-class UserApiImpl : ApiService() {
+class UserService : ApiService() {
 
     private val userApi: UserApi = retrofit.create(UserApi::class.java)
     private val sweetListType = object : TypeToken<List<Sweet>>() {}.type
@@ -106,7 +105,7 @@ class UserApiImpl : ApiService() {
 
     fun login(userId: String, password: String): User? {
 
-        println("UserApiImpl.login:user:$userId:$password")
+        println("UserService.login:user:$userId:$password")
 
         val call = userApi.login(userId, password)
         val response = call.execute().body().string()

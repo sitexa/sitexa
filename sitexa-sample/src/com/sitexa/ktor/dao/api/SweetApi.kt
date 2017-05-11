@@ -3,7 +3,6 @@ package com.sitexa.ktor.dao.api
 import com.github.salomonbrys.kotson.fromJson
 import com.google.gson.reflect.TypeToken
 import com.sitexa.ktor.common.ApiCode
-import com.sitexa.ktor.common.ApiResult
 import com.sitexa.ktor.model.Media
 import com.sitexa.ktor.model.Sweet
 import okhttp3.ResponseBody
@@ -36,7 +35,7 @@ interface SweetApi {
 
 }
 
-class SweetApiImpl : ApiService() {
+class SweetService : ApiService() {
     private val sweetApi = retrofit.create(SweetApi::class.java)
 
     fun getSweetSingle(id: Int): Sweet = sweetApi.singleSweet(id).execute().body()

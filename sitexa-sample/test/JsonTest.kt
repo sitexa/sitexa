@@ -1,6 +1,6 @@
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
-import com.sitexa.ktor.common.ApiResult
+import com.sitexa.ktor.dao.api.ApiResult
 import com.sitexa.ktor.common.JodaGsonAdapter
 import com.sitexa.ktor.model.Sweet
 import org.joda.time.DateTime
