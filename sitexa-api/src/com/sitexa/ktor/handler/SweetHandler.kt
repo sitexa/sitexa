@@ -30,20 +30,24 @@ import java.io.File
  * Created by open on 10/04/2017.
  *
  */
-@location("/sweet-new") data class SweetNew(val text: String = "", val user: String = "", val replyTo: Int? = null)
-@location("/sweet-del") data class SweetDel(val id: Int = -1)
-@location("/sweet-upd") data class SweetUpd(val id: Int = -1, val text: String = "")
+@location("/sweet-new") class SweetNew(val text: String = "", val user: String = "", val replyTo: Int? = null)
 
-@location("/sweet/{id}") data class SweetSingle(val id: Int)
-@location("/sweet-component/{id}") data class SweetComponent(val id: Int)
-@location("/sweet-top/{num}") data class TopSweet(val num: Int = 10)
-@location("/sweet-latest/{num}") data class LatestSweet(val num: Int = 10)
-@location("/sweet-reply-count/{id}") data class CountSweetReplies(val id: Int)
+@location("/sweet-del") class SweetDel(val id: Int = -1)
+@location("/sweet-upd") class SweetUpd(val id: Int = -1, val text: String = "")
 
-@location("/media-new") data class MediaNew(val refId: Int = 0, val fileName: String = "", val fileType: String? = "unknown", val title: String? = null, val sortOrder: Int? = null)
-@location("/media-del") data class MediaDel(val id: Int)
-@location("/media/{name}/{type}") data class MediaView(val name: String, val type: String)
+@location("/sweet/{id}") class SweetSingle(val id: Int)
+@location("/sweet-component/{id}") class SweetComponent(val id: Int)
+@location("/sweet-top/{num}") class TopSweet(val num: Int = 10)
+@location("/sweet-latest/{num}") class LatestSweet(val num: Int = 10)
+@location("/sweet-reply-count/{id}") class CountSweetReplies(val id: Int)
+@location("/sweet-replies/{id}") class GetReplies(val id: Int)
+@location("/sweet-user/{user}") class UserSweet(val user: String)
+
+@location("/media-new") class MediaNew(val refId: Int = 0, val fileName: String = "", val fileType: String? = "unknown", val title: String? = null, val sortOrder: Int? = null)
+@location("/media-del") class MediaDel(val id: Int)
+@location("/media/{name}/{type}") class MediaView(val name: String, val type: String)
 @location("/media/{id}") class MediaData(val id: Int)
+@location("/mediasBySweet/{refId}") class MediasBySweet(val refId: Int)
 
 fun Route.sweetHandler(dao: DAOFacade, hashFunction: (String) -> String) {
 
@@ -108,18 +112,18 @@ fun Route.sweetHandler(dao: DAOFacade, hashFunction: (String) -> String) {
         call.respond(JsonResponse(apiResult))
     }
     get<TopSweet> {
-        var top: List<Sweet> = emptyList()
+        var top: List<Int> = emptyList()
         try {
-            top = dao.topSweets(it.num).map { dao.getSweet(it) }.toList()
+            top = dao.topSweets(it.num)
         } catch (e: Exception) {
             application.log.error(e)
         }
         call.respond(JsonResponse(top))
     }
     get<LatestSweet> {
-        var latest: List<Sweet> = emptyList()
+        var latest: List<Int> = emptyList()
         try {
-            latest = dao.latestSweets(it.num).map { dao.getSweet(it) }.toList()
+            latest = dao.latestSweets(it.num)
         } catch (e: Exception) {
             application.log.error(e)
         }
@@ -133,6 +137,24 @@ fun Route.sweetHandler(dao: DAOFacade, hashFunction: (String) -> String) {
             application.log.error(e)
         }
         call.respond(JsonResponse(countSweetReplies))
+    }
+    get<GetReplies> {
+        var replies: List<Int> = emptyList()
+        try {
+            replies = dao.getReplies(it.id)
+        } catch(e: Exception) {
+            application.log.error(e)
+        }
+        call.respond(JsonResponse(replies))
+    }
+    get<UserSweet> {
+        var sweets: List<Int> = emptyList()
+        try {
+            sweets = dao.userSweets(it.user)
+        } catch (e: Exception) {
+            application.log.error(e)
+        }
+        call.respond(JsonResponse(sweets))
     }
 
     post<MediaNew> {
@@ -167,5 +189,13 @@ fun Route.sweetHandler(dao: DAOFacade, hashFunction: (String) -> String) {
         }
         call.respond(JsonResponse(media!!))
     }
-
+    get<MediasBySweet> {
+        var medias: List<Int> = emptyList()
+        try {
+            medias = dao.getMedias(it.refId)
+        } catch(e: Exception) {
+            application.log.error(e)
+        }
+        call.respond(JsonResponse(medias))
+    }
 }

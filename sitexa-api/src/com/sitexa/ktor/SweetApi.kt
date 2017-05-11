@@ -63,7 +63,7 @@ class SweetApi : AutoCloseable {
     }
 
     val hmacKey = SecretKeySpec(hashKey, "HmacSHA1")
-    val dao: DAOFacade = DAOFacadeCache(DAOFacadeDatabase(Database.connect(datasource)), File(dir, "ehcache"))
+    val dao: DAOFacade = DAOFacadeCache(DAOFacadeDatabase(Database.connect(datasource)), File(cacheDir, "ehcache"))
     val gson = GsonBuilder()
             .registerTypeAdapter(DateTime::class.java, JodaGsonAdapter())
             .setLongSerializationPolicy(LongSerializationPolicy.STRING)

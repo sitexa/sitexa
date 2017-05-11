@@ -48,14 +48,9 @@ data class ChangePassword(val userId: String = "", val password: String = "", va
 @location("/vcode")
 data class VCode(val mobile: String = "", val vcode: String = "", val date: Long = 0, val sign: String = "")
 
-private val userIdPattern = "[a-zA-Z0-9_\\.]+".toRegex()
-internal fun userNameValid(userId: String) = userId.matches(userIdPattern)
+@location("/userByMobile/{mobile}") class UserByMobile(val mobile: String)
 
-private val emailPattern = "[a-zA-Z0-9_]+@[a-zA-Z0-9_]+([-.][a-zA-Z0-9_]+)".toRegex()
-internal fun emailValid(email: String) = email.matches(emailPattern)
-
-private val phonePattern = "\\d{11}|\\d{7,8}".toRegex()
-internal fun phoneValid(phone: String) = phone.matches(phonePattern)
+@location("/userByEmail/{email}") class UserByEmail(val email: String)
 
 fun Route.userHandler(dao: DAOFacade, hashFunction: (String) -> String) {
     val gson = GsonBuilder()
@@ -88,12 +83,14 @@ fun Route.userHandler(dao: DAOFacade, hashFunction: (String) -> String) {
         call.respond(JsonResponse(mapOf("user" to it, "result" to result)))
     }
     post<Login> {
+        println("\nuser:${it.userId}:${it.password}")
         val login = when {
             it.userId.length < 4 -> null
             it.password.length < 6 -> null
             !userNameValid(it.userId) -> null
             else -> dao.user(it.userId, hashFunction(it.password))
         }
+        println("\nlogin:$login")
 
         if (login == null) {
             call.respond(JsonResponse(mapOf("result" to -1)))
@@ -136,6 +133,7 @@ fun Route.userHandler(dao: DAOFacade, hashFunction: (String) -> String) {
         }
         call.respond(JsonResponse(result))
     }
+
     get<VCode> {
         val result: ApiResult
         if (it.mobile != "") {
@@ -157,7 +155,6 @@ fun Route.userHandler(dao: DAOFacade, hashFunction: (String) -> String) {
         }
         call.respond(JsonResponse(result))
     }
-
     post<VCode> {
         val result = if (call.testVCode(it.date, it.vcode, it.sign, hashFunction))
             ApiResult(code = 1) else ApiResult(code = 0)
@@ -168,5 +165,22 @@ fun Route.userHandler(dao: DAOFacade, hashFunction: (String) -> String) {
         val user: User? = dao.user(it.user)
         call.respond(JsonResponse(user!!))
     }
+    get<UserByEmail> {
+        val user: User? = dao.userByEmail(it.email)
+        call.respond(JsonResponse(user!!))
+    }
+    get<UserByMobile> {
+        val user: User? = dao.userByMobile(it.mobile)
+        call.respond(JsonResponse(user!!))
+    }
 }
 
+
+private val userIdPattern = "[a-zA-Z0-9_\\.]+".toRegex()
+internal fun userNameValid(userId: String) = userId.matches(userIdPattern)
+
+private val emailPattern = "[a-zA-Z0-9_]+@[a-zA-Z0-9_]+([-.][a-zA-Z0-9_]+)".toRegex()
+internal fun emailValid(email: String) = email.matches(emailPattern)
+
+private val phonePattern = "\\d{11}|\\d{7,8}".toRegex()
+internal fun phoneValid(phone: String) = phone.matches(phonePattern)
