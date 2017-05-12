@@ -5,10 +5,7 @@ import com.sitexa.ktor.apiBaseUrl
 import com.sitexa.ktor.common.JodaGsonAdapter
 import com.sitexa.ktor.common.JodaMoshiAdapter
 import com.squareup.moshi.Moshi
-import okhttp3.Headers
-import okhttp3.Interceptor
-import okhttp3.OkHttpClient
-import okhttp3.Response
+import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
 import org.joda.time.DateTime
 import org.slf4j.LoggerFactory
@@ -38,6 +35,19 @@ class HeaderInterceptor(val name: String = "Accept", val value: String = "applic
     }
 }
 
+val authenticator = Authenticator { _, response ->
+    fun responseCount(response: Response): Int {
+        var result = 1
+        while ((response.priorResponse()) != null) result++
+        return result
+    }
+
+    if (responseCount(response) >= 3) return@Authenticator null
+
+    val credential = Credentials.basic("test", "test")
+    response.request().newBuilder().header("Authorization", credential).build()
+}
+
 open class ApiService {
 
     internal val log = LoggerFactory.getLogger(this.javaClass)
@@ -49,6 +59,7 @@ open class ApiService {
     protected val moshi = Moshi.Builder().add(JodaMoshiAdapter()).build()
 
     val okClient = OkHttpClient().newBuilder()
+            .authenticator(authenticator)
             .addInterceptor(HeaderInterceptor())
             .addInterceptor(loggingInterceptor)
             .build()
