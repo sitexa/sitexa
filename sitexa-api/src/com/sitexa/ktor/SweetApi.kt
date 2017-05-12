@@ -13,6 +13,9 @@ import com.sitexa.ktor.model.User
 import com.zaxxer.hikari.HikariDataSource
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.ktor.application.*
+import org.jetbrains.ktor.auth.UserHashedTableAuth
+import org.jetbrains.ktor.auth.authentication
+import org.jetbrains.ktor.auth.basicAuthentication
 import org.jetbrains.ktor.content.TextContent
 import org.jetbrains.ktor.features.ConditionalHeaders
 import org.jetbrains.ktor.features.DefaultHeaders
@@ -32,6 +35,7 @@ import org.jetbrains.ktor.sessions.SessionCookiesSettings
 import org.jetbrains.ktor.sessions.withCookieByValue
 import org.jetbrains.ktor.sessions.withSessions
 import org.jetbrains.ktor.transform.transform
+import org.jetbrains.ktor.util.decodeBase64
 import org.jetbrains.ktor.util.hex
 import org.joda.time.DateTime
 import java.io.File
@@ -93,10 +97,12 @@ class SweetApi : AutoCloseable {
             }
         }
 
+        authentication { basicAuthentication("ktor") { hashedUserTable.authenticate(it) } }
+
         install(Routing) {
             userHandler(dao, hashFunction)
             sweetHandler(dao, hashFunction)
-            fileHandler(dao,hashFunction)
+            fileHandler(dao, hashFunction)
         }
 
     }
@@ -140,3 +146,8 @@ fun ApplicationCall.signVCode(date: Long, vcode: String, hashFunction: (String) 
 fun ApplicationCall.testVCode(date: Long, vcode: String, sign: String, hashFunction: (String) -> String) =
         signVCode(date, vcode, hashFunction) == sign
                 && (System.currentTimeMillis() - date).let { it > 0 && it < TimeUnit.MILLISECONDS.convert(5, TimeUnit.MINUTES) }
+
+
+val hashedUserTable = UserHashedTableAuth(table = mapOf(
+        "test" to decodeBase64("VltM4nfheqcJSyH887H+4NEOm2tDuKCl83p5axYXlF0=") // sha256 for "test"
+))
