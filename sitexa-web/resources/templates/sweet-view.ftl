@@ -12,6 +12,7 @@
     </header>
     <div class="post-description">${sweet.text}</div>
     <#list medias as media>
+    <#if media??><#else>
         <#if media.fileType="image">
             <div class="post-images">
                 <img class="post-images" src="/media/${media.fileName}/${media.fileType}"/>
@@ -27,15 +28,15 @@
                 Your browser does not support the audio element.
             </audio>
         </#if>
-
+    </#if>
     </#list>
 </section>
 <section class="reply">
     <#list replies as reply>
         <header class="reply-header">
-            <p class="reply-meta">
+            <div class="reply-meta">
             ${reply.userId}
-                <span>${reply.date.toDate()?string("yyyy.MM.dd HH:mm:ss")}</span></p>
+                <span>${reply.date.toDate()?string("yyyy.MM.dd HH:mm:ss")}</span></div>
         </header>
         <div class="reply-description">
         ${reply.text}

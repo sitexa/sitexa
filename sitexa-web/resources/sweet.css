@@ -114,13 +114,15 @@ h3 {
 .post-description {
     font-family: Georgia, "Cambria", serif;
     color: #444;
-    line-height: 1.8em;
+    line-height: 1.2em;
+    white-space: pre-wrap;
 }
 
 .post-meta {
     color: #999;
     font-size: 90%;
     margin: 0;
+    margin-bottom:0.2em;
 }
 
 .reply {
@@ -132,13 +134,15 @@ h3 {
     color: #999;
     font-size: 90%;
     margin: 0;
+    padding-bottom: 0;
 }
 
 .reply-description {
     font-family: Georgia, "Cambria", serif;
     color: #444;
-    line-height: 1.4em;
+    line-height: 1.2em;
     padding-bottom: 1.2em;
+    white-space: pre-line;
 }
 
 .post-category {
