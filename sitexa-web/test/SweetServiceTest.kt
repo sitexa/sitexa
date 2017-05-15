@@ -1,8 +1,9 @@
-import com.sitexa.ktor.model.Sweet
 import com.sitexa.ktor.dao.api.SweetService
+import com.sitexa.ktor.model.Sweet
 
 /**
  * Created by open on 07/05/2017.
+ *
  */
 
 fun main(vararg: Array<String>) {
@@ -47,13 +48,13 @@ fun getSweetComponent() {
 
 fun testGetTopSweet() {
     println("\n#################testGetTopSweet")
-    val sweets = SweetService().getTopSweet(10)
+    val sweets = SweetService().getTopSweet(1,10)
     sweets.forEach { println(it) }
 }
 
 fun testGetLatestSweet() {
     println("\n#################testGetLatestSweet")
-    val sweets = SweetService().getLatestSweet(10)
+    val sweets = SweetService().getLatestSweet(1,10)
     sweets.forEach { println(it) }
 }
 

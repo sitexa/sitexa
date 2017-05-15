@@ -5,10 +5,10 @@
 
 <@layout.mainLayout title="Welcome">
 <div class="posts">
-    <h3 class="content-subhead"><a href="/sweet-top/10/1">Top Sweets</a></h3>
+    <h3 class="content-subhead">Top 10</h3>
     <@layout.sweets_list sweets=top></@layout.sweets_list>
-
-    <h3 class="content-subhead"><a href="/sweet-latest/10/1">Recent Sweets</a></h3>
-    <@layout.sweets_list sweets=latest></@layout.sweets_list>
+    <div class="nav-page">
+        <a href="/sweet-top/${count}/${page-1}">last</a> <a href="/sweet-top/${count}/${page+1}">next</a>
+    </div>
 </div>
 </@layout.mainLayout>

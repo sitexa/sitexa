@@ -31,6 +31,7 @@
         <okhttp.version>3.6.0</okhttp.version>
         <kotson.version>2.5.0</kotson.version>
         <retrofit.version>2.2.0</retrofit.version>
+        <jsoup.version>1.7.3</jsoup.version>
     </properties>
 
     <dependencies>
@@ -70,6 +71,11 @@
             <artifactId>ktor-netty</artifactId>
             <version>${ktor.version}</version>
             <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains.ktor</groupId>
+            <artifactId>ktor-auth</artifactId>
+            <version>${ktor.version}</version>
         </dependency>
 
         <!-- log dependencies -->

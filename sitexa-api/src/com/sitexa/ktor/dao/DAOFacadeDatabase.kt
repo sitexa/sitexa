@@ -1,10 +1,12 @@
 package com.sitexa.ktor.dao
 
-import com.sitexa.ktor.model.*
+import com.sitexa.ktor.model.Media
+import com.sitexa.ktor.model.Sweet
+import com.sitexa.ktor.model.User
 import org.jetbrains.exposed.sql.*
-import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.SchemaUtils.create
-import org.joda.time.*
+import org.jetbrains.exposed.sql.transactions.transaction
+import org.joda.time.DateTime
 
 
 class DAOFacadeDatabase(val db: Database) : DAOFacade {
@@ -140,11 +142,10 @@ class DAOFacadeDatabase(val db: Database) : DAOFacade {
         }
     }
 
-    override fun topSweets(count: Int): List<Int> = transaction {
+    override fun topSweets(count: Int, page: Int): List<Int> = transaction {
         // note: in a real application you shouldn't do it like this
         //   as it may cause database outages on big data
         //   so this implementation is just for demo purposes
-
         val k2 = Sweets.alias("k2")
         Sweets.join(k2, JoinType.LEFT, Sweets.id, k2[Sweets.replyTo])
                 .slice(Sweets.id, k2[Sweets.id].count())
@@ -152,14 +153,14 @@ class DAOFacadeDatabase(val db: Database) : DAOFacade {
                 .groupBy(Sweets.id)
                 .orderBy(k2[Sweets.id].count(), isAsc = false)
                 .having { k2[Sweets.id].count().greater(0) }
-                .limit(count)
+                .limit(count, page)
                 .map { it[Sweets.id] }
     }
 
-    override fun latestSweets(count: Int) = transaction {
+    override fun latestSweets(count: Int, page: Int) = transaction {
         Sweets.slice(Sweets.id).select { Sweets.replyTo.isNull() }
                 .orderBy(Sweets.date, false)
-                .limit(count).map { it[Sweets.id] }
+                .limit(count, page).map { it[Sweets.id] }
     }
 
     fun latest2(count: Int): List<Int> = transaction {

@@ -13,6 +13,14 @@
     <artifactId>sitexa-web</artifactId>
 
     <dependencies>
+
+        <!-- image thumbnail and watermark dependencies -->
+        <dependency>
+            <groupId>net.coobird</groupId>
+            <artifactId>thumbnailator</artifactId>
+            <version>[0.4, 0.5)</version>
+        </dependency>
+
         <!-- network access dependencies -->
         <dependency>
             <groupId>com.squareup.okhttp3</groupId>

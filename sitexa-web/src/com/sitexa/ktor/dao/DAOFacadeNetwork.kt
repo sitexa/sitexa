@@ -53,9 +53,9 @@ class DAOFacadeNetwork : DAOFacade {
         UserService().register(user)
     }
 
-    override fun top(count: Int): List<Int> = SweetService().getTopSweet(count)
+    override fun top(count: Int, page: Int): List<Int> = SweetService().getTopSweet(count, page)
 
-    override fun latest(count: Int): List<Int> = SweetService().getLatestSweet(count)
+    override fun latest(count: Int, page: Int): List<Int> = SweetService().getLatestSweet(count, page)
 
     override fun close() {
     }

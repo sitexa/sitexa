@@ -31,6 +31,6 @@ interface DAOFacade : Closeable {
     fun userByEmail(email: String): User?
     fun userByMobile(mobile: String): User?
     fun createUser(user: User)
-    fun top(count: Int = 10): List<Int>
-    fun latest(count: Int = 10): List<Int>
+    fun top(count: Int = 10, page: Int = 1): List<Int>
+    fun latest(count: Int = 10, page: Int = 1): List<Int>
 }

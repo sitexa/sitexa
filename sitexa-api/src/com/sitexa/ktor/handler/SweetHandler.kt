@@ -2,27 +2,22 @@ package com.sitexa.ktor.handler
 
 import com.google.gson.GsonBuilder
 import com.google.gson.LongSerializationPolicy
-import com.sitexa.ktor.*
+import com.sitexa.ktor.JsonResponse
 import com.sitexa.ktor.common.ApiCode
 import com.sitexa.ktor.common.ApiResult
 import com.sitexa.ktor.common.JodaGsonAdapter
 import com.sitexa.ktor.dao.DAOFacade
 import com.sitexa.ktor.model.Media
 import com.sitexa.ktor.model.Sweet
-import com.sun.org.apache.bcel.internal.util.InstructionFinder
+import com.sitexa.ktor.uploadDir
 import org.jetbrains.ktor.application.call
 import org.jetbrains.ktor.application.log
-import org.jetbrains.ktor.application.receive
 import org.jetbrains.ktor.content.LocalFileContent
 import org.jetbrains.ktor.locations.get
 import org.jetbrains.ktor.locations.location
 import org.jetbrains.ktor.locations.post
-import org.jetbrains.ktor.request.MultiPartData
-import org.jetbrains.ktor.request.PartData
-import org.jetbrains.ktor.request.isMultipart
 import org.jetbrains.ktor.routing.Route
 import org.jetbrains.ktor.routing.application
-import org.jetbrains.ktor.sessions.sessionOrNull
 import org.joda.time.DateTime
 import java.io.File
 
@@ -37,8 +32,8 @@ import java.io.File
 
 @location("/sweet/{id}") class SweetSingle(val id: Int)
 @location("/sweet-component/{id}") class SweetComponent(val id: Int)
-@location("/sweet-top/{num}") class TopSweet(val num: Int = 10)
-@location("/sweet-latest/{num}") class LatestSweet(val num: Int = 10)
+@location("/sweet-top/{count}/{page}") class TopSweet(val count: Int = 10,val page: Int = 1)
+@location("/sweet-latest/{count}/{page}") class LatestSweet(val count: Int = 10,val page: Int = 1)
 @location("/sweet-reply-count/{id}") class CountSweetReplies(val id: Int)
 @location("/sweet-replies/{id}") class GetReplies(val id: Int)
 @location("/sweet-user/{user}") class UserSweet(val user: String)
@@ -114,7 +109,7 @@ fun Route.sweetHandler(dao: DAOFacade, hashFunction: (String) -> String) {
     get<TopSweet> {
         var top: List<Int> = emptyList()
         try {
-            top = dao.topSweets(it.num)
+            top = dao.topSweets(it.count, it.page)
         } catch (e: Exception) {
             application.log.error(e)
         }
@@ -123,7 +118,7 @@ fun Route.sweetHandler(dao: DAOFacade, hashFunction: (String) -> String) {
     get<LatestSweet> {
         var latest: List<Int> = emptyList()
         try {
-            latest = dao.latestSweets(it.num)
+            latest = dao.latestSweets(it.count, it.page)
         } catch (e: Exception) {
             application.log.error(e)
         }

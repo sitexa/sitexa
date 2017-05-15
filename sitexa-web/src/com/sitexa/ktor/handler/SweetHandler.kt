@@ -3,6 +3,7 @@ package com.sitexa.ktor.handler
 import com.sitexa.ktor.*
 import com.sitexa.ktor.dao.DAOFacade
 import com.sitexa.ktor.model.Media
+import net.coobird.thumbnailator.Thumbnails
 import org.jetbrains.ktor.application.call
 import org.jetbrains.ktor.application.receive
 import org.jetbrains.ktor.content.LocalFileContent
@@ -45,6 +46,9 @@ data class SweetUpd(val id: Int = 0, val text: String = "", val date: Long = 0L,
 
 @location("/sweet-reply")
 data class SweetReply(val replyTo: Int = 0, val text: String = "", val date: Long = 0L, val code: String = "")
+
+@location("/sweet-top/{count}/{page}") class SweetTop(var count: Int = 10, var page: Int = 1)
+@location("/sweet-latest/{count}/{page}") class SweetLatest(var count: Int = 10, var page: Int = 1)
 
 fun Route.sweetHandler(dao: DAOFacade, hashFunction: (String) -> String) {
     get<SweetNew> {
@@ -92,6 +96,11 @@ fun Route.sweetHandler(dao: DAOFacade, hashFunction: (String) -> String) {
                         }
                         fileName = file.name
                         fileType = ContentType.fromFilePath(file.path).firstOrNull()?.contentType
+                        if (fileType == "image") {
+                            val thumb = "thumb-$fileName"
+                            Thumbnails.of(part.streamProvider()).size(160, 160).toFile(File(uploadDir, thumb))
+                        }
+
                     }
                     part.dispose()
                 }
@@ -217,13 +226,27 @@ fun Route.sweetHandler(dao: DAOFacade, hashFunction: (String) -> String) {
     post<SweetReply> {
         val user = call.sessionOrNull<Session>()?.let { dao.user(it.userId) }
 
-        println("Route.replySweet.post:user=${user?.userId},code=${it.code},replyTo=${it.replyTo},text=${it.text}")
-
         if (user == null || !call.verifyCode(it.date, user, it.code, hashFunction)) {
             call.redirect(Login())
         } else {
             val id = dao.createSweet(user.userId, it.text, it.replyTo)
             call.redirect(SweetView(id))
         }
+    }
+
+    get<SweetTop> {
+        val top = dao.top(it.count, it.page).map { dao.getSweet(it) }
+        val date = System.currentTimeMillis()
+        val etagString = date.toString() + "," + top.toString()
+        val etag = etagString.hashCode()
+        call.respond(FreeMarkerContent("sweet-top.ftl", mapOf("top" to top, "count" to it.count, "page" to it.page), etag.toString()))
+    }
+
+    get<SweetLatest> {
+        val latest = dao.latest(it.count, it.page).map { dao.getSweet(it) }
+        val date = System.currentTimeMillis()
+        val etagString = date.toString() + "," + latest.toString()
+        val etag = etagString.hashCode()
+        call.respond(FreeMarkerContent("sweet-latest.ftl", mapOf("latest" to latest, "count" to it.count, "page" to it.page), etag.toString()))
     }
 }

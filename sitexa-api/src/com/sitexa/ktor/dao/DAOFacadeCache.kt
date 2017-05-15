@@ -1,12 +1,16 @@
 package com.sitexa.ktor.dao
 
-import com.sitexa.ktor.model.*
-import org.ehcache.*
-import org.ehcache.config.*
-import org.ehcache.config.persistence.*
-import org.ehcache.config.units.*
-import org.joda.time.*
-import java.io.*
+import com.sitexa.ktor.model.Media
+import com.sitexa.ktor.model.Sweet
+import com.sitexa.ktor.model.User
+import org.ehcache.CacheManagerBuilder
+import org.ehcache.config.CacheConfigurationBuilder
+import org.ehcache.config.ResourcePoolsBuilder
+import org.ehcache.config.persistence.CacheManagerPersistenceConfiguration
+import org.ehcache.config.units.EntryUnit
+import org.ehcache.config.units.MemoryUnit
+import org.joda.time.DateTime
+import java.io.File
 
 
 /**
@@ -162,13 +166,12 @@ class DAOFacadeCache(val delegate: DAOFacade, val storagePath: File) : DAOFacade
         usersCache.remove(user.userId)
     }
 
-
-    override fun topSweets(count: Int): List<Int> {
-        return delegate.topSweets(count)
+    override fun topSweets(count: Int,page: Int): List<Int> {
+        return delegate.topSweets(count,page)
     }
 
-    override fun latestSweets(count: Int): List<Int> {
-        return delegate.latestSweets(count)
+    override fun latestSweets(count: Int,page: Int): List<Int> {
+        return delegate.latestSweets(count,page)
     }
 
     override fun close() {

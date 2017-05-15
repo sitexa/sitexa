@@ -17,8 +17,8 @@ import retrofit2.http.*
 interface SweetApi {
     @GET("/sweet/{id}") fun singleSweet(@Path("id") id: Int): Call<Sweet>
     @GET("/sweet-component/{id}") fun sweetComponent(@Path("id") id: Int): Call<ApiResult>
-    @GET("/sweet-top/{num}") fun topSweet(@Path("num") num: Int): Call<List<Int>>
-    @GET("/sweet-latest/{num}") fun latestSweet(@Path("num") num: Int): Call<List<Int>>
+    @GET("/sweet-top/{count}/{page}") fun topSweet(@Path("count") count: Int, @Path("page") page: Int): Call<List<Int>>
+    @GET("/sweet-latest/{count}/{page}") fun latestSweet(@Path("count") count: Int, @Path("page") page: Int): Call<List<Int>>
     @GET("/sweet-reply-count/{id}") fun countSweetReplies(@Path("id") id: Int): Call<Int>
     @GET("/sweet-replies/{id}") fun getReplies(@Path("id") id: Int): Call<List<Int>>
     @GET("/sweet-user/{user}") fun getUserSweets(@Path("user") user: String): Call<List<Int>>
@@ -62,9 +62,9 @@ class SweetService : ApiService() {
         return map
     }
 
-    fun getTopSweet(num: Int): List<Int> = sweetApi.topSweet(num).execute().body()
+    fun getTopSweet(count: Int, page: Int): List<Int> = sweetApi.topSweet(count, page).execute().body()
 
-    fun getLatestSweet(num: Int): List<Int> = sweetApi.latestSweet(num).execute().body()
+    fun getLatestSweet(count: Int, page: Int): List<Int> = sweetApi.latestSweet(count, page).execute().body()
 
     fun countReplies(id: Int): Int = sweetApi.countSweetReplies(id).execute().body()
 
