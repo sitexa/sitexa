@@ -15,13 +15,13 @@ val hmacKey = SecretKeySpec(hashKey, "HmacSHA1")
 val dao: DAOFacade = DAOFacadeCache(DAOFacadeDatabase(Database.connect(datasource)), File(cacheDir, "ehcache"))
 
 fun main(vararg: Array<String>) {
-    //testTopSweets()
+    testTopSweets()
     testLatestSweets()
 }
 
 fun testTopSweets() {
     println("\n====================testTopSweets")
-    val s = dao.topSweets(3, 3)
+    val s = dao.topSweets(10, 1)
     s.forEach {
         println("it=$it")
     }
@@ -30,7 +30,7 @@ fun testTopSweets() {
 
 fun testLatestSweets() {
     println("\n====================testLatestSweets")
-    val s = dao.latestSweets(3, 3)
+    val s = dao.latestSweets(10, 1)
     s.forEach {
         println("it=$it")
     }
