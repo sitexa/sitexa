@@ -1,12 +1,12 @@
-import com.sitexa.ktor.model.Sweet
 import com.sitexa.ktor.dao.api.SweetService
+import com.sitexa.ktor.model.Sweet
 
 /**
  * Created by open on 07/05/2017.
  */
 
 fun main(vararg: Array<String>) {
-    //getSingleSweet()
+    getSingleSweet()
     //getSweetComponent()
     //testGetTopSweet()
     //testGetLatestSweet()

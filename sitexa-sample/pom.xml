@@ -13,7 +13,18 @@
     <artifactId>sitexa-sample</artifactId>
 
     <dependencies>
+        <!-- image thumbnail and watermark dependencies -->
+        <dependency>
+            <groupId>net.coobird</groupId>
+            <artifactId>thumbnailator</artifactId>
+            <version>[0.4, 0.5)</version>
+        </dependency>
 
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>${jsoup.version}</version>
+        </dependency>
 
         <!-- network access dependencies -->
         <dependency>
@@ -139,6 +150,10 @@
             <artifactId>ktor-websockets</artifactId>
             <version>${ktor.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.jetbrains.ktor</groupId>
+            <artifactId>ktor-auth</artifactId>
+            <version>${ktor.version}</version>
+        </dependency>
     </dependencies>
 </project>

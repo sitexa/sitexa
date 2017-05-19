@@ -19,7 +19,6 @@ import org.jetbrains.ktor.sessions.sessionOrNull
 class Index
 
 fun Route.indexHandler(dao: DAOFacade) {
-
     get<Index> {
         val user = call.sessionOrNull<Session>()?.let { dao.user(it.userId) }
         val top = dao.top(10).map { dao.getSweet(it) }

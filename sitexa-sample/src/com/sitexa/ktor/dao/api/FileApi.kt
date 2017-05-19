@@ -60,6 +60,18 @@ class FileService {
         val call = fileApi.upload(refIdPart, titlePart, sortOrderPart, filePart)
         val response = call.execute().body()
 
+/*
+        call.enqueue(object:retrofit2.Callback<ApiResult>{
+            override fun onFailure(call: Call<ApiResult>?, t: Throwable?) {
+                TODO("not implemented")
+            }
+
+            override fun onResponse(call: Call<ApiResult>?, response: Response<ApiResult>?) {
+                TODO("not implemented")
+            }
+        })
+*/
+
         return if (response.code() == ApiCode.OK) response.data().toInt() else -1
     }
 
