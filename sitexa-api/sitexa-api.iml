@@ -30,8 +30,8 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="commons-httpclient" level="application" />
-    <orderEntry type="library" name="JavaMail" level="application" />
+    <orderEntry type="library" exported="" name="commons-httpclient" level="application" />
+    <orderEntry type="library" exported="" name="JavaMail" level="application" />
     <orderEntry type="library" name="Maven: com.squareup.okhttp3:okhttp:3.6.0" level="project" />
     <orderEntry type="library" name="Maven: com.squareup.okio:okio:1.11.0" level="project" />
     <orderEntry type="library" name="Maven: org.jetbrains.exposed:exposed:0.7.6" level="project" />

@@ -11,7 +11,7 @@ import java.io.File
 val uploadDir = "/Users/open/IdeaProjects/sitexa/uploads"
 
 val dbConfig = mapOf("driver" to "org.mariadb.jdbc.Driver",
-        "url" to "jdbc:mysql://localhost:3306/sitexa",
+        "url" to "jdbc:mysql://192.168.2.108:3306/sitexa",
         "user" to "root",
         "password" to "pop007",
         "pool" to 20,

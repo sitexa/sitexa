@@ -146,6 +146,7 @@ class DAOFacadeDatabase(val db: Database) : DAOFacade {
         // note: in a real application you shouldn't do it like this
         //   as it may cause database outages on big data
         //   so this implementation is just for demo purposes
+        val start = (page - 1) * count
         val k2 = Sweets.alias("k2")
         Sweets.join(k2, JoinType.LEFT, Sweets.id, k2[Sweets.replyTo])
                 .slice(Sweets.id, k2[Sweets.id].count())
@@ -153,14 +154,15 @@ class DAOFacadeDatabase(val db: Database) : DAOFacade {
                 .groupBy(Sweets.id)
                 .orderBy(k2[Sweets.id].count(), isAsc = false)
                 .having { k2[Sweets.id].count().greater(0) }
-                .limit(count, page)
+                .limit(count, start)
                 .map { it[Sweets.id] }
     }
 
     override fun latestSweets(count: Int, page: Int) = transaction {
+        val start = (page - 1) * count
         Sweets.slice(Sweets.id).select { Sweets.replyTo.isNull() }
                 .orderBy(Sweets.date, false)
-                .limit(count, page).map { it[Sweets.id] }
+                .limit(count, start).map { it[Sweets.id] }
     }
 
     fun latest2(count: Int): List<Int> = transaction {
