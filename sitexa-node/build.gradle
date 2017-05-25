@@ -109,7 +109,7 @@ dependencies {
 
 mainClassName = 'org.jetbrains.ktor.netty.DevelopmentHost'
 
-def mainMethod = 'com.sitexa.ktor.SweetWeb.install'
+def mainMethod = 'com.sitexa.ktor.SweetNode.install'
 
 def watchForChange = 'src/**/*.kt'
 

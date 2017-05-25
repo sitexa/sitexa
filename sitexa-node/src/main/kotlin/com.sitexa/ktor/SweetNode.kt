@@ -47,7 +47,7 @@ class JsonResponse(val data: Any)
 
 data class Session(val userId: String)
 
-class SweetWeb : AutoCloseable {
+class SweetNode : AutoCloseable {
 
 
     val hmacKey = SecretKeySpec(hashKey, "HmacSHA1")
@@ -67,7 +67,7 @@ class SweetWeb : AutoCloseable {
         install(PartialContentSupport)
         install(Locations)
         install(FreeMarker) {
-            templateLoader = ClassTemplateLoader(SweetWeb::class.java.classLoader, "templates")
+            templateLoader = ClassTemplateLoader(SweetNode::class.java.classLoader, "templates")
         }
 
         withSessions<Session> {

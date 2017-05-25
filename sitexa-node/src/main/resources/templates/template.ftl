@@ -9,8 +9,8 @@
     <title>${title} | Sweet</title>
     <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">
     <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/pure/0.6.0/grids-responsive-min.css">
-    <link rel="stylesheet" type="text/css" href="/styles/main.css">
-    <link rel="stylesheet" type="text/css" href="/node/styles.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="/public/styles/sweet.css">
+    <link rel="stylesheet" type="text/css" href="/public/node/styles.css" media="screen">
 </head>
 <body>
 <div class="pure-g">

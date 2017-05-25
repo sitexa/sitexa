@@ -15,7 +15,7 @@ import org.jetbrains.ktor.routing.Route
  *
  */
 
-@location("/weather") class Weather(val lat: Double, val lng: Double)
+@location("/weather") class Weather(val lat: Double=0.0, val lng: Double=0.0)
 
 fun Route.weatherHandler() {
     get<Weather> {
