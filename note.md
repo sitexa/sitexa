@@ -13,6 +13,16 @@ Before you can sync your fork with an upstream repository, you must configure a 
 
 ### steps
 
+-   0, add remote upstream
+``` 
+git remote add upstream https://github.com/fccaikai/Gan_Kotlin.git
+
+git remote -v
+origin  https://github.com/sitexa/Gan_Kotlin.git (fetch)
+origin  https://github.com/sitexa/Gan_Kotlin.git (push)
+upstream        https://github.com/fccaikai/Gan_Kotlin.git (fetch)
+upstream        https://github.com/fccaikai/Gan_Kotlin.git (push)
+```
 -   1, Open Terminal.
 -   2, Change the current working directory to your local project.
 -   3, Fetch the branches and their respective commits from the upstream repository. Commits to master will be stored in a local branch, upstream/master.
