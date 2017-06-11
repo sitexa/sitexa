@@ -83,14 +83,12 @@ fun Route.userHandler(dao: DAOFacade, hashFunction: (String) -> String) {
         call.respond(JsonResponse(mapOf("user" to it, "result" to result)))
     }
     post<Login> {
-        println("\nuser:${it.userId}:${it.password}")
         val login = when {
             it.userId.length < 4 -> null
             it.password.length < 6 -> null
             !userNameValid(it.userId) -> null
             else -> dao.user(it.userId, hashFunction(it.password))
         }
-        println("\nlogin:$login")
 
         if (login == null) {
             call.respond(JsonResponse(mapOf("result" to -1)))

@@ -100,6 +100,8 @@ class DAOFacadeDatabase(val db: Database) : DAOFacade {
     override fun user(userId: String, hash: String?) = transaction {
         Users.select { Users.id.eq(userId) }
                 .mapNotNull {
+                    val id = it[Users.id]
+                    val pwd = it[Users.passwordHash]
                     if (hash == null || it[Users.passwordHash] == hash) {
                         User(userId, it[Users.mobile], it[Users.email], it[Users.displayName], it[Users.passwordHash])
                     } else {
