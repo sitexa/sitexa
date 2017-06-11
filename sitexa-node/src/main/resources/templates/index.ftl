@@ -11,5 +11,5 @@
     <@layout.sweets_list sweets=latest></@layout.sweets_list>
 </div>
 <div id="reactView"></div>
-<script src="/public/node/bundle.js"></script>
+<script src="/node/bundle.js"></script>
 </@layout.mainLayout>

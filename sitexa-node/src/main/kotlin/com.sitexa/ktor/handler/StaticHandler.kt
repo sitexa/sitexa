@@ -3,7 +3,6 @@ package com.sitexa.ktor.handler
 import org.jetbrains.ktor.content.default
 import org.jetbrains.ktor.content.files
 import org.jetbrains.ktor.content.static
-import org.jetbrains.ktor.content.staticRootFolder
 import org.jetbrains.ktor.routing.Route
 import java.io.File
 
@@ -16,16 +15,18 @@ val basedir = File("public")
 
 fun Route.staticHandler() {
 
-/*
+
     static("public") {
         files(basedir)
         default("index.html")
     }
-*/
+
+/*
     static {
         staticRootFolder = basedir
-        default("index.html")
+        //default("index.html")
         files(".")
     }
+*/
 
 }

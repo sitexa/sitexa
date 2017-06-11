@@ -85,6 +85,7 @@ fun Route.userHandler(dao: DAOFacade, hashFunction: (String) -> String) {
         }
     }
     get<Login> {
+        println("\nuserHandler:login.get")
         val user = call.sessionOrNull<Session>()?.let { dao.user(it.userId) }
 
         if (user != null) {
