@@ -9,17 +9,14 @@ import com.sitexa.ktor.common.JodaGsonAdapter
 import com.sitexa.ktor.dao.DAOFacade
 import com.sitexa.ktor.model.Media
 import com.sitexa.ktor.model.Sweet
-import com.sitexa.ktor.uploadDir
 import org.jetbrains.ktor.application.call
 import org.jetbrains.ktor.application.log
-import org.jetbrains.ktor.content.LocalFileContent
 import org.jetbrains.ktor.locations.get
 import org.jetbrains.ktor.locations.location
 import org.jetbrains.ktor.locations.post
 import org.jetbrains.ktor.routing.Route
 import org.jetbrains.ktor.routing.application
 import org.joda.time.DateTime
-import java.io.File
 
 /**
  * Created by open on 10/04/2017.
@@ -32,17 +29,14 @@ import java.io.File
 
 @location("/sweet/{id}") class SweetSingle(val id: Int)
 @location("/sweet-component/{id}") class SweetComponent(val id: Int)
-@location("/sweet-top/{count}/{page}") class TopSweet(val count: Int = 10,val page: Int = 1)
-@location("/sweet-latest/{count}/{page}") class LatestSweet(val count: Int = 10,val page: Int = 1)
+@location("/sweet-top/{count}/{page}") class TopSweet(val count: Int = 10, val page: Int = 1)
+@location("/sweet-latest/{count}/{page}") class LatestSweet(val count: Int = 10, val page: Int = 1)
 @location("/sweet-reply-count/{id}") class CountSweetReplies(val id: Int)
 @location("/sweet-replies/{id}") class GetReplies(val id: Int)
 @location("/sweet-user/{user}") class UserSweet(val user: String)
+@location("/top/{count}/{page}") class Top(val count: Int = 10, val page: Int = 1)
+@location("/latest/{count}/{page}") class Latest(val count: Int = 10, val page: Int = 1)
 
-@location("/media-new") class MediaNew(val refId: Int = 0, val fileName: String = "", val fileType: String? = "unknown", val title: String? = null, val sortOrder: Int? = null)
-@location("/media-del") class MediaDel(val id: Int)
-@location("/media/{name}/{type}") class MediaView(val name: String, val type: String)
-@location("/media/{id}") class MediaData(val id: Int)
-@location("/mediasBySweet/{refId}") class MediasBySweet(val refId: Int)
 
 fun Route.sweetHandler(dao: DAOFacade, hashFunction: (String) -> String) {
 
@@ -115,10 +109,28 @@ fun Route.sweetHandler(dao: DAOFacade, hashFunction: (String) -> String) {
         }
         call.respond(JsonResponse(top))
     }
+    get<Top> {
+        var top: List<Sweet> = emptyList()
+        try {
+            top = dao.top(it.count, it.page)
+        } catch (e: Exception) {
+            application.log.error(e)
+        }
+        call.respond(JsonResponse(top))
+    }
     get<LatestSweet> {
         var latest: List<Int> = emptyList()
         try {
             latest = dao.latestSweets(it.count, it.page)
+        } catch (e: Exception) {
+            application.log.error(e)
+        }
+        call.respond(JsonResponse(latest))
+    }
+    get<Latest> {
+        var latest: List<Sweet> = emptyList()
+        try {
+            latest = dao.latest(it.count, it.page)
         } catch (e: Exception) {
             application.log.error(e)
         }
@@ -134,9 +146,10 @@ fun Route.sweetHandler(dao: DAOFacade, hashFunction: (String) -> String) {
         call.respond(JsonResponse(countSweetReplies))
     }
     get<GetReplies> {
-        var replies: List<Int> = emptyList()
+        var replies: List<Sweet> = emptyList()
         try {
-            replies = dao.getReplies(it.id)
+            val ids = dao.getReplies(it.id)
+            replies = ids.map { dao.getSweet(it) }.toList()
         } catch(e: Exception) {
             application.log.error(e)
         }
@@ -152,45 +165,5 @@ fun Route.sweetHandler(dao: DAOFacade, hashFunction: (String) -> String) {
         call.respond(JsonResponse(sweets))
     }
 
-    post<MediaNew> {
-        var apiResult: ApiResult
-        try {
-            val id = dao.createMedia(it.refId, it.fileName, it.fileType, it.title, it.sortOrder)
-            apiResult = ApiResult(code = ApiCode.OK, desc = "success", data = "" + id)
-        } catch (e: Exception) {
-            apiResult = ApiResult(code = ApiCode.ERROR, desc = "fail", data = e.message!!)
-        }
-        call.respond(JsonResponse(apiResult))
-    }
-    get<MediaDel> {
-        var apiResult: ApiResult
-        try {
-            dao.deleteMedia(it.id)
-            apiResult = ApiResult(code = ApiCode.OK, desc = "success", data = "")
-        } catch (e: Exception) {
-            apiResult = ApiResult(code = ApiCode.ERROR, desc = "fail", data = "" + e.message)
-        }
-        call.respond(JsonResponse(apiResult))
-    }
-    get<MediaView> {
-        call.respond(LocalFileContent(File(uploadDir + "/" + it.name)))
-    }
-    get<MediaData> {
-        var media: Media? = null
-        try {
-            media = dao.getMedia(it.id)
-        } catch(e: Exception) {
-            application.log.error(e)
-        }
-        call.respond(JsonResponse(media!!))
-    }
-    get<MediasBySweet> {
-        var medias: List<Int> = emptyList()
-        try {
-            medias = dao.getMedias(it.refId)
-        } catch(e: Exception) {
-            application.log.error(e)
-        }
-        call.respond(JsonResponse(medias))
-    }
+
 }

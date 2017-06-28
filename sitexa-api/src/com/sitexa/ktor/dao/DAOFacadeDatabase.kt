@@ -160,6 +160,10 @@ class DAOFacadeDatabase(val db: Database) : DAOFacade {
                 .map { it[Sweets.id] }
     }
 
+    override fun top(count: Int, page: Int): List<Sweet> = topSweets(count, page).map { getSweet(it) }
+
+    override fun latest(count: Int, page: Int): List<Sweet> = latestSweets(count, page).map { getSweet(it) }
+
     override fun latestSweets(count: Int, page: Int) = transaction {
         val start = (page - 1) * count
         Sweets.slice(Sweets.id).select { Sweets.replyTo.isNull() }

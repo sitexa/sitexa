@@ -166,12 +166,20 @@ class DAOFacadeCache(val delegate: DAOFacade, val storagePath: File) : DAOFacade
         usersCache.remove(user.userId)
     }
 
-    override fun topSweets(count: Int,page: Int): List<Int> {
-        return delegate.topSweets(count,page)
+    override fun topSweets(count: Int, page: Int): List<Int> {
+        return delegate.topSweets(count, page)
     }
 
-    override fun latestSweets(count: Int,page: Int): List<Int> {
-        return delegate.latestSweets(count,page)
+    override fun latestSweets(count: Int, page: Int): List<Int> {
+        return delegate.latestSweets(count, page)
+    }
+
+    override fun top(count: Int, page: Int): List<Sweet> {
+        return delegate.top(count, page)
+    }
+
+    override fun latest(count: Int, page: Int): List<Sweet> {
+        return delegate.latest(count, page)
     }
 
     override fun close() {

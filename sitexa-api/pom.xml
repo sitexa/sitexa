@@ -112,11 +112,15 @@
                     <descriptorRefs>
                         <descriptorRef>jar-with-dependencies</descriptorRef>
                     </descriptorRefs>
+                    <!--<descriptors>
+                        <descriptor>resources/assembly.xml</descriptor>
+                    </descriptors>-->
                     <archive>
                         <manifest>
-                            <mainClass>com.birdben.App</mainClass>
+                            <mainClass>org.jetbrains.ktor.netty.DevelopmentHost</mainClass>
                         </manifest>
                     </archive>
+
                 </configuration>
                 <executions>
                     <execution>

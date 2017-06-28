@@ -21,8 +21,10 @@ interface DAOFacade : Closeable {
     fun getSweet(id: Int): Sweet
     fun getReplies(id: Int): List<Int>
     fun userSweets(userId: String): List<Int>
-    fun topSweets(count: Int = 10,page: Int = 0): List<Int>
-    fun latestSweets(count: Int = 10,page: Int = 0): List<Int>
+    fun topSweets(count: Int = 10, page: Int = 0): List<Int>
+    fun latestSweets(count: Int = 10, page: Int = 0): List<Int>
+    fun top(count: Int = 10, page: Int = 0): List<Sweet>
+    fun latest(count: Int = 10, page: Int = 0): List<Sweet>
 
     fun createMedia(refId: Int? = -1, fileName: String, fileType: String? = "unknown", title: String? = null, sortOrder: Int? = null): Int
     fun deleteMedia(id: Int)

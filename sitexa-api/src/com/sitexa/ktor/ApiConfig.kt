@@ -1,14 +1,11 @@
 package com.sitexa.ktor
 
-import org.jetbrains.ktor.util.hex
-import java.io.File
-
 /**
  * Created by open on 18/04/2017.
  *
  */
 
-val uploadDir = "/Users/open/IdeaProjects/sitexa/uploads"
+var uploadDir = "/Users/open/IdeaProjects/sitexa/uploads"
 
 val dbConfig = mapOf("driver" to "org.mariadb.jdbc.Driver",
         "url" to "jdbc:mysql://192.168.2.108:3306/sitexa",
@@ -18,8 +15,7 @@ val dbConfig = mapOf("driver" to "org.mariadb.jdbc.Driver",
         "autoCommit" to false,
         "dialect" to "MysqlDialect")
 
-val hashKey = hex("6819b57a326945c1968f45236589")
-val cacheDir = File("target/apidb")
+var cacheDir = "target/apidb"
 
 
 

@@ -7,6 +7,7 @@ import com.sitexa.ktor.dao.DAOFacade
 import com.sitexa.ktor.dao.DAOFacadeCache
 import com.sitexa.ktor.dao.DAOFacadeDatabase
 import com.sitexa.ktor.handler.fileHandler
+import com.sitexa.ktor.handler.mediaHandler
 import com.sitexa.ktor.handler.sweetHandler
 import com.sitexa.ktor.handler.userHandler
 import com.sitexa.ktor.model.User
@@ -56,24 +57,32 @@ data class Session(val userId: String)
 
 class SweetApi : AutoCloseable {
 
-    val datasource = HikariDataSource().apply {
-        maximumPoolSize = dbConfig["pool"].toString().toInt()
-        driverClassName = dbConfig["driver"].toString()
-        jdbcUrl = dbConfig["url"].toString()
-        isAutoCommit = dbConfig["autoCommit"].toString().toBoolean()
-        addDataSourceProperty("user", dbConfig["user"].toString())
-        addDataSourceProperty("password", dbConfig["password"].toString())
-        addDataSourceProperty("dialect", dbConfig["dialect"].toString())
-    }
-
+    val hashKey = hex("6819b57a326945c1968f45236589")
     val hmacKey = SecretKeySpec(hashKey, "HmacSHA1")
-    val dao: DAOFacade = DAOFacadeCache(DAOFacadeDatabase(Database.connect(datasource)), File(cacheDir, "ehcache"))
     val gson = GsonBuilder()
             .registerTypeAdapter(DateTime::class.java, JodaGsonAdapter())
             .setLongSerializationPolicy(LongSerializationPolicy.STRING)
             .create()
 
+    lateinit var datasource: HikariDataSource
+
     fun Application.install() {
+
+        uploadDir = environment.config.property("dir.uploadDir").getString()
+        cacheDir = environment.config.property("dir.cacheDir").getString()
+
+        datasource = HikariDataSource().apply {
+            maximumPoolSize = environment.config.property("database.poolSize").getString().toInt()
+            driverClassName = environment.config.property("database.driverClass").getString()
+            jdbcUrl = environment.config.property("database.url").getString()
+            isAutoCommit = environment.config.property("database.autoCommit").getString().toBoolean()
+            addDataSourceProperty("user", environment.config.property("database.user").getString())
+            addDataSourceProperty("password", environment.config.property("database.password").getString())
+            addDataSourceProperty("dialect", environment.config.property("database.dialect").getString())
+        }
+
+        val dao: DAOFacade = DAOFacadeCache(DAOFacadeDatabase(Database.connect(datasource)), File(cacheDir, "ehcache"))
+
         dao.init()
         install(DefaultHeaders)
         install(CallLogging)
@@ -92,6 +101,7 @@ class SweetApi : AutoCloseable {
         intercept(ApplicationCallPipeline.Infrastructure) { call ->
             if (call.request.acceptItems().any { it.value == "application/json" }) {
                 call.transform.register<JsonResponse> { value ->
+                    log.debug(value.data.toString())
                     TextContent(gson.toJson(value.data), ContentType.Application.Json)
                 }
             }
@@ -102,6 +112,7 @@ class SweetApi : AutoCloseable {
         install(Routing) {
             userHandler(dao, hashFunction)
             sweetHandler(dao, hashFunction)
+            mediaHandler(dao, hashFunction)
             fileHandler(dao, hashFunction)
         }
 

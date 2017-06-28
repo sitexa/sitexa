@@ -2,19 +2,19 @@
 <module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
   <component name="FacetManager">
     <facet type="kotlin-language" name="Kotlin">
-      <configuration version="2" platform="JVM 1.8" useProjectSettings="false">
+      <configuration version="2" platform="JVM 1.8">
         <compilerSettings />
         <compilerArguments>
           <option name="jvmTarget" value="1.8" />
           <option name="languageVersion" value="1.1" />
           <option name="apiVersion" value="1.1" />
+          <option name="pluginOptions">
+            <array />
+          </option>
           <option name="pluginClasspaths">
             <array />
           </option>
           <option name="coroutinesEnable" value="true" />
-          <option name="pluginOptions">
-            <array />
-          </option>
         </compilerArguments>
       </configuration>
     </facet>
@@ -32,6 +32,8 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="commons-httpclient" level="application" />
     <orderEntry type="library" exported="" name="JavaMail" level="application" />
+    <orderEntry type="library" name="lib (2)" level="project" />
+    <orderEntry type="library" name="sitexa-api-1.0-DEPENDENCIES (2)" level="project" />
     <orderEntry type="library" name="Maven: com.squareup.okhttp3:okhttp:3.6.0" level="project" />
     <orderEntry type="library" name="Maven: com.squareup.okio:okio:1.11.0" level="project" />
     <orderEntry type="library" name="Maven: org.jetbrains.exposed:exposed:0.7.6" level="project" />
@@ -44,20 +46,20 @@
     <orderEntry type="library" name="Maven: com.google.code.gson:gson:2.7" level="project" />
     <orderEntry type="library" name="Maven: com.squareup.moshi:moshi:1.4.0" level="project" />
     <orderEntry type="library" name="Maven: com.github.salomonbrys.kotson:kotson:2.5.0" level="project" />
-    <orderEntry type="library" name="Maven: org.jetbrains.ktor:ktor-locations:0.3.2" level="project" />
-    <orderEntry type="library" name="Maven: org.jetbrains.kotlin:kotlin-stdlib-jre8:1.1.1" level="project" />
-    <orderEntry type="library" name="Maven: org.jetbrains.kotlin:kotlin-stdlib-jre7:1.1.1" level="project" />
-    <orderEntry type="library" name="Maven: org.jetbrains.kotlinx:kotlinx-coroutines-core:0.14" level="project" />
+    <orderEntry type="library" name="Maven: org.jetbrains.ktor:ktor-locations:0.3.3" level="project" />
+    <orderEntry type="library" name="Maven: org.jetbrains.kotlin:kotlin-stdlib-jre8:1.1.2-5" level="project" />
+    <orderEntry type="library" name="Maven: org.jetbrains.kotlin:kotlin-stdlib-jre7:1.1.2-5" level="project" />
+    <orderEntry type="library" name="Maven: org.jetbrains.kotlinx:kotlinx-coroutines-core:0.16" level="project" />
     <orderEntry type="library" name="Maven: org.jetbrains.kotlin:kotlin-runtime:1.1.2" level="project" />
     <orderEntry type="library" name="Maven: org.jetbrains:annotations:13.0" level="project" />
     <orderEntry type="library" name="Maven: org.jetbrains.kotlin:kotlin-reflect:1.1.2" level="project" />
     <orderEntry type="library" name="Maven: org.jetbrains.kotlin:kotlin-stdlib:1.1.2" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.jetbrains.kotlin:kotlin-test-junit:1.1.2" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.jetbrains.kotlin:kotlin-test:1.1.2" level="project" />
-    <orderEntry type="library" name="Maven: org.jetbrains.ktor:ktor-core:0.3.2" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: org.jetbrains.ktor:ktor-jetty:0.3.2" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: org.jetbrains.ktor:ktor-hosts-common:0.3.2" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: org.jetbrains.ktor:ktor-servlet:0.3.2" level="project" />
+    <orderEntry type="library" name="Maven: org.jetbrains.ktor:ktor-core:0.3.3" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.jetbrains.ktor:ktor-jetty:0.3.3" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.jetbrains.ktor:ktor-hosts-common:0.3.3" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.jetbrains.ktor:ktor-servlet:0.3.3" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.eclipse.jetty:jetty-server:9.4.1.v20170120" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: javax.servlet:javax.servlet-api:3.1.0" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.eclipse.jetty:jetty-http:9.4.1.v20170120" level="project" />
@@ -69,7 +71,7 @@
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.eclipse.jetty.http2:http2-server:9.4.1.v20170120" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.eclipse.jetty.http2:http2-common:9.4.1.v20170120" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.eclipse.jetty.http2:http2-hpack:9.4.1.v20170120" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: org.jetbrains.ktor:ktor-netty:0.3.2" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.jetbrains.ktor:ktor-netty:0.3.3" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: io.netty:netty-codec-http2:4.1.9.Final" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: io.netty:netty-codec-http:4.1.9.Final" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: io.netty:netty-codec:4.1.9.Final" level="project" />
@@ -79,7 +81,7 @@
     <orderEntry type="library" scope="RUNTIME" name="Maven: io.netty:netty-transport:4.1.9.Final" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: io.netty:netty-resolver:4.1.9.Final" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.eclipse.jetty.alpn:alpn-api:1.1.3.v20160715" level="project" />
-    <orderEntry type="library" name="Maven: org.jetbrains.ktor:ktor-auth:0.3.2" level="project" />
+    <orderEntry type="library" name="Maven: org.jetbrains.ktor:ktor-auth:0.3.3" level="project" />
     <orderEntry type="library" name="Maven: com.googlecode.json-simple:json-simple:1.1.1" level="project" />
     <orderEntry type="library" name="Maven: junit:junit:4.10" level="project" />
     <orderEntry type="library" name="Maven: org.hamcrest:hamcrest-core:1.1" level="project" />
@@ -87,6 +89,5 @@
     <orderEntry type="library" name="Maven: ch.qos.logback:logback-classic:1.2.1" level="project" />
     <orderEntry type="library" name="Maven: ch.qos.logback:logback-core:1.2.1" level="project" />
     <orderEntry type="library" name="Maven: com.typesafe:config:1.2.1" level="project" />
-    <orderEntry type="library" name="lib (2)" level="project" />
   </component>
 </module>

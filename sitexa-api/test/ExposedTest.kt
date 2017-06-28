@@ -13,7 +13,6 @@ import org.jetbrains.exposed.sql.SchemaUtils.create
 import org.jetbrains.exposed.sql.StdOutSqlLogger
 import org.jetbrains.exposed.sql.transactions.transaction
 
-
 val datasource = HikariDataSource().apply {
     maximumPoolSize = dbConfig["pool"].toString().toInt()
     driverClassName = dbConfig["driver"].toString()
