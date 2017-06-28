@@ -14,5 +14,6 @@
     <logger name="org.terracotta" level="INFO"/>
     <logger name="com.mchange" level="INFO"/>
     <logger name="com.zaxxer.hikari.pool.HikariPool" level="FATAL"/>
+    <logger name="com.sitexa.ktor" level="info"/>
 
 </configuration>

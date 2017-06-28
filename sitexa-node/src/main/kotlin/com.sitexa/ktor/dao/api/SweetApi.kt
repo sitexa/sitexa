@@ -20,7 +20,7 @@ interface SweetApi {
     @GET("/sweet-top/{count}/{page}") fun topSweet(@Path("count") count: Int, @Path("page") page: Int): Call<List<Int>>
     @GET("/sweet-latest/{count}/{page}") fun latestSweet(@Path("count") count: Int, @Path("page") page: Int): Call<List<Int>>
     @GET("/sweet-reply-count/{id}") fun countSweetReplies(@Path("id") id: Int): Call<Int>
-    @GET("/sweet-replies/{id}") fun getReplies(@Path("id") id: Int): Call<List<Int>>
+    @GET("/sweet-replies/{id}") fun getReplies(@Path("id") id: Int): Call<List<Sweet>>
     @GET("/sweet-user/{user}") fun getUserSweets(@Path("user") user: String): Call<List<Int>>
 
     @FormUrlEncoded @POST("/sweet-new") fun createSweet(@Field("user") user: String, @Field("text") text: String, @Field("replyTo") replyTo: Int?): Call<ApiResult>
@@ -68,7 +68,7 @@ class SweetService : ApiService() {
 
     fun countReplies(id: Int): Int = sweetApi.countSweetReplies(id).execute().body()
 
-    fun getReplies(id: Int): List<Int> = sweetApi.getReplies(id).execute().body()
+    fun getReplies(id: Int): List<Sweet> = sweetApi.getReplies(id).execute().body()
 
     fun getUserSweets(user: String): List<Int> = sweetApi.getUserSweets(user).execute().body()
 

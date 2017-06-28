@@ -90,7 +90,7 @@ class DAOFacadeCache(val delegate: DAOFacade, val storagePath: File) : DAOFacade
         return sweet
     }
 
-    override fun getReplies(id: Int): List<Int> {
+    override fun getReplies(id: Int): List<Sweet> {
         return delegate.getReplies(id)
     }
 

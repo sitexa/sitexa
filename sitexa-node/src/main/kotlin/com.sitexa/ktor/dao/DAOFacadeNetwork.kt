@@ -26,7 +26,7 @@ class DAOFacadeNetwork : DAOFacade {
 
     override fun getSweet(id: Int): Sweet = SweetService().getSweetSingle(id)
 
-    override fun getReplies(id: Int): List<Int> = SweetService().getReplies(id)
+    override fun getReplies(id: Int): List<Sweet> = SweetService().getReplies(id)
 
     override fun userSweets(userId: String): List<Int> = SweetService().getUserSweets(userId)
 

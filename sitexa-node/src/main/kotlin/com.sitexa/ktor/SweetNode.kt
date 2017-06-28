@@ -49,10 +49,10 @@ data class Session(val userId: String)
 
 class SweetNode : AutoCloseable {
 
-
+    val hashKey = hex("6819b57a326945c1968f45236589")
     val hmacKey = SecretKeySpec(hashKey, "HmacSHA1")
 
-    val dao: DAOFacade = DAOFacadeCache(DAOFacadeNetwork(), File(cacheDir, "ehcache"))
+    lateinit var dao: DAOFacade
 
     val gson = GsonBuilder()
             .registerTypeAdapter(DateTime::class.java, JodaGsonAdapter())
@@ -60,7 +60,11 @@ class SweetNode : AutoCloseable {
             .create()
 
     fun Application.install() {
+
+        loadConfig(environment)
+        dao = DAOFacadeCache(DAOFacadeNetwork(), File(cacheDir, "ehcache"))
         dao.init()
+
         install(DefaultHeaders)
         install(CallLogging)
         install(ConditionalHeaders)
@@ -108,6 +112,16 @@ class SweetNode : AutoCloseable {
         val hmac = Mac.getInstance("HmacSHA1")
         hmac.init(hmacKey)
         return hex(hmac.doFinal(password.toByteArray(Charsets.UTF_8)))
+    }
+
+    private fun loadConfig(environment: ApplicationEnvironment) {
+        uploadDir = environment.config.property("dir.uploadDir").getString()
+        cacheDir = environment.config.property("dir.cacheDir").getString()
+        apiBaseUrl = environment.config.property("key.apiBaseUrl").getString()
+        AppId = environment.config.property("key.AppId").getString()
+        AppKey = environment.config.property("key.AppKey").getString()
+
+        println("Environment:\n upload-dir:$uploadDir;\n cache-dir:$cacheDir;\n api-base-url:$apiBaseUrl;\n app-id:$AppId;\n app-key:$AppKey")
     }
 
 }

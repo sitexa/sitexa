@@ -129,14 +129,14 @@ fun Route.sweetHandler(dao: DAOFacade, hashFunction: (String) -> String) {
     get<SweetView> {
         val user = call.sessionOrNull<Session>()?.let { dao.user(it.userId) }
         val sweet = dao.getSweet(it.id)
-        val replies = dao.getReplies(it.id).map { dao.getSweet(it) }
+        val replies = dao.getReplies(it.id)
         val date = System.currentTimeMillis()
         val code = if (user != null) call.securityCode(date, user, hashFunction) else null
         val etagString = date.toString() + "," + user?.userId + "," + sweet.id.toString()
         val etag = etagString.hashCode()
         val medias = dao.getMedias(sweet.id).map {
-            val med = dao.getMedia(it)
-            Media(med!!.id, med.refId, med.fileName, med.fileType, med.title, med.sortOrder)
+            val med = dao.getMedia(it)!!
+            Media(med.id, med.refId, med.fileName, med.fileType, med.title, med.sortOrder)
         }.toList()
 
         call.respond(FreeMarkerContent("sweet-view.ftl", mapOf("user" to user, "sweet" to sweet, "replies" to replies, "date" to date, "code" to code, "medias" to medias), etag.toString()))

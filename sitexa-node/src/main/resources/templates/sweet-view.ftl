@@ -12,7 +12,7 @@
     </header>
     <div class="post-description">${sweet.text}</div>
     <#list medias as media>
-    <#if media??>
+    <#if media?? && media.fileType??>
         <#if media.fileType="image">
             <div class="post-images">
                 <img class="post-images" src="/media/${media.fileName}/${media.fileType}"/>
