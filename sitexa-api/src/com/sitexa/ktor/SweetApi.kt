@@ -18,6 +18,9 @@ import org.jetbrains.ktor.auth.UserHashedTableAuth
 import org.jetbrains.ktor.auth.authentication
 import org.jetbrains.ktor.auth.basicAuthentication
 import org.jetbrains.ktor.content.TextContent
+import org.jetbrains.ktor.content.default
+import org.jetbrains.ktor.content.files
+import org.jetbrains.ktor.content.static
 import org.jetbrains.ktor.features.ConditionalHeaders
 import org.jetbrains.ktor.features.DefaultHeaders
 import org.jetbrains.ktor.features.PartialContentSupport
@@ -68,8 +71,7 @@ class SweetApi : AutoCloseable {
 
     fun Application.install() {
 
-        uploadDir = environment.config.property("dir.uploadDir").getString()
-        cacheDir = environment.config.property("dir.cacheDir").getString()
+        loadConfig(environment)
 
         datasource = HikariDataSource().apply {
             maximumPoolSize = environment.config.property("database.poolSize").getString().toInt()
@@ -114,6 +116,10 @@ class SweetApi : AutoCloseable {
             sweetHandler(dao, hashFunction)
             mediaHandler(dao, hashFunction)
             fileHandler(dao, hashFunction)
+            static {
+                files(".")
+                default("index.html")
+            }
         }
 
     }
@@ -128,6 +134,17 @@ class SweetApi : AutoCloseable {
         return hex(hmac.doFinal(password.toByteArray(Charsets.UTF_8)))
     }
 
+    private fun loadConfig(environment: ApplicationEnvironment) {
+        val mode = environment.config.property("mode").getString()
+        uploadDir = environment.config.property("$mode.dir.uploadDir").getString()
+        cacheDir = environment.config.property("$mode.dir.cacheDir").getString()
+        val jdbcUrl = environment.config.property("database.url").getString()
+        val dbuser = environment.config.property("database.user").getString()
+        val dbpwd = environment.config.property("database.password").getString()
+        val dbdialect = environment.config.property("database.dialect").getString()
+
+        println(" Environment:\n mode:$mode;\n upload-dir:$uploadDir;\n cache-dir:$cacheDir;\n jdbcUrl=$jdbcUrl;\n dbuser=$dbuser;\n dbpwd=$dbpwd;\n dialect=$dbdialect;\n")
+    }
 }
 
 //todo:this function does not work. why?

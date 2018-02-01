@@ -115,13 +115,14 @@ class SweetNode : AutoCloseable {
     }
 
     private fun loadConfig(environment: ApplicationEnvironment) {
-        uploadDir = environment.config.property("dir.uploadDir").getString()
-        cacheDir = environment.config.property("dir.cacheDir").getString()
-        apiBaseUrl = environment.config.property("key.apiBaseUrl").getString()
-        AppId = environment.config.property("key.AppId").getString()
-        AppKey = environment.config.property("key.AppKey").getString()
+        val mode = environment.config.property("mode").getString()
+        apiBaseUrl = environment.config.property("$mode.key.apiBaseUrl").getString()
+        uploadDir = environment.config.property("$mode.dir.uploadDir").getString()
+        cacheDir = environment.config.property("$mode.dir.cacheDir").getString()
+        AppId = environment.config.property("$mode.key.AppId").getString()
+        AppKey = environment.config.property("$mode.key.AppKey").getString()
 
-        println("Environment:\n upload-dir:$uploadDir;\n cache-dir:$cacheDir;\n api-base-url:$apiBaseUrl;\n app-id:$AppId;\n app-key:$AppKey")
+        println("Environment:\n mode:$mode;\n upload-dir:$uploadDir;\n cache-dir:$cacheDir;\n api-base-url:$apiBaseUrl;\n app-id:$AppId;\n app-key:$AppKey")
     }
 
 }

@@ -101,6 +101,11 @@
 
     <repositories>
         <repository>
+            <id>local-repo</id>
+            <name>local libs</name>
+            <url>file://${project.basedir}/repo</url>
+        </repository>
+        <repository>
             <id>jcenter</id>
             <url>http://jcenter.bintray.com</url>
         </repository>

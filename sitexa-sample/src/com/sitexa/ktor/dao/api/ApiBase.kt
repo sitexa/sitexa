@@ -10,6 +10,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import org.joda.time.DateTime
 import org.slf4j.LoggerFactory
 import retrofit2.Retrofit
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
 /**
@@ -67,6 +68,7 @@ open class ApiService {
     val retrofit = Retrofit.Builder()
             .baseUrl(apiBaseUrl)
             .client(okClient)
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
 }

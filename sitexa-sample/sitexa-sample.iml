@@ -8,13 +8,13 @@
           <option name="jvmTarget" value="1.8" />
           <option name="languageVersion" value="1.1" />
           <option name="apiVersion" value="1.1" />
+          <option name="pluginOptions">
+            <array />
+          </option>
           <option name="pluginClasspaths">
             <array />
           </option>
           <option name="coroutinesEnable" value="true" />
-          <option name="pluginOptions">
-            <array />
-          </option>
         </compilerArguments>
       </configuration>
     </facet>
@@ -32,15 +32,15 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Maven: net.coobird:thumbnailator:0.4.8" level="project" />
     <orderEntry type="library" name="Maven: org.jsoup:jsoup:1.7.3" level="project" />
-    <orderEntry type="library" name="Maven: com.squareup.retrofit2:converter-moshi:2.2.0" level="project" />
-    <orderEntry type="library" name="Maven: net.coobird:thumbnailator:0.4.8" level="project" />
-    <orderEntry type="library" name="Maven: org.jsoup:jsoup:1.7.3" level="project" />
     <orderEntry type="library" name="Maven: com.squareup.okhttp3:okhttp:3.6.0" level="project" />
     <orderEntry type="library" name="Maven: com.squareup.okio:okio:1.11.0" level="project" />
     <orderEntry type="library" name="Maven: com.squareup.okhttp3:logging-interceptor:3.6.0" level="project" />
     <orderEntry type="library" name="Maven: com.squareup.retrofit2:retrofit:2.2.0" level="project" />
     <orderEntry type="library" name="Maven: com.squareup.retrofit2:converter-gson:2.2.0" level="project" />
     <orderEntry type="library" name="Maven: com.squareup.retrofit2:converter-moshi:2.2.0" level="project" />
+    <orderEntry type="library" name="Maven: io.reactivex.rxjava2:rxjava:2.1.0" level="project" />
+    <orderEntry type="library" name="Maven: org.reactivestreams:reactive-streams:1.0.0" level="project" />
+    <orderEntry type="library" name="Maven: com.squareup.retrofit2:adapter-rxjava2:2.3.0" level="project" />
     <orderEntry type="library" name="Maven: com.squareup.moshi:moshi:1.4.0" level="project" />
     <orderEntry type="library" name="Maven: com.github.salomonbrys.kotson:kotson:2.5.0" level="project" />
     <orderEntry type="library" name="Maven: org.jetbrains.exposed:exposed:0.7.6" level="project" />
@@ -51,14 +51,14 @@
     <orderEntry type="library" name="Maven: org.terracotta:offheap-store:2.1.2" level="project" />
     <orderEntry type="library" name="Maven: joda-time:joda-time:2.9.2" level="project" />
     <orderEntry type="library" name="Maven: com.google.code.gson:gson:2.7" level="project" />
-    <orderEntry type="library" name="Maven: org.freemarker:freemarker:2.3.26-incubating" level="project" />
-    <orderEntry type="library" name="Maven: org.jetbrains.ktor:ktor-freemarker:0.3.2" level="project" />
-    <orderEntry type="library" name="Maven: org.jetbrains.kotlin:kotlin-stdlib-jre8:1.1.1" level="project" />
-    <orderEntry type="library" name="Maven: org.jetbrains.kotlin:kotlin-stdlib-jre7:1.1.1" level="project" />
-    <orderEntry type="library" name="Maven: org.jetbrains.kotlinx:kotlinx-coroutines-core:0.14" level="project" />
-    <orderEntry type="library" name="Maven: org.jetbrains.ktor:ktor-locations:0.3.2" level="project" />
-    <orderEntry type="library" name="Maven: org.jetbrains.ktor:ktor-websockets:0.3.2" level="project" />
-    <orderEntry type="library" name="Maven: org.jetbrains.ktor:ktor-auth:0.3.2" level="project" />
+    <orderEntry type="library" name="Maven: org.freemarker:freemarker:2.3.27-incubating" level="project" />
+    <orderEntry type="library" name="Maven: org.jetbrains.ktor:ktor-freemarker:0.3.3" level="project" />
+    <orderEntry type="library" name="Maven: org.jetbrains.kotlin:kotlin-stdlib-jre8:1.1.2-5" level="project" />
+    <orderEntry type="library" name="Maven: org.jetbrains.kotlin:kotlin-stdlib-jre7:1.1.2-5" level="project" />
+    <orderEntry type="library" name="Maven: org.jetbrains.kotlinx:kotlinx-coroutines-core:0.16" level="project" />
+    <orderEntry type="library" name="Maven: org.jetbrains.ktor:ktor-locations:0.3.3" level="project" />
+    <orderEntry type="library" name="Maven: org.jetbrains.ktor:ktor-websockets:0.3.3" level="project" />
+    <orderEntry type="library" name="Maven: org.jetbrains.ktor:ktor-auth:0.3.3" level="project" />
     <orderEntry type="library" name="Maven: com.googlecode.json-simple:json-simple:1.1.1" level="project" />
     <orderEntry type="library" name="Maven: junit:junit:4.10" level="project" />
     <orderEntry type="library" name="Maven: org.hamcrest:hamcrest-core:1.1" level="project" />
@@ -68,10 +68,10 @@
     <orderEntry type="library" name="Maven: org.jetbrains.kotlin:kotlin-stdlib:1.1.2" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.jetbrains.kotlin:kotlin-test-junit:1.1.2" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.jetbrains.kotlin:kotlin-test:1.1.2" level="project" />
-    <orderEntry type="library" name="Maven: org.jetbrains.ktor:ktor-core:0.3.2" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: org.jetbrains.ktor:ktor-jetty:0.3.2" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: org.jetbrains.ktor:ktor-hosts-common:0.3.2" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: org.jetbrains.ktor:ktor-servlet:0.3.2" level="project" />
+    <orderEntry type="library" name="Maven: org.jetbrains.ktor:ktor-core:0.3.3" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.jetbrains.ktor:ktor-jetty:0.3.3" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.jetbrains.ktor:ktor-hosts-common:0.3.3" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.jetbrains.ktor:ktor-servlet:0.3.3" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.eclipse.jetty:jetty-server:9.4.1.v20170120" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: javax.servlet:javax.servlet-api:3.1.0" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.eclipse.jetty:jetty-http:9.4.1.v20170120" level="project" />
@@ -83,7 +83,7 @@
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.eclipse.jetty.http2:http2-server:9.4.1.v20170120" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.eclipse.jetty.http2:http2-common:9.4.1.v20170120" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.eclipse.jetty.http2:http2-hpack:9.4.1.v20170120" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: org.jetbrains.ktor:ktor-netty:0.3.2" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.jetbrains.ktor:ktor-netty:0.3.3" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: io.netty:netty-codec-http2:4.1.9.Final" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: io.netty:netty-codec-http:4.1.9.Final" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: io.netty:netty-codec:4.1.9.Final" level="project" />

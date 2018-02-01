@@ -1,0 +1,7 @@
+.gradle/
+.idea/
+cached/
+repo/
+data/
+target/
+upload/

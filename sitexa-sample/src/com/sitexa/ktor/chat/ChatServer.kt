@@ -3,6 +3,7 @@ package com.sitexa.ktor.chat
 import org.jetbrains.ktor.util.buildByteBuffer
 import org.jetbrains.ktor.websocket.Frame
 import org.jetbrains.ktor.websocket.WebSocket
+import org.jetbrains.ktor.websocket.WebSocketSession
 import java.nio.ByteBuffer
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
@@ -12,10 +13,10 @@ import java.util.concurrent.atomic.AtomicInteger
 class ChatServer {
     val usersCounter = AtomicInteger()
     val memberNames = ConcurrentHashMap<String, String>()
-    val members = ConcurrentHashMap<String, MutableList<WebSocket>>()
+    val members = ConcurrentHashMap<String, MutableList<WebSocketSession>>()
     val lastMessages = LinkedList<String>()
 
-    suspend fun memberJoin(member: String, socket: WebSocket) {
+    suspend fun memberJoin(member: String, socket: WebSocketSession) {
         //val name = memberNames.computeIfAbsent(member) { "user${usersCounter.incrementAndGet()}" }
         val name = memberNames.computeIfAbsent(member) { member }
         val list = members.computeIfAbsent(member) { CopyOnWriteArrayList<WebSocket>() }
@@ -36,7 +37,7 @@ class ChatServer {
         broadcast("server", "Member renamed from $oldName to $to")
     }
 
-    suspend fun memberLeft(member: String, socket: WebSocket) {
+    suspend fun memberLeft(member: String, socket: WebSocketSession) {
         val connections = members[member]
         connections?.remove(socket)
 
@@ -88,7 +89,7 @@ class ChatServer {
         }
     }
 
-    suspend fun List<WebSocket>.send(frame: Frame) {
+    suspend fun List<WebSocketSession>.send(frame: Frame) {
         forEach { it.send(frame.copy()) }
     }
 }

@@ -6,9 +6,9 @@ import com.sitexa.ktor.model.Sweet
  */
 
 fun main(vararg: Array<String>) {
-    getSingleSweet()
+    //getSingleSweet()
     //getSweetComponent()
-    //testGetTopSweet()
+    testGetTopSweet()
     //testGetLatestSweet()
     //testCountReplies()
 
