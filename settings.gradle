@@ -1,0 +1,8 @@
+rootProject.name = 'sitexa'
+//include ':sitexa-api'
+//include ':sitexa-web'
+//include ':sitexa-sample'
+
+//project(':sitexa-api').projectDir = "$rootDir/sitexa-api" as File
+//project(':sitexa-web').projectDir = "$rootDir/sitexa-web" as File
+//project(':sitexa-sample').projectDir = "$rootDir/sitexa-sample" as File

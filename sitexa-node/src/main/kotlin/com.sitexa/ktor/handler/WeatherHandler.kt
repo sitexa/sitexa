@@ -4,18 +4,19 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.sitexa.ktor.dao.api.SunInfoService
 import com.sitexa.ktor.dao.api.TemperatureService
 import com.sitexa.ktor.model.SunWeatherInfo
-import org.jetbrains.ktor.application.call
-import org.jetbrains.ktor.locations.get
-import org.jetbrains.ktor.locations.location
-import org.jetbrains.ktor.response.respondText
-import org.jetbrains.ktor.routing.Route
+import io.ktor.application.call
+import io.ktor.locations.Location
+import io.ktor.locations.get
+import io.ktor.response.respondText
+import io.ktor.routing.Route
 
 /**
  * Created by open on 23/05/2017.
  *
  */
 
-@location("/weather") class Weather(val lat: Double=0.0, val lng: Double=0.0)
+@Location("/weather")
+class Weather(val lat: Double = 0.0, val lng: Double = 0.0)
 
 fun Route.weatherHandler() {
     get<Weather> {

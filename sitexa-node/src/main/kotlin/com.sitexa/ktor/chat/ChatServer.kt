@@ -1,9 +1,12 @@
 package com.sitexa.ktor.chat
 
-import org.jetbrains.ktor.util.buildByteBuffer
-import org.jetbrains.ktor.websocket.Frame
-import org.jetbrains.ktor.websocket.WebSocket
-import java.nio.ByteBuffer
+import io.ktor.websocket.CloseReason
+import io.ktor.websocket.Frame
+import io.ktor.websocket.WebSocketSession
+import io.ktor.websocket.close
+import kotlinx.coroutines.experimental.channels.ClosedSendChannelException
+import kotlinx.io.core.ByteReadPacket
+import kotlinx.io.core.buildPacket
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.CopyOnWriteArrayList
@@ -12,13 +15,13 @@ import java.util.concurrent.atomic.AtomicInteger
 class ChatServer {
     val usersCounter = AtomicInteger()
     val memberNames = ConcurrentHashMap<String, String>()
-    val members = ConcurrentHashMap<String, MutableList<WebSocket>>()
+    val members = ConcurrentHashMap<String, MutableList<WebSocketSession>>()
     val lastMessages = LinkedList<String>()
 
-    suspend fun memberJoin(member: String, socket: WebSocket) {
+    suspend fun memberJoin(member: String, socket: WebSocketSession) {
         //val name = memberNames.computeIfAbsent(member) { "user${usersCounter.incrementAndGet()}" }
         val name = memberNames.computeIfAbsent(member) { member }
-        val list = members.computeIfAbsent(member) { CopyOnWriteArrayList<WebSocket>() }
+        val list = members.computeIfAbsent(member) { CopyOnWriteArrayList<WebSocketSession>() }
         list.add(socket)
 
         if (list.size == 1) {
@@ -36,7 +39,7 @@ class ChatServer {
         broadcast("server", "Member renamed from $oldName to $to")
     }
 
-    suspend fun memberLeft(member: String, socket: WebSocket) {
+    suspend fun memberLeft(member: String, socket: WebSocketSession) {
         val connections = members[member]
         connections?.remove(socket)
 
@@ -71,24 +74,34 @@ class ChatServer {
         }
     }
 
-    suspend fun broadcast(message: String) {
-        broadcast(buildByteBuffer {
-            putString(message, Charsets.UTF_8)
+    private suspend fun broadcast(message: String) {
+        broadcast(buildPacket {
+            writeStringUtf8(message)
         })
     }
 
-    suspend fun broadcast(sender: String, message: String) {
+    private suspend fun broadcast(sender: String, message: String) {
         val name = memberNames[sender] ?: sender
         broadcast("[$name] $message")
     }
 
-    suspend fun broadcast(serialized: ByteBuffer) {
+    private suspend fun broadcast(serialized: ByteReadPacket) {
         members.values.forEach { socket ->
-            socket.send(Frame.Text(true, serialized.duplicate()))
+            socket.send(Frame.Text(fin = true, packet = serialized))
         }
     }
 
-    suspend fun List<WebSocket>.send(frame: Frame) {
-        forEach { it.send(frame.copy()) }
+    suspend fun List<WebSocketSession>.send(frame: Frame) {
+        forEach {
+            try {
+                it.send(frame.copy())
+            } catch (t: Throwable) {
+                try {
+                    it.close(CloseReason(CloseReason.Codes.PROTOCOL_ERROR, ""))
+                } catch (ignore: ClosedSendChannelException) {
+                    // at some point it will get closed
+                }
+            }
+        }
     }
 }

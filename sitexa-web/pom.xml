@@ -131,17 +131,17 @@
 
         <!-- ktor dependencies -->
         <dependency>
-            <groupId>org.jetbrains.ktor</groupId>
+            <groupId>io.ktor</groupId>
             <artifactId>ktor-freemarker</artifactId>
             <version>${ktor.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.jetbrains.ktor</groupId>
+            <groupId>io.ktor</groupId>
             <artifactId>ktor-locations</artifactId>
             <version>${ktor.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.jetbrains.ktor</groupId>
+            <groupId>io.ktor</groupId>
             <artifactId>ktor-websockets</artifactId>
             <version>${ktor.version}</version>
         </dependency>

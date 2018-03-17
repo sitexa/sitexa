@@ -1,13 +1,15 @@
 package com.sitexa.ktor.handler
 
-import com.sitexa.ktor.Session
+import com.sitexa.ktor.SweetSession
 import com.sitexa.ktor.dao.DAOFacade
-import org.jetbrains.ktor.application.call
-import org.jetbrains.ktor.freemarker.FreeMarkerContent
-import org.jetbrains.ktor.locations.get
-import org.jetbrains.ktor.locations.location
-import org.jetbrains.ktor.routing.Route
-import org.jetbrains.ktor.sessions.sessionOrNull
+import io.ktor.application.call
+import io.ktor.freemarker.FreeMarkerContent
+import io.ktor.locations.Location
+import io.ktor.locations.get
+import io.ktor.response.respond
+import io.ktor.routing.Route
+import io.ktor.sessions.get
+import io.ktor.sessions.sessions
 
 /**
  * Created by open on 03/04/2017.
@@ -15,13 +17,13 @@ import org.jetbrains.ktor.sessions.sessionOrNull
  */
 
 
-@location("/")
-class Index
+@Location("/")
+class Index()
 
 fun Route.indexHandler(dao: DAOFacade) {
 
     get<Index> {
-        val user = call.sessionOrNull<Session>()?.let { dao.user(it.userId) }
+        val user = call.sessions.get<SweetSession>()?.let { dao.user(it.userId) }
         val top = dao.top(10).map { dao.getSweet(it) }
         val latest = dao.latest(10).map { dao.getSweet(it) }
         val date = System.currentTimeMillis()

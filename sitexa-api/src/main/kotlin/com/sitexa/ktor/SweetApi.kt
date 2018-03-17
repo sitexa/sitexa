@@ -12,35 +12,31 @@ import com.sitexa.ktor.handler.sweetHandler
 import com.sitexa.ktor.handler.userHandler
 import com.sitexa.ktor.model.User
 import com.zaxxer.hikari.HikariDataSource
+import io.ktor.application.*
+import io.ktor.auth.UserHashedTableAuth
+import io.ktor.auth.authentication
+import io.ktor.auth.basicAuthentication
+import io.ktor.content.default
+import io.ktor.content.files
+import io.ktor.content.static
+import io.ktor.features.CallLogging
+import io.ktor.features.ConditionalHeaders
+import io.ktor.features.DefaultHeaders
+import io.ktor.features.PartialContent
+import io.ktor.http.HttpHeaders
+import io.ktor.locations.Locations
+import io.ktor.request.header
+import io.ktor.request.host
+import io.ktor.request.port
+import io.ktor.response.respond
+import io.ktor.response.respondRedirect
+import io.ktor.routing.Routing
+import io.ktor.sessions.SessionTransportTransformerMessageAuthentication
+import io.ktor.sessions.Sessions
+import io.ktor.sessions.cookie
+import io.ktor.util.decodeBase64
+import io.ktor.util.hex
 import org.jetbrains.exposed.sql.Database
-import org.jetbrains.ktor.application.*
-import org.jetbrains.ktor.auth.UserHashedTableAuth
-import org.jetbrains.ktor.auth.authentication
-import org.jetbrains.ktor.auth.basicAuthentication
-import org.jetbrains.ktor.content.TextContent
-import org.jetbrains.ktor.content.default
-import org.jetbrains.ktor.content.files
-import org.jetbrains.ktor.content.static
-import org.jetbrains.ktor.features.ConditionalHeaders
-import org.jetbrains.ktor.features.DefaultHeaders
-import org.jetbrains.ktor.features.PartialContentSupport
-import org.jetbrains.ktor.http.ContentType
-import org.jetbrains.ktor.http.HttpHeaders
-import org.jetbrains.ktor.locations.Locations
-import org.jetbrains.ktor.logging.CallLogging
-import org.jetbrains.ktor.request.acceptItems
-import org.jetbrains.ktor.request.header
-import org.jetbrains.ktor.request.host
-import org.jetbrains.ktor.request.port
-import org.jetbrains.ktor.response.respondRedirect
-import org.jetbrains.ktor.routing.Routing
-import org.jetbrains.ktor.sessions.SessionCookieTransformerMessageAuthentication
-import org.jetbrains.ktor.sessions.SessionCookiesSettings
-import org.jetbrains.ktor.sessions.withCookieByValue
-import org.jetbrains.ktor.sessions.withSessions
-import org.jetbrains.ktor.transform.transform
-import org.jetbrains.ktor.util.decodeBase64
-import org.jetbrains.ktor.util.hex
 import org.joda.time.DateTime
 import java.io.File
 import java.net.URI
@@ -55,8 +51,8 @@ import javax.crypto.spec.SecretKeySpec
 
 class JsonResponse(val data: Any)
 
-data class Session(val userId: String)
-//data class Session(val userId: String, val appId: String)
+data class SweetSession(val userId: String)
+//data class SweetSession(val userId: String, val appId: String)
 
 class SweetApi : AutoCloseable {
 
@@ -89,25 +85,16 @@ class SweetApi : AutoCloseable {
         install(DefaultHeaders)
         install(CallLogging)
         install(ConditionalHeaders)
-        install(PartialContentSupport)
+        install(PartialContent)
         install(Locations)
 
-        withSessions<Session> {
-            withCookieByValue {
-                settings = SessionCookiesSettings(transformers = listOf(SessionCookieTransformerMessageAuthentication(hashKey)))
+        install(Sessions) {
+            cookie<SweetSession>("SESSION") {
+                transform(SessionTransportTransformerMessageAuthentication(hashKey))
             }
         }
 
         val hashFunction = { s: String -> hash(s) }
-
-        intercept(ApplicationCallPipeline.Infrastructure) { call ->
-            if (call.request.acceptItems().any { it.value == "application/json" }) {
-                call.transform.register<JsonResponse> { value ->
-                    log.debug(value.data.toString())
-                    TextContent(gson.toJson(value.data), ContentType.Application.Json)
-                }
-            }
-        }
 
         authentication { basicAuthentication("ktor") { hashedUserTable.authenticate(it) } }
 

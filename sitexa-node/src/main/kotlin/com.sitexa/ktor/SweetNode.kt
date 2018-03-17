@@ -1,7 +1,6 @@
 package com.sitexa.ktor
 
 
-import com.google.gson.GsonBuilder
 import com.google.gson.LongSerializationPolicy
 import com.sitexa.ktor.chat.chatHandler
 import com.sitexa.ktor.common.JodaGsonAdapter
@@ -11,25 +10,19 @@ import com.sitexa.ktor.dao.DAOFacadeNetwork
 import com.sitexa.ktor.handler.*
 import com.sitexa.ktor.model.User
 import freemarker.cache.ClassTemplateLoader
-import org.jetbrains.ktor.application.*
-import org.jetbrains.ktor.content.TextContent
-import org.jetbrains.ktor.features.ConditionalHeaders
-import org.jetbrains.ktor.features.DefaultHeaders
-import org.jetbrains.ktor.features.PartialContentSupport
-import org.jetbrains.ktor.freemarker.FreeMarker
-import org.jetbrains.ktor.http.ContentType
-import org.jetbrains.ktor.http.HttpHeaders
-import org.jetbrains.ktor.locations.Locations
-import org.jetbrains.ktor.logging.CallLogging
-import org.jetbrains.ktor.request.acceptItems
-import org.jetbrains.ktor.request.header
-import org.jetbrains.ktor.request.host
-import org.jetbrains.ktor.request.port
-import org.jetbrains.ktor.response.respondRedirect
-import org.jetbrains.ktor.routing.Routing
-import org.jetbrains.ktor.sessions.*
-import org.jetbrains.ktor.transform.transform
-import org.jetbrains.ktor.util.hex
+import io.ktor.application.*
+import io.ktor.features.*
+import io.ktor.freemarker.FreeMarker
+import io.ktor.gson.gson
+import io.ktor.http.HttpHeaders
+import io.ktor.locations.Locations
+import io.ktor.request.header
+import io.ktor.request.host
+import io.ktor.request.port
+import io.ktor.response.respondRedirect
+import io.ktor.routing.Routing
+import io.ktor.sessions.*
+import io.ktor.util.hex
 import org.joda.time.DateTime
 import java.io.File
 import java.net.URI
@@ -45,7 +38,7 @@ import javax.crypto.spec.SecretKeySpec
 
 class JsonResponse(val data: Any)
 
-data class Session(val userId: String)
+data class SweetSession(val userId: String)
 
 class SweetNode : AutoCloseable {
 
@@ -54,10 +47,10 @@ class SweetNode : AutoCloseable {
 
     lateinit var dao: DAOFacade
 
-    val gson = GsonBuilder()
-            .registerTypeAdapter(DateTime::class.java, JodaGsonAdapter())
-            .setLongSerializationPolicy(LongSerializationPolicy.STRING)
-            .create()
+    //val gson = GsonBuilder()
+    //        .registerTypeAdapter(DateTime::class.java, JodaGsonAdapter())
+    //        .setLongSerializationPolicy(LongSerializationPolicy.STRING)
+    //        .create()
 
     fun Application.install() {
 
@@ -68,29 +61,32 @@ class SweetNode : AutoCloseable {
         install(DefaultHeaders)
         install(CallLogging)
         install(ConditionalHeaders)
-        install(PartialContentSupport)
+        install(PartialContent)
         install(Locations)
         install(FreeMarker) {
             templateLoader = ClassTemplateLoader(SweetNode::class.java.classLoader, "templates")
         }
 
-        withSessions<Session> {
-            withCookieByValue {
-                settings = SessionCookiesSettings(transformers = listOf(SessionCookieTransformerMessageAuthentication(hashKey)))
+        install(Sessions) {
+            cookie<SweetSession>("SESSION") {
+                transform(SessionTransportTransformerMessageAuthentication(hashKey))
+            }
+        }
+
+        install(ContentNegotiation){
+            gson {
+                registerTypeAdapter(DateTime::class.java, JodaGsonAdapter())
+                setLongSerializationPolicy(LongSerializationPolicy.STRING)
+                setPrettyPrinting()
             }
         }
 
         val hashFunction = { s: String -> hash(s) }
 
-        intercept(ApplicationCallPipeline.Infrastructure) { call ->
-            if (call.request.acceptItems().any { it.value == "application/json" }) {
-                call.transform.register<JsonResponse> { value ->
-                    TextContent(gson.toJson(value.data), ContentType.Application.Json)
-                }
-            }
+        intercept(ApplicationCallPipeline.Infrastructure) {
             //for chat
-            if (call.sessionOrNull<Session>() == null) {
-                //call.session(Session(nextNonce()))
+            if (call.sessions.get<SweetSession>() == null) {
+                //call.sessions.set(SweetSession(nextNonce()))
                 //call.redirect(Login())
             }
         }

@@ -4,7 +4,7 @@ package com.sitexa.ktor.handler
 import com.google.gson.GsonBuilder
 import com.google.gson.LongSerializationPolicy
 import com.sitexa.ktor.JsonResponse
-import com.sitexa.ktor.Session
+import com.sitexa.ktor.SweetSession
 import com.sitexa.ktor.common.ApiResult
 import com.sitexa.ktor.common.JodaGsonAdapter
 import com.sitexa.ktor.dao.DAOFacade
@@ -12,17 +12,19 @@ import com.sitexa.ktor.model.User
 import com.sitexa.ktor.service.createRandomStr
 import com.sitexa.ktor.signVCode
 import com.sitexa.ktor.testVCode
-import org.jetbrains.ktor.application.call
-import org.jetbrains.ktor.application.log
-import org.jetbrains.ktor.http.HttpStatusCode
-import org.jetbrains.ktor.locations.get
-import org.jetbrains.ktor.locations.location
-import org.jetbrains.ktor.locations.post
-import org.jetbrains.ktor.routing.Route
-import org.jetbrains.ktor.routing.application
-import org.jetbrains.ktor.sessions.clearSession
-import org.jetbrains.ktor.sessions.session
-import org.jetbrains.ktor.sessions.sessionOrNull
+import io.ktor.application.application
+import io.ktor.application.call
+import io.ktor.application.log
+import io.ktor.http.HttpStatusCode
+import io.ktor.locations.Location
+import io.ktor.locations.get
+import io.ktor.locations.post
+import io.ktor.response.respond
+import io.ktor.routing.Route
+import io.ktor.sessions.clear
+import io.ktor.sessions.get
+import io.ktor.sessions.sessions
+import io.ktor.sessions.set
 import org.joda.time.DateTime
 
 /**
@@ -30,27 +32,27 @@ import org.joda.time.DateTime
  *
  */
 
-@location("/user-info/{user}") data class UserInfo(val user: String)
+@Location("/user-info/{user}") data class UserInfo(val user: String)
 
-@location("/user/{user}") data class UserPage(val user: String)
+@Location("/user/{user}") data class UserPage(val user: String)
 
-@location("/register")
+@Location("/register")
 data class Register(val userId: String = "", val mobile: String = "", val displayName: String = "", val email: String = "", val password: String = "", val error: String = "")
 
-@location("/login")
+@Location("/login")
 data class Login(val userId: String = "", val password: String = "", val error: String = "")
 
-@location("/logout") class Logout
+@Location("/logout") class Logout
 
-@location("/cpwd")
+@Location("/cpwd")
 data class ChangePassword(val userId: String = "", val password: String = "", val newPassword: String = "")
 
-@location("/vcode")
+@Location("/vcode")
 data class VCode(val mobile: String = "", val vcode: String = "", val date: Long = 0, val sign: String = "")
 
-@location("/userByMobile/{mobile}") class UserByMobile(val mobile: String)
+@Location("/userByMobile/{mobile}") class UserByMobile(val mobile: String)
 
-@location("/userByEmail/{email}") class UserByEmail(val email: String)
+@Location("/userByEmail/{email}") class UserByEmail(val email: String)
 
 fun Route.userHandler(dao: DAOFacade, hashFunction: (String) -> String) {
     val gson = GsonBuilder()
@@ -93,16 +95,16 @@ fun Route.userHandler(dao: DAOFacade, hashFunction: (String) -> String) {
         if (login == null) {
             call.respond(JsonResponse(mapOf("result" to -1)))
         } else {
-            call.session(Session(userId = login.userId))
+            call.sessions.set(SweetSession(userId = login.userId))
             call.respond(JsonResponse(mapOf("user" to login, "result" to 1)))
         }
     }
     get<Logout> {
-        call.clearSession()
+        call.sessions.clear<SweetSession>()
         call.respond(JsonResponse(mapOf("result" to "success")))
     }
     get<UserPage> {
-        val user = call.sessionOrNull<Session>()?.let { dao.user(it.userId) }
+        val user = call.sessions.get<SweetSession>()?.let { dao.user(it.userId) }
         val pageUser = dao.user(it.user)
 
         if (pageUser == null) {
@@ -126,7 +128,7 @@ fun Route.userHandler(dao: DAOFacade, hashFunction: (String) -> String) {
                 result = ApiResult(code = 1, desc = "修改密码成功")
             } catch (e: Exception) {
                 result = ApiResult(code = 0, desc = e.message!!)
-                application.log.error(e)
+                application.log.error(e.toString())
             }
         }
         call.respond(JsonResponse(result))

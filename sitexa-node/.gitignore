@@ -7,5 +7,4 @@ target/
 uploads/
 build/
 gradle/
-sitexa-node/node_modules/
-
+node_modules/

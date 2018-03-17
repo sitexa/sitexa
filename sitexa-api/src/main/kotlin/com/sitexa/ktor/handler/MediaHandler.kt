@@ -6,14 +6,15 @@ import com.sitexa.ktor.common.ApiResult
 import com.sitexa.ktor.dao.DAOFacade
 import com.sitexa.ktor.model.Media
 import com.sitexa.ktor.uploadDir
-import org.jetbrains.ktor.application.call
-import org.jetbrains.ktor.application.log
-import org.jetbrains.ktor.content.LocalFileContent
-import org.jetbrains.ktor.locations.get
-import org.jetbrains.ktor.locations.location
-import org.jetbrains.ktor.locations.post
-import org.jetbrains.ktor.routing.Route
-import org.jetbrains.ktor.routing.application
+import io.ktor.application.application
+import io.ktor.application.call
+import io.ktor.application.log
+import io.ktor.content.LocalFileContent
+import io.ktor.locations.Location
+import io.ktor.locations.get
+import io.ktor.locations.post
+import io.ktor.response.respond
+import io.ktor.routing.Route
 import java.io.File
 
 /**
@@ -21,13 +22,13 @@ import java.io.File
  *
  */
 
-@location("/sweet-medias/{refId}") class GetMedias(val refId: Int)
+@Location("/sweet-medias/{refId}") class GetMedias(val refId: Int)
 
-@location("/media-new") class MediaNew(val refId: Int = 0, val fileName: String = "", val fileType: String? = "unknown", val title: String? = null, val sortOrder: Int? = null)
-@location("/media-del") class MediaDel(val id: Int)
-@location("/media/{name}/{type}") class MediaView(val name: String, val type: String)
-@location("/media/{id}") class MediaData(val id: Int)
-@location("/mediasBySweet/{refId}") class MediasBySweet(val refId: Int)
+@Location("/media-new") class MediaNew(val refId: Int = 0, val fileName: String = "", val fileType: String? = "unknown", val title: String? = null, val sortOrder: Int? = null)
+@Location("/media-del") class MediaDel(val id: Int)
+@Location("/media/{name}/{type}") class MediaView(val name: String, val type: String)
+@Location("/media/{id}") class MediaData(val id: Int)
+@Location("/mediasBySweet/{refId}") class MediasBySweet(val refId: Int)
 
 fun Route.mediaHandler(dao: DAOFacade, hashFunction: (String) -> String) {
     post<MediaNew> {
@@ -58,7 +59,7 @@ fun Route.mediaHandler(dao: DAOFacade, hashFunction: (String) -> String) {
         try {
             media = dao.getMedia(it.id)
         } catch(e: Exception) {
-            application.log.error(e)
+            application.log.error(e.toString())
         }
         call.respond(JsonResponse(media!!))
     }
@@ -67,7 +68,7 @@ fun Route.mediaHandler(dao: DAOFacade, hashFunction: (String) -> String) {
         try {
             medias = dao.getMedias(it.refId)
         } catch(e: Exception) {
-            application.log.error(e)
+            application.log.error(e.toString())
         }
         call.respond(JsonResponse(medias))
     }
@@ -76,7 +77,7 @@ fun Route.mediaHandler(dao: DAOFacade, hashFunction: (String) -> String) {
         try {
             medias = dao.getMedias(it.refId).map { dao.getMedia(it) }.filterNotNull()
         } catch(e: Exception) {
-            application.log.error(e)
+            application.log.error(e.toString())
         }
         call.respond(JsonResponse(medias))
     }

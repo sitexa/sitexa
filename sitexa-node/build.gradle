@@ -2,7 +2,7 @@ group 'com.sitexa.ktor'
 version '1.0-SNAPSHOT'
 
 buildscript {
-    ext.kotlin_version = '1.1.2-5'
+    ext.kotlin_version = '1.2.30'
     ext.shadow_version = '2.0.0'
     ext.functionale_version = '0.8'
     ext.kovenant_version = '3.3.0'
@@ -23,7 +23,7 @@ buildscript {
     ext.exposed_version = '0.7.6'
     ext.jackson_version = '2.7.5'
 
-    ext.ktor_version = '0.3.2'
+    ext.ktor_version = '0.9.1'
     ext.gson_version = '2.7'
     ext.typesafe_version = '1.2.1'
     ext.ehcache_version = '3.0.0.m4'
@@ -73,7 +73,7 @@ repositories {
 }
 
 dependencies {
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     compile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
 
     compile "org.funktionale:funktionale:$functionale_version"
@@ -97,14 +97,15 @@ dependencies {
     compile "com.squareup.retrofit2:converter-gson:$retrofit_version"
     compile "com.squareup.retrofit2:converter-moshi:$retrofit_version"
     compile "com.squareup.moshi:moshi:$moshi_version"
-
-    compile "org.jetbrains.ktor:ktor-core:$ktor_version"
-    compile "org.jetbrains.ktor:ktor-jetty:$ktor_version"
-    compile "org.jetbrains.ktor:ktor-netty:$ktor_version"
-    compile "org.jetbrains.ktor:ktor-auth:$ktor_version"
-    compile "org.jetbrains.ktor:ktor-freemarker:$ktor_version"
-    compile "org.jetbrains.ktor:ktor-locations:$ktor_version"
-    compile "org.jetbrains.ktor:ktor-websockets:$ktor_version"
+    
+    compile "io.ktor:ktor-server-core:$ktor_version"
+    compile "io.ktor:ktor-server-jetty:$ktor_version"
+    compile "io.ktor:ktor-server-netty:$ktor_version"
+    compile "io.ktor:ktor-auth:$ktor_version"
+    compile "io.ktor:ktor-freemarker:$ktor_version"
+    compile "io.ktor:ktor-locations:$ktor_version"
+    compile "io.ktor:ktor-websockets:$ktor_version"
+    compile "io.ktor:ktor-gson:$ktor_version"
 
     compile "org.freemarker:freemarker:$freemarker_version"
 

@@ -1,9 +1,9 @@
 package com.sitexa.ktor.handler
 
-import org.jetbrains.ktor.content.default
-import org.jetbrains.ktor.content.files
-import org.jetbrains.ktor.content.static
-import org.jetbrains.ktor.routing.Route
+import io.ktor.content.default
+import io.ktor.content.files
+import io.ktor.content.static
+import io.ktor.routing.Route
 
 /**
  * Created by open on 03/04/2017.

@@ -9,33 +9,34 @@ import com.sitexa.ktor.common.JodaGsonAdapter
 import com.sitexa.ktor.dao.DAOFacade
 import com.sitexa.ktor.model.Media
 import com.sitexa.ktor.model.Sweet
-import org.jetbrains.ktor.application.call
-import org.jetbrains.ktor.application.log
-import org.jetbrains.ktor.locations.get
-import org.jetbrains.ktor.locations.location
-import org.jetbrains.ktor.locations.post
-import org.jetbrains.ktor.routing.Route
-import org.jetbrains.ktor.routing.application
+import io.ktor.application.application
+import io.ktor.application.call
+import io.ktor.application.log
+import io.ktor.locations.Location
+import io.ktor.locations.get
+import io.ktor.locations.post
+import io.ktor.response.respond
+import io.ktor.routing.Route
 import org.joda.time.DateTime
 
 /**
  * Created by open on 10/04/2017.
  *
  */
-@location("/sweet-new") class SweetNew(val text: String = "", val user: String = "", val replyTo: Int? = null)
+@Location("/sweet-new") class SweetNew(val text: String = "", val user: String = "", val replyTo: Int? = null)
 
-@location("/sweet-del") class SweetDel(val id: Int = -1)
-@location("/sweet-upd") class SweetUpd(val id: Int = -1, val text: String = "")
+@Location("/sweet-del") class SweetDel(val id: Int = -1)
+@Location("/sweet-upd") class SweetUpd(val id: Int = -1, val text: String = "")
 
-@location("/sweet/{id}") class SweetSingle(val id: Int)
-@location("/sweet-component/{id}") class SweetComponent(val id: Int)
-@location("/sweet-top/{count}/{page}") class TopSweet(val count: Int = 10, val page: Int = 1)
-@location("/sweet-latest/{count}/{page}") class LatestSweet(val count: Int = 10, val page: Int = 1)
-@location("/sweet-reply-count/{id}") class CountSweetReplies(val id: Int)
-@location("/sweet-replies/{id}") class GetReplies(val id: Int)
-@location("/sweet-user/{user}") class UserSweet(val user: String)
-@location("/top/{count}/{page}") class Top(val count: Int = 10, val page: Int = 1)
-@location("/latest/{count}/{page}") class Latest(val count: Int = 10, val page: Int = 1)
+@Location("/sweet/{id}") class SweetSingle(val id: Int)
+@Location("/sweet-component/{id}") class SweetComponent(val id: Int)
+@Location("/sweet-top/{count}/{page}") class TopSweet(val count: Int = 10, val page: Int = 1)
+@Location("/sweet-latest/{count}/{page}") class LatestSweet(val count: Int = 10, val page: Int = 1)
+@Location("/sweet-reply-count/{id}") class CountSweetReplies(val id: Int)
+@Location("/sweet-replies/{id}") class GetReplies(val id: Int)
+@Location("/sweet-user/{user}") class UserSweet(val user: String)
+@Location("/top/{count}/{page}") class Top(val count: Int = 10, val page: Int = 1)
+@Location("/latest/{count}/{page}") class Latest(val count: Int = 10, val page: Int = 1)
 
 
 fun Route.sweetHandler(dao: DAOFacade, hashFunction: (String) -> String) {
@@ -79,7 +80,7 @@ fun Route.sweetHandler(dao: DAOFacade, hashFunction: (String) -> String) {
         try {
             sweet = dao.getSweet(it.id)
         } catch (e: Exception) {
-            application.log.error(e)
+            application.log.error(e.toString())
         }
         call.respond(JsonResponse(sweet!!))
     }
@@ -105,7 +106,7 @@ fun Route.sweetHandler(dao: DAOFacade, hashFunction: (String) -> String) {
         try {
             top = dao.topSweets(it.count, it.page)
         } catch (e: Exception) {
-            application.log.error(e)
+            application.log.error(e.toString())
         }
         call.respond(JsonResponse(top))
     }
@@ -114,7 +115,7 @@ fun Route.sweetHandler(dao: DAOFacade, hashFunction: (String) -> String) {
         try {
             top = dao.top(it.count, it.page)
         } catch (e: Exception) {
-            application.log.error(e)
+            application.log.error(e.toString())
         }
         call.respond(JsonResponse(top))
     }
@@ -123,7 +124,7 @@ fun Route.sweetHandler(dao: DAOFacade, hashFunction: (String) -> String) {
         try {
             latest = dao.latestSweets(it.count, it.page)
         } catch (e: Exception) {
-            application.log.error(e)
+            application.log.error(e.toString())
         }
         call.respond(JsonResponse(latest))
     }
@@ -132,7 +133,7 @@ fun Route.sweetHandler(dao: DAOFacade, hashFunction: (String) -> String) {
         try {
             latest = dao.latest(it.count, it.page)
         } catch (e: Exception) {
-            application.log.error(e)
+            application.log.error(e.toString())
         }
         call.respond(JsonResponse(latest))
     }
@@ -141,7 +142,7 @@ fun Route.sweetHandler(dao: DAOFacade, hashFunction: (String) -> String) {
         try {
             countSweetReplies = dao.countReplies(it.id)
         } catch (e: Exception) {
-            application.log.error(e)
+            application.log.error(e.toString())
         }
         call.respond(JsonResponse(countSweetReplies))
     }
@@ -151,7 +152,7 @@ fun Route.sweetHandler(dao: DAOFacade, hashFunction: (String) -> String) {
             val ids = dao.getReplies(it.id)
             replies = ids.map { dao.getSweet(it) }.toList()
         } catch(e: Exception) {
-            application.log.error(e)
+            application.log.error(e.toString())
         }
         call.respond(JsonResponse(replies))
     }
@@ -160,7 +161,7 @@ fun Route.sweetHandler(dao: DAOFacade, hashFunction: (String) -> String) {
         try {
             sweets = dao.userSweets(it.user)
         } catch (e: Exception) {
-            application.log.error(e)
+            application.log.error(e.toString())
         }
         call.respond(JsonResponse(sweets))
     }

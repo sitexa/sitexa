@@ -1,22 +1,24 @@
 package com.sitexa.ktor.handler
 
 
-import com.sitexa.ktor.Session
+import com.sitexa.ktor.SweetSession
 import com.sitexa.ktor.dao.DAOFacade
 import com.sitexa.ktor.model.User
 import com.sitexa.ktor.redirect
-import org.jetbrains.ktor.application.call
-import org.jetbrains.ktor.application.log
-import org.jetbrains.ktor.freemarker.FreeMarkerContent
-import org.jetbrains.ktor.http.HttpStatusCode
-import org.jetbrains.ktor.locations.get
-import org.jetbrains.ktor.locations.location
-import org.jetbrains.ktor.locations.post
-import org.jetbrains.ktor.routing.Route
-import org.jetbrains.ktor.routing.application
-import org.jetbrains.ktor.sessions.clearSession
-import org.jetbrains.ktor.sessions.session
-import org.jetbrains.ktor.sessions.sessionOrNull
+import io.ktor.application.application
+import io.ktor.application.call
+import io.ktor.application.log
+import io.ktor.freemarker.FreeMarkerContent
+import io.ktor.http.HttpStatusCode
+import io.ktor.locations.Location
+import io.ktor.locations.get
+import io.ktor.locations.post
+import io.ktor.response.respond
+import io.ktor.routing.Route
+import io.ktor.sessions.clear
+import io.ktor.sessions.get
+import io.ktor.sessions.sessions
+import io.ktor.sessions.set
 
 /**
  * Created by open on 03/04/2017.
@@ -24,21 +26,21 @@ import org.jetbrains.ktor.sessions.sessionOrNull
  */
 
 
-@location("/user/{user}")
+@Location("/user/{user}")
 data class UserPage(val user: String)
 
-@location("/register")
+@Location("/register")
 data class Register(val userId: String = "", val mobile: String = "", val displayName: String = "", val email: String = "", val password: String = "", val error: String = "")
 
-@location("/login")
+@Location("/login")
 data class Login(val userId: String = "", val password: String = "", val error: String = "")
 
-@location("/logout")
+@Location("/logout")
 class Logout
 
 fun Route.userHandler(dao: DAOFacade, hashFunction: (String) -> String) {
     post<Register> {
-        val user = call.sessionOrNull<Session>()?.let { dao.user(it.userId) }
+        val user = call.sessions.get<SweetSession>()?.let { dao.user(it.userId) }
         if (user != null) {
             call.redirect(UserPage(user.userId))
         } else {
@@ -71,13 +73,13 @@ fun Route.userHandler(dao: DAOFacade, hashFunction: (String) -> String) {
                     }
                 }
 
-                call.session(Session(newUser.userId))
+                call.sessions.set(SweetSession(newUser.userId))
                 call.redirect(UserPage(newUser.userId))
             }
         }
     }
     get<Register> {
-        val user = call.sessionOrNull<Session>()?.let { dao.user(it.userId) }
+        val user = call.sessions.get<SweetSession>()?.let { dao.user(it.userId) }
         if (user != null) {
             call.redirect(UserPage(user.userId))
         } else {
@@ -86,7 +88,7 @@ fun Route.userHandler(dao: DAOFacade, hashFunction: (String) -> String) {
     }
     get<Login> {
         println("\nuserHandler:login.get")
-        val user = call.sessionOrNull<Session>()?.let { dao.user(it.userId) }
+        val user = call.sessions.get<SweetSession>()?.let { dao.user(it.userId) }
 
         if (user != null) {
             call.redirect(UserPage(user.userId))
@@ -106,16 +108,16 @@ fun Route.userHandler(dao: DAOFacade, hashFunction: (String) -> String) {
         if (login == null) {
             call.redirect(it.copy(password = "", error = "Invalid username or password"))
         } else {
-            call.session(Session(login.userId))
+            call.sessions.set(SweetSession(login.userId))
             call.redirect(UserPage(login.userId))
         }
     }
     get<Logout> {
-        call.clearSession()
+        call.sessions.clear<SweetSession>()
         call.redirect(Index())
     }
     get<UserPage> {
-        val user = call.sessionOrNull<Session>()?.let { dao.user(it.userId) }
+        val user = call.sessions.get<SweetSession>()?.let { dao.user(it.userId) }
         val pageUser = dao.user(it.user)
 
         if (pageUser == null) {

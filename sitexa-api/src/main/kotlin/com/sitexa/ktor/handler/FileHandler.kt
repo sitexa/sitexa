@@ -5,18 +5,18 @@ import com.sitexa.ktor.common.ApiCode
 import com.sitexa.ktor.common.ApiResult
 import com.sitexa.ktor.dao.DAOFacade
 import com.sitexa.ktor.uploadDir
-import org.jetbrains.ktor.application.call
-import org.jetbrains.ktor.application.receive
-import org.jetbrains.ktor.content.LocalFileContent
-import org.jetbrains.ktor.content.fromFilePath
-import org.jetbrains.ktor.http.ContentType
-import org.jetbrains.ktor.locations.get
-import org.jetbrains.ktor.locations.location
-import org.jetbrains.ktor.locations.post
-import org.jetbrains.ktor.request.MultiPartData
-import org.jetbrains.ktor.request.PartData
-import org.jetbrains.ktor.request.isMultipart
-import org.jetbrains.ktor.routing.Route
+import io.ktor.application.call
+import io.ktor.content.LocalFileContent
+import io.ktor.content.PartData
+import io.ktor.content.forEachPart
+import io.ktor.http.ContentType
+import io.ktor.http.fromFilePath
+import io.ktor.locations.Location
+import io.ktor.locations.get
+import io.ktor.locations.post
+import io.ktor.request.receiveMultipart
+import io.ktor.response.respond
+import io.ktor.routing.Route
 import java.io.File
 
 /**
@@ -24,9 +24,9 @@ import java.io.File
  *
  */
 
-@location("/upload") class Upload
+@Location("/upload") class Upload
 
-@location("/download") class Download(val id: Int)
+@Location("/download") class Download(val id: Int)
 
 fun Route.fileHandler(dao: DAOFacade, hashFunction: (String) -> String) {
 
@@ -42,10 +42,10 @@ fun Route.fileHandler(dao: DAOFacade, hashFunction: (String) -> String) {
         var apiResult: ApiResult
 
         try {
-            val multipart = call.request.receive<MultiPartData>()
-            if (call.request.isMultipart()) {
-                multipart.parts.forEach { part ->
-                    if (part is PartData.FormItem) {
+            val multipart = call.receiveMultipart()
+            multipart.forEachPart { part ->
+                when(part){
+                    is PartData.FormItem ->{
                         if (part.partName == "refId") {
                             refId = part.value.toInt()
                         } else if (part.partName == "title") {
@@ -53,7 +53,8 @@ fun Route.fileHandler(dao: DAOFacade, hashFunction: (String) -> String) {
                         } else if (part.partName == "sortOrder") {
                             sortOrder = part.value.toInt()
                         }
-                    } else if (part is PartData.FileItem) {
+                    }
+                    is PartData.FileItem ->{
                         val ext = File(part.originalFileName).extension
                         val file = File(uploadDir, "${System.currentTimeMillis()}.$ext")
                         part.streamProvider().use { instream ->
@@ -64,8 +65,8 @@ fun Route.fileHandler(dao: DAOFacade, hashFunction: (String) -> String) {
                         fileName = file.name
                         fileType = ContentType.fromFilePath(file.path).firstOrNull()?.contentType
                     }
-                    part.dispose()
                 }
+                part.dispose()
             }
             id = (fileName != null).let { dao.createMedia(refId, fileName!!, fileType, title, sortOrder) }
             apiResult = ApiResult(code = ApiCode.OK, desc = "success", data = "$id")

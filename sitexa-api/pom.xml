@@ -94,7 +94,7 @@
         </dependency>
 
         <dependency>
-            <groupId>org.jetbrains.ktor</groupId>
+            <groupId>io.ktor</groupId>
             <artifactId>ktor-locations</artifactId>
             <version>${ktor.version}</version>
         </dependency>

@@ -2,7 +2,6 @@ package com.sitexa.ktor.common
 
 import com.github.salomonbrys.kotson.obj
 import com.google.gson.GsonBuilder
-import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import org.joda.time.DateTime
 import java.io.Serializable
