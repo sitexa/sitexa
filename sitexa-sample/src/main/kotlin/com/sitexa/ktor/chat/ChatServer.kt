@@ -1,11 +1,11 @@
 package com.sitexa.ktor.chat
 
 import io.ktor.websocket.*
-import kotlinx.coroutines.experimental.channels.*
 import kotlinx.io.core.*
+import java.nio.ByteBuffer
 import java.util.*
 import java.util.concurrent.*
-import java.util.concurrent.atomic.*
+import java.util.concurrent.atomic.AtomicInteger
 
 class ChatServer {
     val usersCounter = AtomicInteger()
@@ -75,7 +75,7 @@ class ChatServer {
         })
     }
 
-    private suspend fun broadcast(sender: String, message: String) {
+    suspend fun broadcast(sender: String, message: String) {
         val name = memberNames[sender] ?: sender
         broadcast("[$name] $message")
     }
@@ -89,16 +89,6 @@ class ChatServer {
     }
 
     suspend fun List<WebSocketSession>.send(frame: Frame) {
-        forEach {
-            try {
-                it.send(frame.copy())
-            } catch (t: Throwable) {
-                try {
-                    it.close(CloseReason(CloseReason.Codes.PROTOCOL_ERROR, ""))
-                } catch (ignore: ClosedSendChannelException) {
-                    // at some point it will get closed
-                }
-            }
-        }
+        forEach { it.send(frame.copy()) }
     }
 }

@@ -1,4 +1,15 @@
+description = 'sitexa'
+
+group 'com.sitexa'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+apply plugin: 'kotlin'
+
 buildscript {
+    ext.kotlin_version = '1.2.30'
+    ext.ktor_version = '0.9.1'
+
     repositories {
         jcenter()
         maven { url 'https://plugins.gradle.org/m2/' }
@@ -26,7 +37,7 @@ repositories {
 }
 
 allprojects {
-    apply plugin: 'maven'
+    apply plugin: 'java'
     apply plugin: 'kotlin'
 
     group = 'com.sitexa.ktor'
@@ -34,23 +45,14 @@ allprojects {
 }
 
 subprojects {
-    apply plugin: 'java'
+
     sourceCompatibility = 1.8
     targetCompatibility = 1.8
-
-    task packageSources(type: Jar) {
-        classifier = 'sources'
-        from sourceSets.main.allSource
-
-    }
-    artifacts.archives packageSources
 
     dependencies {
         runtime group: 'io.ktor', name: 'ktor-server-jetty', version: ktor_version
         runtime group: 'io.ktor', name: 'ktor-server-netty', version: ktor_version
         compile group: 'org.jetbrains.kotlin', name: 'kotlin-reflect', version: kotlin_version
-        compile group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib', version: kotlin_version
-        compile group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib-jdk7', version: kotlin_version
         compile group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib-jdk8', version: kotlin_version
         compile group: 'org.jetbrains.kotlinx', name: 'kotlinx-coroutines-jdk8', version: coroutines_version
         compile(group: 'org.jetbrains.kotlinx', name: 'kotlinx-coroutines-io', version: coroutines_version) {
@@ -63,6 +65,5 @@ subprojects {
         testCompile group: 'org.jetbrains.kotlin', name: 'kotlin-test-junit', version: kotlin_version
         testCompile group: 'junit', name: 'junit', version: junit_version
     }
-
 
 }

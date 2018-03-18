@@ -52,6 +52,7 @@ apply plugin: 'kotlin'
 apply plugin: 'application'
 apply plugin: 'com.github.johnrengelman.shadow'
 apply plugin: 'idea'
+
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
@@ -64,12 +65,8 @@ configure([compileKotlin, compileTestKotlin]) {
 repositories {
     //mavenCentral()
     jcenter()
-    maven {
-        url "https://dl.bintray.com/kotlin/ktor"
-    }
-    maven {
-        url "http://dl.bintray.com/kotlin/exposed"
-    }
+    maven { url "https://dl.bintray.com/kotlin/ktor" }
+    maven { url "http://dl.bintray.com/kotlin/exposed" }
 }
 
 dependencies {
