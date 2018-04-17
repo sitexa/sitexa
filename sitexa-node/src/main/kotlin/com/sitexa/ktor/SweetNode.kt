@@ -1,6 +1,5 @@
 package com.sitexa.ktor
 
-
 import com.google.gson.LongSerializationPolicy
 import com.sitexa.ktor.chat.chatHandler
 import com.sitexa.ktor.common.JodaGsonAdapter
@@ -16,13 +15,17 @@ import io.ktor.freemarker.FreeMarker
 import io.ktor.gson.gson
 import io.ktor.http.HttpHeaders
 import io.ktor.locations.Locations
+import io.ktor.locations.locations
 import io.ktor.request.header
 import io.ktor.request.host
 import io.ktor.request.port
 import io.ktor.response.respondRedirect
 import io.ktor.routing.Routing
-import io.ktor.sessions.*
+import io.ktor.sessions.SessionTransportTransformerMessageAuthentication
+import io.ktor.sessions.Sessions
+import io.ktor.sessions.cookie
 import io.ktor.util.hex
+import io.ktor.websocket.WebSockets
 import org.joda.time.DateTime
 import java.io.File
 import java.net.URI
@@ -36,8 +39,6 @@ import javax.crypto.spec.SecretKeySpec
  */
 
 
-class JsonResponse(val data: Any)
-
 data class SweetSession(val userId: String)
 
 class SweetNode : AutoCloseable {
@@ -47,22 +48,19 @@ class SweetNode : AutoCloseable {
 
     lateinit var dao: DAOFacade
 
-    //val gson = GsonBuilder()
-    //        .registerTypeAdapter(DateTime::class.java, JodaGsonAdapter())
-    //        .setLongSerializationPolicy(LongSerializationPolicy.STRING)
-    //        .create()
-
     fun Application.install() {
 
         loadConfig(environment)
         dao = DAOFacadeCache(DAOFacadeNetwork(), File(cacheDir, "ehcache"))
         dao.init()
+        environment.monitor.subscribe(ApplicationStopped) { dao.close() }
 
         install(DefaultHeaders)
         install(CallLogging)
         install(ConditionalHeaders)
         install(PartialContent)
         install(Locations)
+        install(WebSockets)
         install(FreeMarker) {
             templateLoader = ClassTemplateLoader(SweetNode::class.java.classLoader, "templates")
         }
@@ -81,22 +79,20 @@ class SweetNode : AutoCloseable {
             }
         }
 
-        val hashFunction = { s: String -> hash(s) }
-
-        intercept(ApplicationCallPipeline.Infrastructure) {
-            //for chat
+        /*intercept(ApplicationCallPipeline.Infrastructure) {
             if (call.sessions.get<SweetSession>() == null) {
-                //call.sessions.set(SweetSession(nextNonce()))
-                //call.redirect(Login())
+                call.redirect(Login())
             }
-        }
+        }*/
+
+        val hashFunction = { s: String -> hash(s) }
 
         install(Routing) {
             staticHandler()
             indexHandler(dao)
             userHandler(dao, hashFunction)
             sweetHandler(dao, hashFunction)
-            chatHandler()
+            chatHandler(dao)
             weatherHandler()
         }
     }
@@ -104,7 +100,7 @@ class SweetNode : AutoCloseable {
     override fun close() {
     }
 
-    fun hash(password: String): String {
+    private fun hash(password: String): String {
         val hmac = Mac.getInstance("HmacSHA1")
         hmac.init(hmacKey)
         return hex(hmac.doFinal(password.toByteArray(Charsets.UTF_8)))
@@ -128,15 +124,12 @@ suspend fun ApplicationCall.redirect(location: Any) {
     val portSpec = request.port().let { if (it == 80) "" else ":$it" }
     val address = host + portSpec
 
-    respondRedirect("http://$address${application.feature(Locations).href(location)}")
+    respondRedirect("http://$address${application.locations.href(location)}")
 }
 
-fun ApplicationCall.securityCode(date: Long, user: User, hashFunction: (String) -> String) =
-        hashFunction("$date:${user.userId}:${request.host()}:${refererHost()}")
+fun ApplicationCall.securityCode(date: Long, user: User, hashFunction: (String) -> String) = hashFunction("$date:${user.userId}:${request.host()}:${refererHost()}")
 
-fun ApplicationCall.verifyCode(date: Long, user: User, code: String, hashFunction: (String) -> String) =
-        securityCode(date, user, hashFunction) == code
-                && (System.currentTimeMillis() - date).let { it > 0 && it < TimeUnit.MILLISECONDS.convert(2, TimeUnit.HOURS) }
+fun ApplicationCall.verifyCode(date: Long, user: User, code: String, hashFunction: (String) -> String) = securityCode(date, user, hashFunction) == code && (System.currentTimeMillis() - date).let { it > 0 && it < TimeUnit.MILLISECONDS.convert(2, TimeUnit.HOURS) }
 
 fun ApplicationCall.refererHost() = request.header(HttpHeaders.Referrer)?.let { URI.create(it).host }
 

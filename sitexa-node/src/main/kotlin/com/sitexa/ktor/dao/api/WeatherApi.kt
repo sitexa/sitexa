@@ -7,7 +7,6 @@ import com.github.salomonbrys.kotson.string
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonParser
 import com.sitexa.ktor.common.JodaGsonAdapter
-import com.sitexa.ktor.model.SunInfo
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
 import org.joda.time.DateTime
@@ -24,6 +23,10 @@ import retrofit2.http.Query
  *
  */
 
+
+data class SunWeatherInfo(val sunInfo: SunInfo, val temperature: Double)
+
+data class SunInfo(val sunrise: String, val sunset: String)
 
 interface SunInfoApi {
     @GET("/json") fun
@@ -47,8 +50,7 @@ class SunInfoService {
             .create()
     private val baseUrl = "http://api.sunrise-sunset.org"
     private val okClient = OkHttpClient().newBuilder().addInterceptor(loggingInterceptor).build()
-    private val retrofit = Retrofit.Builder().client(okClient).baseUrl(baseUrl)
-            .addConverterFactory(GsonConverterFactory.create(gson)).build()
+    private val retrofit = Retrofit.Builder().client(okClient).baseUrl(baseUrl).addConverterFactory(GsonConverterFactory.create(gson)).build()
 
     private val sunInfoApi = retrofit.create(SunInfoApi::class.java)
 
@@ -72,8 +74,7 @@ class TemperatureService {
             .create()
     private val baseUrl = "http://api.openweathermap.org"
     private val okClient = OkHttpClient().newBuilder().addInterceptor(loggingInterceptor).build()
-    private val retrofit = Retrofit.Builder().client(okClient).baseUrl(baseUrl)
-            .addConverterFactory(GsonConverterFactory.create(gson)).build()
+    private val retrofit = Retrofit.Builder().client(okClient).baseUrl(baseUrl).addConverterFactory(GsonConverterFactory.create(gson)).build()
 
     private val temperatureApi = retrofit.create(TemperatureApi::class.java)
 

@@ -2,8 +2,8 @@ package com.sitexa.ktor.handler
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.sitexa.ktor.dao.api.SunInfoService
+import com.sitexa.ktor.dao.api.SunWeatherInfo
 import com.sitexa.ktor.dao.api.TemperatureService
-import com.sitexa.ktor.model.SunWeatherInfo
 import io.ktor.application.call
 import io.ktor.locations.Location
 import io.ktor.locations.get

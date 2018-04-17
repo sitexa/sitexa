@@ -13,7 +13,7 @@ fun main(vararg: Array<String>) {
     //testGetLatestSweet()
     //testCountReplies()
 
-    //testCreateSweet()
+    testCreateSweet()
     //testUpdateSweet()
     //testDeleteSweet()
 
@@ -26,7 +26,7 @@ fun getSingleSweet() {
 
     println("\n#################getSingleSweet")
 
-    val sweetSingle = SweetService().getSweetSingle(9)
+    val sweetSingle = SweetService().getSweetSingle(5)
     println("\nsweetSingle:$sweetSingle")
 }
 
@@ -34,8 +34,9 @@ fun getSweetComponent() {
     println("\n#################getSweetComponent")
 
     val sweetComponent = SweetService().getSweetComponent(9)
+    println("\nsweetComponent:$sweetComponent")
 
-    val sweet = sweetComponent["sweet"] as Sweet
+    val sweet = sweetComponent.get("sweet") as Sweet
     println("\nsweet:$sweet")
 
     val replies = sweetComponent["replies"] as List<*>
@@ -48,19 +49,19 @@ fun getSweetComponent() {
 
 fun testGetTopSweet() {
     println("\n#################testGetTopSweet")
-    val sweets = SweetService().getTopSweet(1,10)
+    val sweets = SweetService().getTopSweet(10,0)
     sweets.forEach { println(it) }
 }
 
 fun testGetLatestSweet() {
     println("\n#################testGetLatestSweet")
-    val sweets = SweetService().getLatestSweet(1,10)
+    val sweets = SweetService().getLatestSweet(10,0)
     sweets.forEach { println(it) }
 }
 
 fun testCountReplies(){
     println("\n#################testCountReplies")
-    val count = SweetService().countReplies(90)
+    val count = SweetService().countReplies(1)
     println("\ncount:$count")
 }
 
@@ -71,14 +72,14 @@ fun testCreateSweet(){
     val text = "test create sweet again"
     val replyTo = 9
 
-    val id = SweetService().createSweet(user,text)
+    val id = SweetService().createSweet(user,text,replyTo)
     println("\nid:$id")
 }
 
 fun testUpdateSweet(){
     println("\n#################testUpdateSweet")
-    val id = 23
-    val text = "test create reply to 9"
+    val id = 2
+    val text = "test create reply to 2"
 
     val res = SweetService().updateSweet(id,text)
     println("\nresult:$res")
@@ -86,7 +87,7 @@ fun testUpdateSweet(){
 
 fun testDeleteSweet(){
     println("\n#################testDeleteSweet")
-    val res = SweetService().deleteSweet(24)
+    val res = SweetService().deleteSweet(56)
     println("\nresult:$res")
 }
 

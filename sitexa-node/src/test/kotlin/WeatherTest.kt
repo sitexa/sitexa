@@ -4,9 +4,9 @@ import com.github.salomonbrys.kotson.get
 import com.github.salomonbrys.kotson.obj
 import com.github.salomonbrys.kotson.string
 import com.google.gson.JsonParser
+import com.sitexa.ktor.dao.api.SunInfo
 import com.sitexa.ktor.dao.api.SunInfoService
 import com.sitexa.ktor.dao.api.TemperatureService
-import com.sitexa.ktor.model.SunInfo
 import nl.komponents.kovenant.Promise
 import nl.komponents.kovenant.task
 import org.joda.time.DateTime

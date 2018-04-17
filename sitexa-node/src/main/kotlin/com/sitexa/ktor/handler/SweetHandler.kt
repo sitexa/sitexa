@@ -9,11 +9,13 @@ import io.ktor.content.PartData
 import io.ktor.content.forEachPart
 import io.ktor.freemarker.FreeMarkerContent
 import io.ktor.http.ContentType
+import io.ktor.http.Parameters
 import io.ktor.http.fromFilePath
 import io.ktor.locations.Location
 import io.ktor.locations.get
 import io.ktor.locations.post
 import io.ktor.request.isMultipart
+import io.ktor.request.receive
 import io.ktor.request.receiveMultipart
 import io.ktor.response.respond
 import io.ktor.routing.Route
@@ -28,7 +30,7 @@ import java.io.File
  */
 
 @Location("/upload")
-class Upload()
+class Upload
 
 @Location("/media/{name}/{type}")
 data class MediaView(val name: String, val type: String)
@@ -49,8 +51,11 @@ data class SweetUpd(val id: Int = 0, val text: String = "", val date: Long = 0L,
 @Location("/sweet-reply")
 data class SweetReply(val replyTo: Int = 0, val text: String = "", val date: Long = 0L, val code: String = "")
 
-@Location("/sweet-top/{count}/{page}") class SweetTop(var count: Int = 10, var page: Int = 1)
-@Location("/sweet-latest/{count}/{page}") class SweetLatest(var count: Int = 10, var page: Int = 1)
+@Location("/sweet-top/{count}/{page}")
+class SweetTop(var count: Int = 10, var page: Int = 1)
+
+@Location("/sweet-latest/{count}/{page}")
+class SweetLatest(var count: Int = 10, var page: Int = 1)
 
 fun Route.sweetHandler(dao: DAOFacade, hashFunction: (String) -> String) {
     get<SweetNew> {
@@ -70,26 +75,24 @@ fun Route.sweetHandler(dao: DAOFacade, hashFunction: (String) -> String) {
         if (user == null) {
             call.redirect(Login())
         } else {
-            var date: Long = 0L
-            var code: String = ""
-            var text: String = ""
-            var fileName: String = ""
+            var date = 0L
+            var code = ""
+            var text = ""
+            var fileName = ""
             var fileType: String? = "unknown"
 
             if (call.request.isMultipart()) {
                 val multipart = call.receiveMultipart()
                 multipart.forEachPart { part ->
-                    when (part){
-                        is PartData.FormItem ->{
-                            if (part.partName == "date") {
-                                date = part.value.toLong()
-                            } else if (part.partName == "code") {
-                                code = part.value
-                            } else if (part.partName == "text") {
-                                text = part.value
+                    when (part) {
+                        is PartData.FormItem -> {
+                            when {
+                                part.name == "date" -> date = part.value.toLong()
+                                part.name == "code" -> code = part.value
+                                part.name == "text" -> text = part.value
                             }
                         }
-                        is PartData.FileItem ->{
+                        is PartData.FileItem -> {
                             val ext = File(part.originalFileName).extension
                             val file = File(uploadDir, "upload-${System.currentTimeMillis()}-${user.userId.hashCode()}.$ext")
                             part.streamProvider().use { its ->
@@ -113,26 +116,39 @@ fun Route.sweetHandler(dao: DAOFacade, hashFunction: (String) -> String) {
                 call.redirect(Index())
             } else {
                 val id = dao.createSweet(user.userId, text)
-                val medId = dao.createMedia(id, fileName, fileType)
+                dao.createMedia(id, fileName, fileType)
                 call.redirect(SweetView(id))
             }
         }
     }
     post<SweetDel> {
         val user = call.sessions.get<SweetSession>()?.let { dao.user(it.userId) }
-        val sweet = dao.getSweet(it.id)
 
-        if (user == null || sweet.userId != user.userId || !call.verifyCode(it.date, user, it.code, hashFunction)) {
-            call.redirect(SweetView(it.id))
+        val post = call.receive<Parameters>()
+        val id = post["id"]?.toIntOrNull()
+        val date = post["date"]?.toLongOrNull()
+        val code = post["code"]
+
+        val sweet = dao.getSweet(id!!)
+
+        if (user == null || sweet.userId != user.userId || !call.verifyCode(date!!, user, code!!, hashFunction)){
+            call.redirect(SweetView(id))
         } else {
-            dao.deleteSweet(it.id)
+            dao.deleteSweet(id)
             call.redirect(Index())
         }
     }
     get<SweetView> {
+
+        val s = call.sessions.get<SweetSession>()
+        println("SweetPage==s:$s,${s!!.userId}")
+
         val user = call.sessions.get<SweetSession>()?.let { dao.user(it.userId) }
         val sweet = dao.getSweet(it.id)
         val replies = dao.getReplies(it.id)
+        val s1 = call.sessions.get<SweetSession>()
+        println("SweetPage==s1:$s1,${s1!!.userId}")
+
         val date = System.currentTimeMillis()
         val code = if (user != null) call.securityCode(date, user, hashFunction) else null
         val etagString = date.toString() + "," + user?.userId + "," + sweet.id.toString()
@@ -142,35 +158,34 @@ fun Route.sweetHandler(dao: DAOFacade, hashFunction: (String) -> String) {
             Media(med.id, med.refId, med.fileName, med.fileType, med.title, med.sortOrder)
         }.toList()
 
+        val s2 = call.sessions.get<SweetSession>()
+        println("SweetPage==s2:$s2,${s2!!.userId}")
+
         call.respond(FreeMarkerContent("sweet-view.ftl", mapOf("user" to user, "sweet" to sweet, "replies" to replies, "date" to date, "code" to code, "medias" to medias), etag.toString()))
     }
     post<Upload> {
         val user = call.sessions.get<SweetSession>()?.let { it.userId }
-        if (user == null) {
-            call.redirect(Login())
-        } else {
-            var refId: Int = 0
-            var fileName: String = ""
+        if (user == null) call.redirect(Login())
+        else {
+            var refId = 0
+            var fileName = ""
             var fileType: String? = ""
             var title: String? = ""
-            var sortOrder: Int = 0
+            var sortOrder = 0
 
             if (call.request.isMultipart()) {
                 val multipart = call.receiveMultipart()
                 multipart.forEachPart { part ->
-                    when(part){
-                        is PartData.FormItem ->{
-                            if (part.partName == "refId") {
-                                refId = part.value.toInt()
-                            } else if (part.partName == "fileName") {
-                                fileName = part.value
-                            } else if (part.partName == "title") {
-                                title = part.value
-                            } else if (part.partName == "sortOrder") {
-                                sortOrder = part.value.toInt()
+                    when (part) {
+                        is PartData.FormItem -> {
+                            when {
+                                part.name == "refId" -> refId = part.value.toInt()
+                                part.name == "fileName" -> fileName = part.value
+                                part.name == "title" -> title = part.value
+                                part.name == "sortOrder" -> sortOrder = part.value.toInt()
                             }
                         }
-                        is PartData.FileItem ->{
+                        is PartData.FileItem -> {
                             val ext = File(part.originalFileName).extension
                             val file = File(uploadDir, "${System.currentTimeMillis()}${user.hashCode()}.$ext")
                             part.streamProvider().use { instream ->
@@ -187,7 +202,7 @@ fun Route.sweetHandler(dao: DAOFacade, hashFunction: (String) -> String) {
             }
 
             val id = dao.createMedia(refId, fileName, fileType, title, sortOrder)
-            call.respond(JsonResponse(Media(id, refId, fileName, fileType, title, sortOrder)))
+            call.respond(Media(id, refId, fileName, fileType, title, sortOrder))
         }
     }
     get<MediaView> {
@@ -208,11 +223,18 @@ fun Route.sweetHandler(dao: DAOFacade, hashFunction: (String) -> String) {
     }
     post<SweetUpd> {
         val user = call.sessions.get<SweetSession>()?.let { dao.user(it.userId) }
-        if (user == null || !call.verifyCode(it.date, user, it.code, hashFunction)) {
+
+        val post = call.receive<Parameters>()
+        val date = post["date"]!!.toLongOrNull()
+        val code = post["code"]
+        val id = post["id"]!!.toIntOrNull()
+        val text = post["text"]
+
+        if (user == null || !call.verifyCode(date!!, user, code!!, hashFunction)) {
             call.redirect(Login())
         } else {
-            dao.updateSweet(it.id, it.text)
-            call.redirect(SweetView(it.id))
+            dao.updateSweet(id!!, text!!)
+            call.redirect(SweetView(id))
         }
     }
     get<SweetReply> {
@@ -231,10 +253,16 @@ fun Route.sweetHandler(dao: DAOFacade, hashFunction: (String) -> String) {
     post<SweetReply> {
         val user = call.sessions.get<SweetSession>()?.let { dao.user(it.userId) }
 
-        if (user == null || !call.verifyCode(it.date, user, it.code, hashFunction)) {
+        val post = call.receive<Parameters>()
+        val date = post["date"]?.toLongOrNull() ?: return@post call.redirect(it)
+        val code = post["code"] ?: return@post call.redirect(it)
+        val text = post["text"] ?: return@post call.redirect(it)
+        val replyTo = post["replyTo"]?.toIntOrNull() ?: return@post call.redirect(it)
+
+        if (user == null || !call.verifyCode(date, user, code, hashFunction)) {
             call.redirect(Login())
         } else {
-            val id = dao.createSweet(user.userId, it.text, it.replyTo)
+            val id = dao.createSweet(user.userId, text, replyTo)
             call.redirect(SweetView(id))
         }
     }

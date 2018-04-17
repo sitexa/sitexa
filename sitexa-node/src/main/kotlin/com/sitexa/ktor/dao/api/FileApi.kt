@@ -60,7 +60,7 @@ class FileService {
         val call = fileApi.upload(refIdPart, titlePart, sortOrderPart, filePart)
         val response = call.execute().body()
 
-        return if (response.code() == ApiCode.OK) response.data().toInt() else -1
+        return if (response.code == ApiCode.OK) response.data!! as Int else -1
     }
 
     fun download(id: Int) {

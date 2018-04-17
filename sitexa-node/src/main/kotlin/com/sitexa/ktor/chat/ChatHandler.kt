@@ -1,6 +1,7 @@
 package com.sitexa.ktor.chat
 
 import com.sitexa.ktor.SweetSession
+import com.sitexa.ktor.dao.DAOFacade
 import com.sitexa.ktor.handler.Login
 import com.sitexa.ktor.redirect
 import io.ktor.application.call
@@ -26,7 +27,7 @@ class Chat
 @Location("/js/chat.js")
 class ChatJs
 
-fun Route.chatHandler() {
+fun Route.chatHandler(dao:DAOFacade) {
     webSocket("/ws") {
         val session = call.sessions.get<SweetSession>()
 
@@ -49,9 +50,11 @@ fun Route.chatHandler() {
     }
 
     get<Chat> {
-        val session = call.sessions.get<SweetSession>()
-        if (session == null) call.redirect(Login())
-        call.respond(FreeMarkerContent("chat/chat.ftl", mapOf("user" to "xnpeng"), "1001"))
+        //val session = call.sessions.get<SweetSession>()
+        //if (session == null) call.redirect(Login())
+        val user = call.sessions.get<SweetSession>()?.let { dao.user(it.userId) }
+        if(user == null) call.redirect(Login())
+        call.respond(FreeMarkerContent("chat/chat.ftl", mapOf("user" to user?.displayName), user?.userId))
     }
 
     get<ChatJs> {

@@ -16,14 +16,14 @@ import io.ktor.sessions.sessions
  *
  */
 
-
 @Location("/")
-class Index()
+class Index
 
 fun Route.indexHandler(dao: DAOFacade) {
 
     get<Index> {
         val user = call.sessions.get<SweetSession>()?.let { dao.user(it.userId) }
+
         val top = dao.top(10).map { dao.getSweet(it) }
         val latest = dao.latest(10).map { dao.getSweet(it) }
         val date = System.currentTimeMillis()

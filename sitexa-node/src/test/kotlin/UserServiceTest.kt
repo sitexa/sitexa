@@ -16,7 +16,7 @@ fun main(vararg: Array<String>) {
 
     //testChangePwd()
 
-    testLogin()
+    //testLogin()
 
     //testRegisterUser()
 
@@ -26,7 +26,7 @@ fun main(vararg: Array<String>) {
 
     //testGetUserPage()
 
-    //testGetUserInfo()
+    testGetUserInfo()
 }
 
 fun testSendVCode() {
@@ -60,26 +60,6 @@ fun testRegisterUser() {
     val newUser = UserService().register(user1)
     println("\nnweUser:\n$newUser")
 }
-
-fun testGetUserPageApiResult() {
-    println("\n###########testGetUserPageApiResult")
-    val user1 = UserService().getUserPageApiResult("xnpeng")
-    user1?.forEach { it -> println("\nuserPageApiResult:$it") }
-}
-
-fun testGetUserPageGson() {
-    println("\n###########testGetUserPageGson")
-    val user2 = UserService().getUserPageGson("xnpeng")
-    user2?.forEach { it -> println("\nuserPageGson:$it") }
-
-}
-
-fun testGetUserPageMoshi() {
-    println("\n###########testGetUserPageMoshi")
-    val user2 = UserService().getUserPageMoshi("xnpeng")
-    user2?.forEach { it -> println("\nuserPageMoshi:$it") }
-}
-
 
 fun testGetUserPage() {
     println("\n###########testGetUserPage")

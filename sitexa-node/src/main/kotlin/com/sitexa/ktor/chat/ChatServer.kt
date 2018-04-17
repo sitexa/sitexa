@@ -1,11 +1,16 @@
 package com.sitexa.ktor.chat
 
-import io.ktor.websocket.*
-import kotlinx.coroutines.experimental.channels.*
-import kotlinx.io.core.*
+import io.ktor.websocket.CloseReason
+import io.ktor.websocket.Frame
+import io.ktor.websocket.WebSocketSession
+import io.ktor.websocket.close
+import kotlinx.coroutines.experimental.channels.ClosedSendChannelException
+import kotlinx.io.core.ByteReadPacket
+import kotlinx.io.core.buildPacket
 import java.util.*
-import java.util.concurrent.*
-import java.util.concurrent.atomic.*
+import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.CopyOnWriteArrayList
+import java.util.concurrent.atomic.AtomicInteger
 
 class ChatServer {
     val usersCounter = AtomicInteger()
@@ -82,9 +87,7 @@ class ChatServer {
 
     private suspend fun broadcast(serialized: ByteReadPacket) {
         members.values.forEach { socket ->
-            //todo ... upgrade ktor
-            //socket.send(Frame.Text(fin = true, packet = serialized))
-            socket.send(Frame.Text(serialized.readText()))
+            socket.send(Frame.Text(fin = true, packet = serialized))
         }
     }
 

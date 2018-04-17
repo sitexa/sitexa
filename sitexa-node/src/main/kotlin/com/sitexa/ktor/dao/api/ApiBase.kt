@@ -28,6 +28,8 @@ val headerMultipartInterceptor = Interceptor { chain -> chain.proceed(chain.requ
 
 val loggingInterceptor = HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY }
 
+
+
 class HeaderInterceptor(val name: String = "Accept", val value: String = "application/json") : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request().newBuilder().addHeader(name, value).build()
@@ -58,15 +60,15 @@ open class ApiService {
             .create()
     protected val moshi = Moshi.Builder().add(JodaMoshiAdapter()).build()
 
-    val okClient = OkHttpClient().newBuilder()
+    private val okClient = OkHttpClient().newBuilder()
             .authenticator(authenticator)
             .addInterceptor(HeaderInterceptor())
             .addInterceptor(loggingInterceptor)
-            .build()
+            .build()!!
 
     val retrofit = Retrofit.Builder()
             .baseUrl(apiBaseUrl)
             .client(okClient)
             .addConverterFactory(GsonConverterFactory.create(gson))
-            .build()
+            .build()!!
 }

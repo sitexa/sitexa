@@ -2,6 +2,7 @@
 
 <@layout.mainLayout title="View sweet">
 
+<#-- @ftlvariable name="user" type="com.sitexa.ktor.model.User" -->
 <#-- @ftlvariable name="media" type="com.sitexa.ktor.model.Media" -->
 <section class="post">
     <header class="post-header">

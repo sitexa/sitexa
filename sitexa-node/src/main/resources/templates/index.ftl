@@ -10,6 +10,4 @@
     <h3 class="content-subhead"><a href="/sweet-latest/10/1">Recent Sweets</a></h3>
     <@layout.sweets_list sweets=latest></@layout.sweets_list>
 </div>
-<div id="reactView"></div>
-<script src="/public/node/bundle.js"></script>
 </@layout.mainLayout>

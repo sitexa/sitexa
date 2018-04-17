@@ -3,8 +3,8 @@ package com.sitexa.ktor.dao.api
 import com.github.salomonbrys.kotson.fromJson
 import com.github.salomonbrys.kotson.obj
 import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import com.google.gson.JsonParser
-import com.google.gson.reflect.TypeToken
 import com.sitexa.ktor.model.Sweet
 import com.sitexa.ktor.model.User
 import okhttp3.FormBody
@@ -24,10 +24,7 @@ interface UserApi {
     @GET("/user-info/{userId}") fun userInfo(@Path("userId") userId: String): Call<User>
 
     @GET("/user/{userId}")
-    fun userPage(@Path("userId") userId: String): Call<ResponseBody>
-
-    @GET("/user/{userId}")
-    fun userPage2(@Path("userId") userId: String): retrofit2.Call<List<Sweet>>
+    fun userPage(@Path("userId") userId: String): retrofit2.Call<List<Sweet>>
 
     @FormUrlEncoded @POST("/login")
     fun login(@Field("userId") userId: String, @Field("password") password: String = ""): Call<ResponseBody>
@@ -57,34 +54,9 @@ interface UserApi {
 class UserService : ApiService() {
 
     private val userApi: UserApi = retrofit.create(UserApi::class.java)
-    private val sweetListType = object : TypeToken<List<Sweet>>() {}.type
-
-    @Deprecated("use getUserPage")
-    fun getUserPageApiResult(userId: String): List<Sweet>? {
-        val call = userApi.userPage(userId)
-        val response = call.execute().body().string()
-        val response_apiResult = ApiResult(data = response)
-        val response_apiResult_dataList = response_apiResult.data<List<Sweet>>(sweetListType)
-        return response_apiResult_dataList
-    }
-
-    @Deprecated("use getUserPage")
-    fun getUserPageMoshi(userId: String): List<Sweet>? {
-        val call = userApi.userPage(userId)
-        val response = call.execute().body().string()
-
-        val sweetsAdapter = moshi.adapter<List<Sweet>>(sweetListType).lenient()
-        return sweetsAdapter.fromJson(response)
-    }
-
-    @Deprecated("use getUserPage")
-    fun getUserPageGson(userId: String): List<Sweet>? {
-        val call = userApi.userPage2(userId)
-        return call.execute().body()
-    }
 
     fun getUserPage(userId: String): List<Sweet> {
-        val call = userApi.userPage2(userId)
+        val call = userApi.userPage(userId)
         return call.execute().body()
     }
 
@@ -94,11 +66,9 @@ class UserService : ApiService() {
 
         val result = JsonParser().parse(response).obj["result"].asString
         var newUser: User? = null
-        if (result != "") {
-            log.error(result)
-        } else {
+        if (result != "") log.error(result) else {
             val jsonUser = JsonParser().parse(response).obj["user"]
-            newUser = Gson().fromJson<User>(jsonUser)
+            newUser = Gson().fromJson(jsonUser)
         }
         return newUser
     }
@@ -110,13 +80,13 @@ class UserService : ApiService() {
         val call = userApi.login(userId, password)
         val response = call.execute().body().string()
 
+        println("response:$response")
+
         val result = JsonParser().parse(response).obj["result"].asInt
         if (result == -1) return null
 
         val jsonUser = JsonParser().parse(response).obj["user"]
-        val user = Gson().fromJson<User>(jsonUser)
-
-        return user
+        return Gson().fromJson(jsonUser)
     }
 
     fun loginOrigin(userId: String, password: String): User? {
@@ -126,11 +96,11 @@ class UserService : ApiService() {
          * kotson是对Gson的包装，没有改变任何Gson的功能，只是增加了"语法糖"，让代码写起来更简单。
          */
 
-        val LOGIN_URL = "${com.sitexa.ktor.apiBaseUrl}/login"
+        val loginUrl = com.sitexa.ktor.apiBaseUrl + "/login"
 
         val client = OkHttpClient()
         val formBody = FormBody.Builder().add("userId", userId).add("password", password).build()
-        val request = Request.Builder().url(LOGIN_URL).headers(HEADERS_JSON).post(formBody).build()
+        val request = Request.Builder().url(loginUrl).headers(HEADERS_JSON).post(formBody).build()
         val response = client.newCall(request).execute()
 
         val jsonStr = response.body().string()
@@ -138,9 +108,7 @@ class UserService : ApiService() {
         if (result == -1) return null
 
         val jsonUser = JsonParser().parse(jsonStr).obj["user"]
-        val user = com.google.gson.GsonBuilder().create().fromJson<User>(jsonUser)
-
-        return user
+        return GsonBuilder().create().fromJson(jsonUser)
     }
 
     fun changePassword(userId: String, password: String, newPassword: String): ApiResult {
@@ -150,7 +118,7 @@ class UserService : ApiService() {
 
     fun sendVCode(mobile: String): ApiResult = userApi.sendVCode(mobile).execute().body()
 
-    fun testVCode(vcode: String, date: Long, sign: String) = userApi.testVCode(vcode, date, sign).execute().body()
+    fun testVCode(vcode: String, date: Long, sign: String) = userApi.testVCode(vcode, date, sign).execute().body()!!
 
     fun getUserInfo(userId: String): User? = userApi.userInfo(userId).execute().body()
 

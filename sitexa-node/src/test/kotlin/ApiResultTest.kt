@@ -88,7 +88,7 @@ fun testJsonData() {
     val obj = gson.fromJson<ApiResult>(json)
     println("\nobj:$obj")
 
-    val obj_data = obj.data()
+    val obj_data = obj.data
     println("\nobj_data:$obj_data")
 
     val obj_data_map = obj.data(Map::class.java)
@@ -105,53 +105,42 @@ fun testDeepJsonData() {
 
     val reply1 = Sweet(id = 2, userId = "xnpeng", text = "this is a reply for sweet=1", date = DateTime.now(), replyTo = 1)
     val reply2 = Sweet(id = 3, userId = "xnpeng", text = "this is a reply for \"sweet's id%1 \"", date = DateTime.now(), replyTo = 1)
-
-    val reply1Json = gson.toJson(reply1)
-    val reply2Json = gson.toJson(reply2)
-    val replies = listOf(reply1Json, reply2Json)
-    val repliesJson = gson.toJson(replies)
-
     val replies2 = listOf(reply1, reply2)
     val replies2Json = gson.toJson(replies2)
 
     val media = Media(id = 1, refId = 1, fileName = "media1", fileType = "video", title = "video title", sortOrder = 0)
-
-    val mediaJson = gson.toJson(media)
-    val medias = listOf(mediaJson)
-    val mediasJson = gson.toJson(medias)
-
     val medias2 = listOf(media)
     val medias2Json = gson.toJson(medias2)
 
-    val data = mapOf("sweet" to sweetJson, "replies" to replies2Json, "medias" to medias2Json)
-    val data_json = gson.toJson(data)
+    val map = mapOf("sweet" to sweetJson, "replies" to replies2Json, "medias" to medias2Json)
+    val mapJson = gson.toJson(map)
 
-    val apiResult = ApiResult(code = 1, desc = "deep json data", data = data_json)
+    val apiResult = ApiResult(code = 100, desc = "deep json data", data = mapJson)
     println("\napiResult:$apiResult")
 
-    val res_json = gson.toJson(apiResult)
-    println("\nres_json:$res_json")
+    val resJson = gson.toJson(apiResult)
+    println("\nresJson:$resJson")
 
-    val res_data = apiResult.data()
-    println("\nres_data:$res_data")
+    val resData = apiResult.data
+    println("\nresData:$resData")
 
-    val res_data_obj = apiResult.data(Map::class.java)
-    println("\nres_data_obj:$res_data_obj")
+    val resDataMap = apiResult.data(Map::class.java)
+    println("\nresDataMap:$resDataMap")
 
-    res_data_obj!!.forEach { k, v ->
+    resDataMap!!.forEach { k, v ->
         if (k == "sweet") {
-            val res_sweet = gson.fromJson<Sweet>(v.toString())
-            println("\nres_sweet:$res_sweet")
+            val resSweet = gson.fromJson<Sweet>(v.toString())
+            println("\nresSweet:$resSweet")
         } else if (k == "replies") {
-            val res_replies = gson.fromJson<List<Sweet>>(v.toString(), object : TypeToken<List<Sweet>>() {}.type)
-            println("\nres_replies:$res_replies")
-            res_replies.forEach { it ->
+            val resReplies = gson.fromJson<List<Sweet>>(v.toString(), object : TypeToken<List<Sweet>>() {}.type)
+            println("\nresReplies:$resReplies")
+            resReplies.forEach { it ->
                 println("\nreply:$it")
             }
         } else if (k == "medias") {
-            val res_medias = gson.fromJson<List<Media>>(v.toString(), object : TypeToken<List<Media>>() {}.type)
-            println("\nres_medias:$res_medias")
-            res_medias.forEach { it ->
+            val resMedias = gson.fromJson<List<Media>>(v.toString(), object : TypeToken<List<Media>>() {}.type)
+            println("\nres_medias:$resMedias")
+            resMedias.forEach { it ->
                 println("\nmedia:$it")
             }
         }
