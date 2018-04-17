@@ -1,0 +1,11 @@
+.gradle/
+.idea/
+cached/
+repo/
+data/
+target/
+uploads/
+build/
+gradle/
+sitexa-node/node_modules/
+out/
