@@ -9,12 +9,6 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-    <modules>
-        <module>sitexa-api</module>
-        <module>sitexa-web</module>
-        <module>sitexa-sample</module>
-    </modules>
-
     <properties>
         <kotlin.version>1.2.21</kotlin.version>
         <ktor.version>0.9.1</ktor.version>
@@ -310,10 +304,6 @@
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
-            <modules>
-                <module>sitexa-api</module>
-                <module>sitexa-web</module>
-            </modules>
         </profile>
         <profile>
             <id>bintray</id>

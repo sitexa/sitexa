@@ -6,10 +6,7 @@ import com.sitexa.ktor.common.JodaGsonAdapter
 import com.sitexa.ktor.dao.DAOFacade
 import com.sitexa.ktor.dao.DAOFacadeCache
 import com.sitexa.ktor.dao.DAOFacadeDatabase
-import com.sitexa.ktor.handler.fileHandler
-import com.sitexa.ktor.handler.mediaHandler
-import com.sitexa.ktor.handler.sweetHandler
-import com.sitexa.ktor.handler.userHandler
+import com.sitexa.ktor.handler.*
 import com.sitexa.ktor.model.User
 import com.zaxxer.hikari.HikariDataSource
 import io.ktor.application.*
@@ -19,10 +16,8 @@ import io.ktor.auth.basicAuthentication
 import io.ktor.content.default
 import io.ktor.content.files
 import io.ktor.content.static
-import io.ktor.features.CallLogging
-import io.ktor.features.ConditionalHeaders
-import io.ktor.features.DefaultHeaders
-import io.ktor.features.PartialContent
+import io.ktor.features.*
+import io.ktor.gson.gson
 import io.ktor.http.HttpHeaders
 import io.ktor.locations.Locations
 import io.ktor.request.header
@@ -94,6 +89,14 @@ class SweetApi : AutoCloseable {
             }
         }
 
+        install(ContentNegotiation){
+            gson {
+                registerTypeAdapter(DateTime::class.java, JodaGsonAdapter())
+                setLongSerializationPolicy(LongSerializationPolicy.STRING)
+                //setPrettyPrinting()
+            }
+        }
+
         val hashFunction = { s: String -> hash(s) }
 
         authentication { basicAuthentication("ktor") { hashedUserTable.authenticate(it) } }
@@ -103,6 +106,7 @@ class SweetApi : AutoCloseable {
             sweetHandler(dao, hashFunction)
             mediaHandler(dao, hashFunction)
             fileHandler(dao, hashFunction)
+            TestHandler(dao,hashFunction)
             static {
                 files(".")
                 default("index.html")

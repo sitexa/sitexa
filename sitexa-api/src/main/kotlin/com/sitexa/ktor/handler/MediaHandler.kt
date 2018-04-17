@@ -1,6 +1,5 @@
 package com.sitexa.ktor.handler
 
-import com.sitexa.ktor.JsonResponse
 import com.sitexa.ktor.common.ApiCode
 import com.sitexa.ktor.common.ApiResult
 import com.sitexa.ktor.dao.DAOFacade
@@ -10,9 +9,11 @@ import io.ktor.application.application
 import io.ktor.application.call
 import io.ktor.application.log
 import io.ktor.content.LocalFileContent
+import io.ktor.http.Parameters
 import io.ktor.locations.Location
 import io.ktor.locations.get
 import io.ktor.locations.post
+import io.ktor.request.receive
 import io.ktor.response.respond
 import io.ktor.routing.Route
 import java.io.File
@@ -22,24 +23,40 @@ import java.io.File
  *
  */
 
-@Location("/sweet-medias/{refId}") class GetMedias(val refId: Int)
+@Location("/sweet-medias/{refId}")
+class GetMedias(val refId: Int)
 
-@Location("/media-new") class MediaNew(val refId: Int = 0, val fileName: String = "", val fileType: String? = "unknown", val title: String? = null, val sortOrder: Int? = null)
-@Location("/media-del") class MediaDel(val id: Int)
-@Location("/media/{name}/{type}") class MediaView(val name: String, val type: String)
-@Location("/media/{id}") class MediaData(val id: Int)
-@Location("/mediasBySweet/{refId}") class MediasBySweet(val refId: Int)
+@Location("/media-new")
+class MediaNew(val refId: Int = 0, val fileName: String = "", val fileType: String? = "unknown", val title: String? = null, val sortOrder: Int? = null)
+
+@Location("/media-del")
+class MediaDel(val id: Int)
+
+@Location("/media/{name}/{type}")
+class MediaView(val name: String, val type: String)
+
+@Location("/media/{id}")
+class MediaData(val id: Int)
+
+@Location("/mediasBySweet/{refId}")
+class MediasBySweet(val refId: Int)
 
 fun Route.mediaHandler(dao: DAOFacade, hashFunction: (String) -> String) {
     post<MediaNew> {
         var apiResult: ApiResult
         try {
-            val id = dao.createMedia(it.refId, it.fileName, it.fileType, it.title, it.sortOrder)
+            val post = call.receive<Parameters>()
+            val refId = post["refId"]!!.toIntOrNull()
+            val fileName = post["fileName"]
+            val fileType = post["fileType"]
+            val title = post["title"]
+            val sortOrder = post["sortOrder"]!!.toIntOrNull()
+            val id = dao.createMedia(refId, fileName!!, fileType, title, sortOrder)
             apiResult = ApiResult(code = ApiCode.OK, desc = "success", data = "" + id)
         } catch (e: Exception) {
             apiResult = ApiResult(code = ApiCode.ERROR, desc = "fail", data = e.message!!)
         }
-        call.respond(JsonResponse(apiResult))
+        call.respond(apiResult)
     }
     get<MediaDel> {
         var apiResult: ApiResult
@@ -49,7 +66,7 @@ fun Route.mediaHandler(dao: DAOFacade, hashFunction: (String) -> String) {
         } catch (e: Exception) {
             apiResult = ApiResult(code = ApiCode.ERROR, desc = "fail", data = "" + e.message)
         }
-        call.respond(JsonResponse(apiResult))
+        call.respond(apiResult)
     }
     get<MediaView> {
         call.respond(LocalFileContent(File(uploadDir + "/" + it.name)))
@@ -58,27 +75,27 @@ fun Route.mediaHandler(dao: DAOFacade, hashFunction: (String) -> String) {
         var media: Media? = null
         try {
             media = dao.getMedia(it.id)
-        } catch(e: Exception) {
+        } catch (e: Exception) {
             application.log.error(e.toString())
         }
-        call.respond(JsonResponse(media!!))
+        call.respond(media!!)
     }
     get<MediasBySweet> {
         var medias: List<Int> = emptyList()
         try {
             medias = dao.getMedias(it.refId)
-        } catch(e: Exception) {
+        } catch (e: Exception) {
             application.log.error(e.toString())
         }
-        call.respond(JsonResponse(medias))
+        call.respond(medias)
     }
     get<GetMedias> {
         var medias: List<Media> = emptyList()
         try {
             medias = dao.getMedias(it.refId).map { dao.getMedia(it) }.filterNotNull()
-        } catch(e: Exception) {
+        } catch (e: Exception) {
             application.log.error(e.toString())
         }
-        call.respond(JsonResponse(medias))
+        call.respond(medias)
     }
 }

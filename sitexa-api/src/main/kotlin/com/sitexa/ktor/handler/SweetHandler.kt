@@ -2,7 +2,6 @@ package com.sitexa.ktor.handler
 
 import com.google.gson.GsonBuilder
 import com.google.gson.LongSerializationPolicy
-import com.sitexa.ktor.JsonResponse
 import com.sitexa.ktor.common.ApiCode
 import com.sitexa.ktor.common.ApiResult
 import com.sitexa.ktor.common.JodaGsonAdapter
@@ -12,9 +11,11 @@ import com.sitexa.ktor.model.Sweet
 import io.ktor.application.application
 import io.ktor.application.call
 import io.ktor.application.log
+import io.ktor.http.Parameters
 import io.ktor.locations.Location
 import io.ktor.locations.get
 import io.ktor.locations.post
+import io.ktor.request.receive
 import io.ktor.response.respond
 import io.ktor.routing.Route
 import org.joda.time.DateTime
@@ -23,20 +24,41 @@ import org.joda.time.DateTime
  * Created by open on 10/04/2017.
  *
  */
-@Location("/sweet-new") class SweetNew(val text: String = "", val user: String = "", val replyTo: Int? = null)
+@Location("/sweet-new")
+class SweetNew(val text: String = "", val user: String = "", val replyTo: Int? = null)
 
-@Location("/sweet-del") class SweetDel(val id: Int = -1)
-@Location("/sweet-upd") class SweetUpd(val id: Int = -1, val text: String = "")
+@Location("/sweet-del")
+class SweetDel(val id: Int = -1)
 
-@Location("/sweet/{id}") class SweetSingle(val id: Int)
-@Location("/sweet-component/{id}") class SweetComponent(val id: Int)
-@Location("/sweet-top/{count}/{page}") class TopSweet(val count: Int = 10, val page: Int = 1)
-@Location("/sweet-latest/{count}/{page}") class LatestSweet(val count: Int = 10, val page: Int = 1)
-@Location("/sweet-reply-count/{id}") class CountSweetReplies(val id: Int)
-@Location("/sweet-replies/{id}") class GetReplies(val id: Int)
-@Location("/sweet-user/{user}") class UserSweet(val user: String)
-@Location("/top/{count}/{page}") class Top(val count: Int = 10, val page: Int = 1)
-@Location("/latest/{count}/{page}") class Latest(val count: Int = 10, val page: Int = 1)
+@Location("/sweet-upd")
+class SweetUpd(val id: Int = -1, val text: String = "")
+
+@Location("/sweet/{id}")
+class SweetSingle(val id: Int)
+
+@Location("/sweet-component/{id}")
+class SweetComponent(val id: Int)
+
+@Location("/sweet-top/{count}/{page}")
+class TopSweet(val count: Int = 10, val page: Int = 1)
+
+@Location("/sweet-latest/{count}/{page}")
+class LatestSweet(val count: Int = 10, val page: Int = 1)
+
+@Location("/sweet-reply-count/{id}")
+class CountSweetReplies(val id: Int)
+
+@Location("/sweet-replies/{id}")
+class GetReplies(val id: Int)
+
+@Location("/sweet-user/{user}")
+class UserSweet(val user: String)
+
+@Location("/top/{count}/{page}")
+class Top(val count: Int = 10, val page: Int = 1)
+
+@Location("/latest/{count}/{page}")
+class Latest(val count: Int = 10, val page: Int = 1)
 
 
 fun Route.sweetHandler(dao: DAOFacade, hashFunction: (String) -> String) {
@@ -45,15 +67,25 @@ fun Route.sweetHandler(dao: DAOFacade, hashFunction: (String) -> String) {
 
     post<SweetNew> {
         var apiResult: ApiResult
-        try {
-            val id = dao.createSweet(it.user, it.text, it.replyTo)
-            apiResult = ApiResult(code = ApiCode.OK, desc = "保存成功", data = "" + id)
-        } catch (e: Exception) {
-            apiResult = ApiResult(code = ApiCode.ERROR, desc = e.message!!)
-        }
-        call.respond(JsonResponse(apiResult))
 
+        val post = call.receive<Parameters>()
+        val user = post["user"]
+        val text = post["text"]
+        val replyTo = post["replyTo"]?.toIntOrNull()
+
+        if (user.isNullOrEmpty() || text.isNullOrEmpty()) {
+            apiResult = ApiResult(code = ApiCode.ERROR, desc = "user or text cannot be empty")
+        } else {
+            try {
+                val id = dao.createSweet(user!!, text!!, replyTo)
+                apiResult = ApiResult(code = ApiCode.OK, desc = "保存成功", data = id)
+            } catch (e: Exception) {
+                apiResult = ApiResult(code = ApiCode.ERROR, desc = e.message!!)
+            }
+        }
+        call.respond(apiResult)
     }
+
     get<SweetDel> {
         var apiResult: ApiResult
         try {
@@ -62,27 +94,37 @@ fun Route.sweetHandler(dao: DAOFacade, hashFunction: (String) -> String) {
         } catch (e: Exception) {
             apiResult = ApiResult(code = ApiCode.ERROR, desc = "删除失败", data = e.message!!)
         }
-        call.respond(JsonResponse(apiResult))
+        call.respond(apiResult)
     }
     post<SweetUpd> {
         var apiResult: ApiResult
-        try {
-            dao.updateSweet(it.id, it.text)
-            apiResult = ApiResult(code = ApiCode.OK, desc = "success", data = "" + it.id)
-        } catch (e: Exception) {
-            apiResult = ApiResult(code = ApiCode.ERROR, desc = "fail", data = "" + e.message)
+
+        val post = call.receive<Parameters>()
+        val id = post["id"]?.toIntOrNull()
+        val text = post["text"]
+
+        apiResult = if (id == null || text.isNullOrEmpty()) {
+            ApiResult(code = ApiCode.ERROR, desc = "id or text cannot be empty")
+        } else {
+            try {
+                dao.updateSweet(id, text!!)
+                ApiResult(code = ApiCode.OK, desc = "success", data = "" + it.id)
+            } catch (e: Exception) {
+                ApiResult(code = ApiCode.ERROR, desc = "fail", data = "" + e.message)
+            }
         }
-        call.respond(JsonResponse(apiResult))
+        call.respond(apiResult)
     }
 
     get<SweetSingle> {
         var sweet: Sweet? = null
         try {
             sweet = dao.getSweet(it.id)
+            //println("Sweet:=$sweet")
         } catch (e: Exception) {
             application.log.error(e.toString())
         }
-        call.respond(JsonResponse(sweet!!))
+        call.respond(sweet!!)
     }
     get<SweetComponent> {
         var apiResult: ApiResult
@@ -93,13 +135,13 @@ fun Route.sweetHandler(dao: DAOFacade, hashFunction: (String) -> String) {
                 val med = dao.getMedia(it)
                 Media(med!!.id, med.refId, med.fileName, med.fileType, med.title, med.sortOrder)
             }.toList()
-            val data = mapOf("sweet" to gson.toJson(sweet), "replies" to gson.toJson(replies), "medias" to gson.toJson(medias))
-            val data_json = gson.toJson(data)
-            apiResult = ApiResult(code = ApiCode.OK, desc = "success", data = data_json)
+            val dataMap = mapOf("sweet" to gson.toJson(sweet), "replies" to gson.toJson(replies), "medias" to gson.toJson(medias))
+            val dataMapJson = gson.toJson(dataMap)
+            apiResult = ApiResult(code = ApiCode.OK, desc = "success", data = dataMapJson)
         } catch (e: Exception) {
             apiResult = ApiResult(code = ApiCode.ERROR, desc = "fail", data = "" + e.message)
         }
-        call.respond(JsonResponse(apiResult))
+        call.respond(apiResult)
     }
     get<TopSweet> {
         var top: List<Int> = emptyList()
@@ -108,7 +150,7 @@ fun Route.sweetHandler(dao: DAOFacade, hashFunction: (String) -> String) {
         } catch (e: Exception) {
             application.log.error(e.toString())
         }
-        call.respond(JsonResponse(top))
+        call.respond(top)
     }
     get<Top> {
         var top: List<Sweet> = emptyList()
@@ -117,7 +159,7 @@ fun Route.sweetHandler(dao: DAOFacade, hashFunction: (String) -> String) {
         } catch (e: Exception) {
             application.log.error(e.toString())
         }
-        call.respond(JsonResponse(top))
+        call.respond(top)
     }
     get<LatestSweet> {
         var latest: List<Int> = emptyList()
@@ -126,7 +168,7 @@ fun Route.sweetHandler(dao: DAOFacade, hashFunction: (String) -> String) {
         } catch (e: Exception) {
             application.log.error(e.toString())
         }
-        call.respond(JsonResponse(latest))
+        call.respond(latest)
     }
     get<Latest> {
         var latest: List<Sweet> = emptyList()
@@ -135,7 +177,7 @@ fun Route.sweetHandler(dao: DAOFacade, hashFunction: (String) -> String) {
         } catch (e: Exception) {
             application.log.error(e.toString())
         }
-        call.respond(JsonResponse(latest))
+        call.respond(latest)
     }
     get<CountSweetReplies> {
         var countSweetReplies: Int = 0
@@ -144,17 +186,17 @@ fun Route.sweetHandler(dao: DAOFacade, hashFunction: (String) -> String) {
         } catch (e: Exception) {
             application.log.error(e.toString())
         }
-        call.respond(JsonResponse(countSweetReplies))
+        call.respond(countSweetReplies)
     }
     get<GetReplies> {
         var replies: List<Sweet> = emptyList()
         try {
             val ids = dao.getReplies(it.id)
             replies = ids.map { dao.getSweet(it) }.toList()
-        } catch(e: Exception) {
+        } catch (e: Exception) {
             application.log.error(e.toString())
         }
-        call.respond(JsonResponse(replies))
+        call.respond(replies)
     }
     get<UserSweet> {
         var sweets: List<Int> = emptyList()
@@ -163,8 +205,7 @@ fun Route.sweetHandler(dao: DAOFacade, hashFunction: (String) -> String) {
         } catch (e: Exception) {
             application.log.error(e.toString())
         }
-        call.respond(JsonResponse(sweets))
+        call.respond(sweets)
     }
-
 
 }

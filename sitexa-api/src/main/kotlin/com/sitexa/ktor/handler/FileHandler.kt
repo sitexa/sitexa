@@ -1,6 +1,5 @@
 package com.sitexa.ktor.handler
 
-import com.sitexa.ktor.JsonResponse
 import com.sitexa.ktor.common.ApiCode
 import com.sitexa.ktor.common.ApiResult
 import com.sitexa.ktor.dao.DAOFacade
@@ -73,7 +72,7 @@ fun Route.fileHandler(dao: DAOFacade, hashFunction: (String) -> String) {
         } catch(e: Exception) {
             apiResult = ApiResult(code = ApiCode.ERROR, desc = "fail", data = e.message!!)
         }
-        call.respond(JsonResponse(apiResult))
+        call.respond(apiResult)
     }
 
     get<Download> {

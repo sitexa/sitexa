@@ -8,4 +8,4 @@ uploads/
 build/
 gradle/
 sitexa-node/node_modules/
-
+out/
