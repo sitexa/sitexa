@@ -6,7 +6,10 @@ import com.sitexa.ktor.common.JodaGsonAdapter
 import com.sitexa.ktor.dao.DAOFacade
 import com.sitexa.ktor.dao.DAOFacadeCache
 import com.sitexa.ktor.dao.DAOFacadeDatabase
-import com.sitexa.ktor.handler.*
+import com.sitexa.ktor.handler.fileHandler
+import com.sitexa.ktor.handler.mediaHandler
+import com.sitexa.ktor.handler.sweetHandler
+import com.sitexa.ktor.handler.userHandler
 import com.sitexa.ktor.model.User
 import com.zaxxer.hikari.HikariDataSource
 import io.ktor.application.*
@@ -106,7 +109,6 @@ class SweetApi : AutoCloseable {
             sweetHandler(dao, hashFunction)
             mediaHandler(dao, hashFunction)
             fileHandler(dao, hashFunction)
-            TestHandler(dao,hashFunction)
             static {
                 files(".")
                 default("index.html")
