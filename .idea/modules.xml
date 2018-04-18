@@ -3,9 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/sitexa.iml" filepath="$PROJECT_DIR$/.idea/sitexa.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/sitexa-api.iml" filepath="$PROJECT_DIR$/.idea/modules/sitexa-api.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/sitexa-api_main.iml" filepath="$PROJECT_DIR$/.idea/modules/sitexa-api_main.iml" group="sitexa-api" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/sitexa-api_test.iml" filepath="$PROJECT_DIR$/.idea/modules/sitexa-api_test.iml" group="sitexa-api" />
+      <module fileurl="file://$PROJECT_DIR$/sitexa-api/sitexa-api.iml" filepath="$PROJECT_DIR$/sitexa-api/sitexa-api.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/sitexa-node.iml" filepath="$PROJECT_DIR$/.idea/modules/sitexa-node.iml" />
     </modules>
   </component>

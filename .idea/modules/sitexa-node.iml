@@ -37,8 +37,11 @@
       <sourceFolder url="file://$MODULE_DIR$/../../sitexa-node/src/main/resources" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/../../sitexa-node/src/test/resources" type="java-test-resource" />
       <excludeFolder url="file://$MODULE_DIR$/../../sitexa-node/.gradle" />
+      <excludeFolder url="file://$MODULE_DIR$/../../sitexa-node/.idea" />
       <excludeFolder url="file://$MODULE_DIR$/../../sitexa-node/build" />
+      <excludeFolder url="file://$MODULE_DIR$/../../sitexa-node/cached" />
       <excludeFolder url="file://$MODULE_DIR$/../../sitexa-node/out" />
+      <excludeFolder url="file://$MODULE_DIR$/../../sitexa-node/target" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
