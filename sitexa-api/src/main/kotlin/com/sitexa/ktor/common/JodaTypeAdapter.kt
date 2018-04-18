@@ -21,16 +21,15 @@ class JodaMoshiAdapter {
 
 class JodaGsonAdapter : JsonSerializer<DateTime>, JsonDeserializer<DateTime> {
     override fun serialize(src: DateTime, srcType: Type, context: JsonSerializationContext): JsonElement {
-        //return JsonPrimitive(src.toString())
         return JsonPrimitive(src.millis)
     }
 
     @Throws(JsonParseException::class)
     override fun deserialize(json: JsonElement, type: Type, context: JsonDeserializationContext): DateTime {
-        try {
-            return DateTime(json.asLong)
+        return try {
+            DateTime(json.asLong)
         } catch (e: IllegalArgumentException) {
-            return context.deserialize<DateTime>(json, DateTime::class.java)
+            context.deserialize<DateTime>(json, DateTime::class.java)
         }
     }
 }

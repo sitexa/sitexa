@@ -1,6 +1,5 @@
 package com.sitexa.ktor
 
-import com.google.gson.GsonBuilder
 import com.google.gson.LongSerializationPolicy
 import com.sitexa.ktor.common.JodaGsonAdapter
 import com.sitexa.ktor.dao.DAOFacade
@@ -25,9 +24,6 @@ import io.ktor.http.HttpHeaders
 import io.ktor.locations.Locations
 import io.ktor.request.header
 import io.ktor.request.host
-import io.ktor.request.port
-import io.ktor.response.respond
-import io.ktor.response.respondRedirect
 import io.ktor.routing.Routing
 import io.ktor.sessions.SessionTransportTransformerMessageAuthentication
 import io.ktor.sessions.Sessions
@@ -47,21 +43,15 @@ import javax.crypto.spec.SecretKeySpec
  *
  */
 
-class JsonResponse(val data: Any)
-
 data class SweetSession(val userId: String)
-//data class SweetSession(val userId: String, val appId: String)
 
 class SweetApi : AutoCloseable {
 
-    val hashKey = hex("6819b57a326945c1968f45236589")
-    val hmacKey = SecretKeySpec(hashKey, "HmacSHA1")
-    val gson = GsonBuilder()
-            .registerTypeAdapter(DateTime::class.java, JodaGsonAdapter())
-            .setLongSerializationPolicy(LongSerializationPolicy.STRING)
-            .create()
+    private val hashKey = hex("6819b57a326945c1968f45236589")
+    private val hmacKey = SecretKeySpec(hashKey, "HmacSHA1")
 
     lateinit var datasource: HikariDataSource
+    lateinit var dao: DAOFacade
 
     fun Application.install() {
 
@@ -76,10 +66,10 @@ class SweetApi : AutoCloseable {
             addDataSourceProperty("password", environment.config.property("database.password").getString())
             addDataSourceProperty("dialect", environment.config.property("database.dialect").getString())
         }
-
-        val dao: DAOFacade = DAOFacadeCache(DAOFacadeDatabase(Database.connect(datasource)), File(cacheDir, "ehcache"))
-
+        dao = DAOFacadeCache(DAOFacadeDatabase(Database.connect(datasource)), File(cacheDir, "ehcache"))
         dao.init()
+        environment.monitor.subscribe(ApplicationStopped) { dao.close() }
+
         install(DefaultHeaders)
         install(CallLogging)
         install(ConditionalHeaders)
@@ -92,11 +82,11 @@ class SweetApi : AutoCloseable {
             }
         }
 
-        install(ContentNegotiation){
+        install(ContentNegotiation) {
             gson {
                 registerTypeAdapter(DateTime::class.java, JodaGsonAdapter())
                 setLongSerializationPolicy(LongSerializationPolicy.STRING)
-                //setPrettyPrinting()
+                setPrettyPrinting()
             }
         }
 
@@ -114,7 +104,6 @@ class SweetApi : AutoCloseable {
                 default("index.html")
             }
         }
-
     }
 
     override fun close() {
@@ -140,35 +129,18 @@ class SweetApi : AutoCloseable {
     }
 }
 
-//todo:this function does not work. why?
-suspend fun ApplicationCall.respondJson(data: Any) = respond(JsonResponse(data))
-
-suspend fun ApplicationCall.redirect(location: Any) {
-    val host = request.host() ?: "localhost"
-    val portSpec = request.port().let { if (it == 80) "" else ":$it" }
-    val address = host + portSpec
-
-    respondRedirect("http://$address${application.feature(Locations).href(location)}")
-}
-
 fun ApplicationCall.securityCode(date: Long, user: User, hashFunction: (String) -> String) =
         hashFunction("$date:${user.userId}:${request.host()}:${refererHost()}")
 
 fun ApplicationCall.verifyCode(date: Long, user: User, code: String, hashFunction: (String) -> String) =
-        securityCode(date, user, hashFunction) == code
-                && (System.currentTimeMillis() - date).let { it > 0 && it < TimeUnit.MILLISECONDS.convert(2, TimeUnit.HOURS) }
+        securityCode(date, user, hashFunction) == code && (System.currentTimeMillis() - date).let { it > 0 && it < TimeUnit.MILLISECONDS.convert(2, TimeUnit.HOURS) }
 
 fun ApplicationCall.refererHost() = request.header(HttpHeaders.Referrer)?.let { URI.create(it).host }
-
 
 fun ApplicationCall.signVCode(date: Long, vcode: String, hashFunction: (String) -> String) =
         hashFunction("$date:$vcode:${request.host()}:${refererHost()}")
 
 fun ApplicationCall.testVCode(date: Long, vcode: String, sign: String, hashFunction: (String) -> String) =
-        signVCode(date, vcode, hashFunction) == sign
-                && (System.currentTimeMillis() - date).let { it > 0 && it < TimeUnit.MILLISECONDS.convert(5, TimeUnit.MINUTES) }
+        signVCode(date, vcode, hashFunction) == sign && (System.currentTimeMillis() - date).let { it > 0 && it < TimeUnit.MILLISECONDS.convert(5, TimeUnit.MINUTES) }
 
-
-val hashedUserTable = UserHashedTableAuth(table = mapOf(
-        "test" to decodeBase64("VltM4nfheqcJSyH887H+4NEOm2tDuKCl83p5axYXlF0=") // sha256 for "test"
-))
+val hashedUserTable = UserHashedTableAuth(table = mapOf("test" to decodeBase64("VltM4nfheqcJSyH887H+4NEOm2tDuKCl83p5axYXlF0="))) // sha256 for "test"

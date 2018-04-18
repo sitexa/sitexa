@@ -31,7 +31,7 @@ fun Route.fileHandler(dao: DAOFacade, hashFunction: (String) -> String) {
 
     post<Upload> {
 
-        var id: Int? = null
+        var id: Int?
         var refId: Int? = null
         var title: String? = null
         var sortOrder: Int? = null

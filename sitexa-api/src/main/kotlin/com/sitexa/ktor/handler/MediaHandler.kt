@@ -92,7 +92,7 @@ fun Route.mediaHandler(dao: DAOFacade, hashFunction: (String) -> String) {
     get<GetMedias> {
         var medias: List<Media> = emptyList()
         try {
-            medias = dao.getMedias(it.refId).map { dao.getMedia(it) }.filterNotNull()
+            medias = dao.getMedias(it.refId).mapNotNull { dao.getMedia(it) }
         } catch (e: Exception) {
             application.log.error(e.toString())
         }

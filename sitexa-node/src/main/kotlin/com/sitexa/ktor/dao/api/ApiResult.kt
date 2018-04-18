@@ -31,7 +31,6 @@ data class ApiResult(val code: Int = 0, val desc: String = "", val data: Any? = 
         return try {
             gson.fromJson<T>(data.toString(), type)
         } catch (e: Exception) {
-            println(e.stackTrace)
             null
         }
     }

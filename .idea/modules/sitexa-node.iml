@@ -58,7 +58,6 @@
     <orderEntry type="library" scope="PROVIDED" name="Gradle: io.ktor:ktor-utils:0.9.2-alpha-5" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: io.ktor:ktor-network:0.9.2-alpha-5" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.2.31" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.jetbrains.exposed:exposed:0.7.6" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: com.fasterxml.jackson.module:jackson-module-kotlin:2.7.5" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: org.jetbrains.kotlin:kotlin-reflect:1.2.31" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: org.funktionale:funktionale:0.8" level="project" />
@@ -66,13 +65,11 @@
     <orderEntry type="library" scope="PROVIDED" name="Gradle: com.github.salomonbrys.kotson:kotson:2.5.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: joda-time:joda-time:2.9.4" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: org.flywaydb:flyway-core:4.0.3" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: com.zaxxer:HikariCP:2.4.7" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: de.svenkubiak:jBCrypt:0.4.1" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: ch.qos.logback:logback-classic:1.1.7" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: org.ehcache:ehcache:3.0.0.m4" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: org.terracotta:offheap-store:2.1.2" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: org.slf4j:slf4j-api:1.7.25" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.mariadb.jdbc:mariadb-java-client:1.5.9" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: com.squareup.okhttp3:logging-interceptor:3.6.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: com.squareup.retrofit2:converter-gson:2.2.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: com.squareup.retrofit2:converter-moshi:2.2.0" level="project" />
@@ -142,7 +139,6 @@
     <orderEntry type="library" scope="RUNTIME" name="Gradle: io.ktor:ktor-utils:0.9.2-alpha-5" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: io.ktor:ktor-network:0.9.2-alpha-5" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.2.31" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.jetbrains.exposed:exposed:0.7.6" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: com.fasterxml.jackson.module:jackson-module-kotlin:2.7.5" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: org.jetbrains.kotlin:kotlin-reflect:1.2.31" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: org.funktionale:funktionale:0.8" level="project" />
@@ -150,13 +146,11 @@
     <orderEntry type="library" scope="RUNTIME" name="Gradle: com.github.salomonbrys.kotson:kotson:2.5.0" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: joda-time:joda-time:2.9.4" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: org.flywaydb:flyway-core:4.0.3" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: com.zaxxer:HikariCP:2.4.7" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: de.svenkubiak:jBCrypt:0.4.1" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: ch.qos.logback:logback-classic:1.1.7" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: org.ehcache:ehcache:3.0.0.m4" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: org.terracotta:offheap-store:2.1.2" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: org.slf4j:slf4j-api:1.7.25" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.mariadb.jdbc:mariadb-java-client:1.5.9" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: com.squareup.okhttp3:logging-interceptor:3.6.0" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: com.squareup.retrofit2:converter-gson:2.2.0" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: com.squareup.retrofit2:converter-moshi:2.2.0" level="project" />
@@ -226,7 +220,6 @@
     <orderEntry type="library" scope="TEST" name="Gradle: io.ktor:ktor-utils:0.9.2-alpha-5" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: io.ktor:ktor-network:0.9.2-alpha-5" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.2.31" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.exposed:exposed:0.7.6" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: com.fasterxml.jackson.module:jackson-module-kotlin:2.7.5" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.kotlin:kotlin-reflect:1.2.31" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: org.funktionale:funktionale:0.8" level="project" />
@@ -234,13 +227,11 @@
     <orderEntry type="library" scope="TEST" name="Gradle: com.github.salomonbrys.kotson:kotson:2.5.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: joda-time:joda-time:2.9.4" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: org.flywaydb:flyway-core:4.0.3" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: com.zaxxer:HikariCP:2.4.7" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: de.svenkubiak:jBCrypt:0.4.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: ch.qos.logback:logback-classic:1.1.7" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: org.ehcache:ehcache:3.0.0.m4" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: org.terracotta:offheap-store:2.1.2" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: org.slf4j:slf4j-api:1.7.25" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: org.mariadb.jdbc:mariadb-java-client:1.5.9" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: com.squareup.okhttp3:logging-interceptor:3.6.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: com.squareup.retrofit2:converter-gson:2.2.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: com.squareup.retrofit2:converter-moshi:2.2.0" level="project" />

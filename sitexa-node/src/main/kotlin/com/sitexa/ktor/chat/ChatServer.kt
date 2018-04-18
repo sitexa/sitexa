@@ -10,16 +10,13 @@ import kotlinx.io.core.buildPacket
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.CopyOnWriteArrayList
-import java.util.concurrent.atomic.AtomicInteger
 
 class ChatServer {
-    val usersCounter = AtomicInteger()
     val memberNames = ConcurrentHashMap<String, String>()
     val members = ConcurrentHashMap<String, MutableList<WebSocketSession>>()
     val lastMessages = LinkedList<String>()
 
     suspend fun memberJoin(member: String, socket: WebSocketSession) {
-        //val name = memberNames.computeIfAbsent(member) { "user${usersCounter.incrementAndGet()}" }
         val name = memberNames.computeIfAbsent(member) { member }
         val list = members.computeIfAbsent(member) { CopyOnWriteArrayList<WebSocketSession>() }
         list.add(socket)

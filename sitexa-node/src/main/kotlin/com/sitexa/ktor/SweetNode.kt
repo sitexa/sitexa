@@ -79,12 +79,6 @@ class SweetNode : AutoCloseable {
             }
         }
 
-        /*intercept(ApplicationCallPipeline.Infrastructure) {
-            if (call.sessions.get<SweetSession>() == null) {
-                call.redirect(Login())
-            }
-        }*/
-
         val hashFunction = { s: String -> hash(s) }
 
         install(Routing) {
