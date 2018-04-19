@@ -110,7 +110,7 @@ class SweetApi : AutoCloseable {
         datasource.close()
     }
 
-    fun hash(password: String): String {
+    private fun hash(password: String): String {
         val hmac = Mac.getInstance("HmacSHA1")
         hmac.init(hmacKey)
         return hex(hmac.doFinal(password.toByteArray(Charsets.UTF_8)))

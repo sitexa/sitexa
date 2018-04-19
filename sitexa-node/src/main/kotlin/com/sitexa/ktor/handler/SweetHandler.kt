@@ -141,13 +141,13 @@ fun Route.sweetHandler(dao: DAOFacade, hashFunction: (String) -> String) {
     get<SweetView> {
 
         val s = call.sessions.get<SweetSession>()
-        println("SweetPage==s:$s,${s!!.userId}")
+        println("SweetPage==s:$s")
 
         val user = call.sessions.get<SweetSession>()?.let { dao.user(it.userId) }
         val sweet = dao.getSweet(it.id)
         val replies = dao.getReplies(it.id)
         val s1 = call.sessions.get<SweetSession>()
-        println("SweetPage==s1:$s1,${s1!!.userId}")
+        println("SweetPage==s1:$s1")
 
         val date = System.currentTimeMillis()
         val code = if (user != null) call.securityCode(date, user, hashFunction) else null
@@ -159,7 +159,7 @@ fun Route.sweetHandler(dao: DAOFacade, hashFunction: (String) -> String) {
         }.toList()
 
         val s2 = call.sessions.get<SweetSession>()
-        println("SweetPage==s2:$s2,${s2!!.userId}")
+        println("SweetPage==s2:$s2")
 
         call.respond(FreeMarkerContent("sweet-view.ftl", mapOf("user" to user, "sweet" to sweet, "replies" to replies, "date" to date, "code" to code, "medias" to medias), etag.toString()))
     }

@@ -125,6 +125,8 @@ fun Route.userHandler(dao: DAOFacade, hashFunction: (String) -> String) {
 
     get<Logout> {
         call.sessions.clear<SweetSession>()
+        val logoutSession = call.sessions.get<SweetSession>()
+        println("logoutSession==$logoutSession")
         call.redirect(Index())
     }
 
