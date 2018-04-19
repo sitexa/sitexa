@@ -1,10 +1,12 @@
 package com.sitexa.ktor.dao
 
 import com.sitexa.ktor.model.Media
+import com.sitexa.ktor.model.Site
 import com.sitexa.ktor.model.Sweet
 import com.sitexa.ktor.model.User
 import org.joda.time.DateTime
 import java.io.Closeable
+import java.math.BigDecimal
 
 /**
  * Created by open on 19/04/2017.
@@ -36,4 +38,12 @@ interface DAOFacade : Closeable {
     fun userByMobile(mobile: String): User?
     fun createUser(user: User)
     fun updateUser(user: User)
+
+    fun site(id: Int): Site?
+    fun siteByCode(code: Int): Site?
+    fun childrenById(id: Int): List<Site>?
+    fun childrenByCode(code: Int): List<Site>?
+    fun sitesByLevel(level: Int): List<Site>?
+    fun updateLatLng(id: Int, lat: BigDecimal? = null, lng: BigDecimal? = null)
+
 }

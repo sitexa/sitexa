@@ -1,5 +1,7 @@
 package com.sitexa.ktor
 
+import com.zaxxer.hikari.HikariDataSource
+
 /**
  * Created by open on 18/04/2017.
  *
@@ -17,5 +19,12 @@ val dbConfig = mapOf("driver" to "org.mariadb.jdbc.Driver",
 
 var cacheDir = "target/apidb"
 
-
-
+var datasource = HikariDataSource().apply {
+    maximumPoolSize = (dbConfig["pool"] as Int?)!!
+    driverClassName = dbConfig["driver"] as String
+    jdbcUrl = dbConfig["url"] as String
+    isAutoCommit = dbConfig["autoCommit"] as Boolean
+    addDataSourceProperty("user", dbConfig["user"] as String)
+    addDataSourceProperty("password", dbConfig["password"] as String)
+    addDataSourceProperty("dialect", dbConfig["dialect"] as String)
+}

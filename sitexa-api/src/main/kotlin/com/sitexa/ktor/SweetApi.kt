@@ -50,7 +50,7 @@ class SweetApi : AutoCloseable {
     private val hashKey = hex("6819b57a326945c1968f45236589")
     private val hmacKey = SecretKeySpec(hashKey, "HmacSHA1")
 
-    lateinit var datasource: HikariDataSource
+    //lateinit var datasource: HikariDataSource
     lateinit var dao: DAOFacade
 
     fun Application.install() {
@@ -66,7 +66,8 @@ class SweetApi : AutoCloseable {
             addDataSourceProperty("password", environment.config.property("database.password").getString())
             addDataSourceProperty("dialect", environment.config.property("database.dialect").getString())
         }
-        dao = DAOFacadeCache(DAOFacadeDatabase(Database.connect(datasource)), File(cacheDir, "ehcache"))
+        Database.connect(datasource)
+        dao = DAOFacadeCache(DAOFacadeDatabase(), File(cacheDir, "ehcache"))
         dao.init()
         environment.monitor.subscribe(ApplicationStopped) { dao.close() }
 

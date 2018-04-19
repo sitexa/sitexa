@@ -1,19 +1,21 @@
 package com.sitexa.ktor.dao
 
 import com.sitexa.ktor.model.Media
+import com.sitexa.ktor.model.Site
 import com.sitexa.ktor.model.Sweet
 import com.sitexa.ktor.model.User
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SchemaUtils.create
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.joda.time.DateTime
+import java.math.BigDecimal
 
 
-class DAOFacadeDatabase(val db: Database) : DAOFacade {
+class DAOFacadeDatabase : DAOFacade {
 
     override fun init() {
         transaction {
-            create(Users, Sweets, Medias)
+            create(Users, Sweets, Medias, Sites)
         }
     }
 
@@ -100,8 +102,6 @@ class DAOFacadeDatabase(val db: Database) : DAOFacade {
     override fun user(userId: String, hash: String?) = transaction {
         Users.select { Users.id.eq(userId) }
                 .mapNotNull {
-                    val id = it[Users.id]
-                    val pwd = it[Users.passwordHash]
                     if (hash == null || it[Users.passwordHash] == hash) {
                         User(userId, it[Users.mobile], it[Users.email], it[Users.displayName], it[Users.passwordHash])
                     } else {
@@ -201,5 +201,42 @@ class DAOFacadeDatabase(val db: Database) : DAOFacade {
     }
 
     override fun close() {
+    }
+
+    override fun site(id: Int): Site? = transaction {
+        Sites.select { Sites.id.eq(id) }
+                .mapNotNull { Site(id, it[Sites.code], it[Sites.parentId], it[Sites.name], it[Sites.level], it[Sites.lat], it[Sites.lng]) }
+                .singleOrNull()
+    }
+
+    override fun siteByCode(code: Int): Site? = transaction {
+        Sites.select { Sites.code.eq(code) }
+                .mapNotNull { Site(it[Sites.id], it[Sites.code], it[Sites.parentId], it[Sites.name], it[Sites.level], it[Sites.lat], it[Sites.lng]) }
+                .singleOrNull()
+    }
+
+    override fun childrenById(id: Int): List<Site>? = transaction {
+        val s = site(id)
+        childrenByCode(s!!.code)
+    }
+
+    override fun childrenByCode(code: Int): List<Site>? = transaction {
+        Sites.select { Sites.parentId.eq(code) }
+                .mapNotNull { Site(it[Sites.id], it[Sites.code], it[Sites.parentId], it[Sites.name], it[Sites.level], it[Sites.lat], it[Sites.lng]) }
+                .toList()
+    }
+
+    override fun sitesByLevel(level: Int): List<Site>? = transaction {
+        Sites.select { Sites.level.eq(level) }
+                .mapNotNull { Site(it[Sites.id], it[Sites.code], it[Sites.parentId], it[Sites.name], it[Sites.level], it[Sites.lat], it[Sites.lng]) }
+                .toList()
+    }
+
+    override fun updateLatLng(id: Int, lat: BigDecimal?, lng: BigDecimal?) = transaction {
+        Sites.update({ Sites.id.eq(id) }) {
+            it[Sites.lat] = lat
+            it[Sites.lng] = lng
+        }
+        Unit
     }
 }
