@@ -87,6 +87,7 @@ class SweetNode : AutoCloseable {
             userHandler(dao, hashFunction)
             sweetHandler(dao, hashFunction)
             chatHandler(dao)
+            siteHandler(dao)
             weatherHandler()
         }
     }

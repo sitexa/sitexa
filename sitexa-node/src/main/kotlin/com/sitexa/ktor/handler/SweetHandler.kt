@@ -60,7 +60,6 @@ class SweetLatest(var count: Int = 10, var page: Int = 1)
 fun Route.sweetHandler(dao: DAOFacade, hashFunction: (String) -> String) {
     get<SweetNew> {
         val user = call.sessions.get<SweetSession>()?.let { dao.user(it.userId) }
-
         if (user == null) {
             call.redirect(Login())
         } else {
@@ -140,14 +139,9 @@ fun Route.sweetHandler(dao: DAOFacade, hashFunction: (String) -> String) {
     }
     get<SweetView> {
 
-        val s = call.sessions.get<SweetSession>()
-        println("SweetPage==s:$s")
-
         val user = call.sessions.get<SweetSession>()?.let { dao.user(it.userId) }
         val sweet = dao.getSweet(it.id)
         val replies = dao.getReplies(it.id)
-        val s1 = call.sessions.get<SweetSession>()
-        println("SweetPage==s1:$s1")
 
         val date = System.currentTimeMillis()
         val code = if (user != null) call.securityCode(date, user, hashFunction) else null
@@ -157,9 +151,6 @@ fun Route.sweetHandler(dao: DAOFacade, hashFunction: (String) -> String) {
             val med = dao.getMedia(it)!!
             Media(med.id, med.refId, med.fileName, med.fileType, med.title, med.sortOrder)
         }.toList()
-
-        val s2 = call.sessions.get<SweetSession>()
-        println("SweetPage==s2:$s2")
 
         call.respond(FreeMarkerContent("sweet-view.ftl", mapOf("user" to user, "sweet" to sweet, "replies" to replies, "date" to date, "code" to code, "medias" to medias), etag.toString()))
     }

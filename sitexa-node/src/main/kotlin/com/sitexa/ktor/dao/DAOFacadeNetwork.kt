@@ -1,10 +1,13 @@
 package com.sitexa.ktor.dao
 
+import com.sitexa.ktor.dao.api.SiteService
 import com.sitexa.ktor.dao.api.SweetService
 import com.sitexa.ktor.dao.api.UserService
 import com.sitexa.ktor.model.Media
+import com.sitexa.ktor.model.Site
 import com.sitexa.ktor.model.Sweet
 import com.sitexa.ktor.model.User
+import java.math.BigDecimal
 
 
 class DAOFacadeNetwork : DAOFacade {
@@ -59,4 +62,16 @@ class DAOFacadeNetwork : DAOFacade {
 
     override fun close() {
     }
+
+    override fun site(id: Int): Site? = SiteService().site(id)
+
+    override fun siteByCode(code: Int): Site?=SiteService().siteByCode(code)
+
+    override fun childrenById(id: Int): List<Site>? = SiteService().childrenById(id)
+
+    override fun childrenByCode(code: Int): List<Site>? = SiteService().childrenByCode(code)
+
+    override fun sitesByLevel(level: Int): List<Site>? = SiteService().siteByLevel(level)
+
+    override fun updateLatLng(id: Int, lat: BigDecimal?, lng: BigDecimal?) = SiteService().updateSiteLatLng(id,lat,lng)
 }

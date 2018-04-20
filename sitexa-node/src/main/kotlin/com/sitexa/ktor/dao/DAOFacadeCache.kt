@@ -1,6 +1,8 @@
 package com.sitexa.ktor.dao
 
+import com.sitexa.ktor.dao.api.ApiResult
 import com.sitexa.ktor.model.Media
+import com.sitexa.ktor.model.Site
 import com.sitexa.ktor.model.Sweet
 import com.sitexa.ktor.model.User
 import org.ehcache.CacheManagerBuilder
@@ -10,6 +12,7 @@ import org.ehcache.config.persistence.CacheManagerPersistenceConfiguration
 import org.ehcache.config.units.EntryUnit
 import org.ehcache.config.units.MemoryUnit
 import java.io.File
+import java.math.BigDecimal
 
 
 /**
@@ -45,6 +48,14 @@ class DAOFacadeCache(val delegate: DAOFacade, val storagePath: File) : DAOFacade
                                     .disk(100, MemoryUnit.MB, true)
                             )
                             .buildConfig(Int::class.javaObjectType, Media::class.java))
+            .withCache("sitesCache",
+                    CacheConfigurationBuilder.newCacheConfigurationBuilder<Int, Site>()
+                            .withResourcePools(ResourcePoolsBuilder.newResourcePoolsBuilder()
+                                    .heap(1000, EntryUnit.ENTRIES)
+                                    .offheap(10, MemoryUnit.MB)
+                                    .disk(100, MemoryUnit.MB, true)
+                            )
+                            .buildConfig(Int::class.javaObjectType, Site::class.java))
             .build(true)
 
     val sweetsCache = cacheManager.getCache("sweetsCache", Int::class.javaObjectType, Sweet::class.java)
@@ -52,6 +63,8 @@ class DAOFacadeCache(val delegate: DAOFacade, val storagePath: File) : DAOFacade
     val usersCache = cacheManager.getCache("usersCache", String::class.java, User::class.java)
 
     val mediasCache = cacheManager.getCache("mediasCache", Int::class.javaObjectType, Media::class.java)
+
+    val sitesCache = cacheManager.getCache("sitesCache", Int::class.javaObjectType, Site::class.java)
 
     override fun init() {
         delegate.init()
@@ -170,12 +183,12 @@ class DAOFacadeCache(val delegate: DAOFacade, val storagePath: File) : DAOFacade
         usersCache.put(user.userId, user)
     }
 
-    override fun top(count: Int,page:Int): List<Int> {
-        return delegate.top(count,page)
+    override fun top(count: Int, page: Int): List<Int> {
+        return delegate.top(count, page)
     }
 
-    override fun latest(count: Int,page:Int): List<Int> {
-        return delegate.latest(count,page)
+    override fun latest(count: Int, page: Int): List<Int> {
+        return delegate.latest(count, page)
     }
 
     override fun close() {
@@ -184,5 +197,39 @@ class DAOFacadeCache(val delegate: DAOFacade, val storagePath: File) : DAOFacade
         } finally {
             cacheManager.close()
         }
+    }
+
+    override fun site(id: Int): Site? {
+        val cached = sitesCache.get(id)
+
+        return if (cached == null) {
+            val dbSite = delegate.site(id)
+            if (dbSite != null) {
+                sitesCache.put(id, dbSite)
+            }
+            dbSite
+        } else {
+            cached
+        }
+    }
+
+    override fun siteByCode(code: Int): Site? {
+        return delegate.siteByCode(code)
+    }
+
+    override fun childrenById(id: Int): List<Site>? {
+        return delegate.childrenById(id)
+    }
+
+    override fun childrenByCode(code: Int): List<Site>? {
+        return delegate.childrenByCode(code)
+    }
+
+    override fun sitesByLevel(level: Int): List<Site>? {
+        return delegate.sitesByLevel(level)
+    }
+
+    override fun updateLatLng(id: Int, lat: BigDecimal?, lng: BigDecimal?): ApiResult {
+        return delegate.updateLatLng(id, lat, lng)
     }
 }
