@@ -27,7 +27,7 @@ import java.io.File
 
 @Location("/download") class Download(val id: Int)
 
-fun Route.fileHandler(dao: DAOFacade, hashFunction: (String) -> String) {
+fun Route.fileHandler(dao: DAOFacade) {
 
     post<Upload> {
 
@@ -45,12 +45,10 @@ fun Route.fileHandler(dao: DAOFacade, hashFunction: (String) -> String) {
             multipart.forEachPart { part ->
                 when(part){
                     is PartData.FormItem ->{
-                        if (part.partName == "refId") {
-                            refId = part.value.toInt()
-                        } else if (part.partName == "title") {
-                            title = part.value
-                        } else if (part.partName == "sortOrder") {
-                            sortOrder = part.value.toInt()
+                        when {
+                            part.partName == "refId" -> refId = part.value.toInt()
+                            part.partName == "title" -> title = part.value
+                            part.partName == "sortOrder" -> sortOrder = part.value.toInt()
                         }
                     }
                     is PartData.FileItem ->{

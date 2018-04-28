@@ -61,7 +61,7 @@ class Top(val count: Int = 10, val page: Int = 1)
 class Latest(val count: Int = 10, val page: Int = 1)
 
 
-fun Route.sweetHandler(dao: DAOFacade, hashFunction: (String) -> String) {
+fun Route.sweetHandler(dao: DAOFacade) {
 
     val gson = GsonBuilder().registerTypeAdapter(DateTime::class.java, JodaGsonAdapter()).setLongSerializationPolicy(LongSerializationPolicy.STRING).create()
 
@@ -120,7 +120,6 @@ fun Route.sweetHandler(dao: DAOFacade, hashFunction: (String) -> String) {
         var sweet: Sweet? = null
         try {
             sweet = dao.getSweet(it.id)
-            //println("Sweet:=$sweet")
         } catch (e: Exception) {
             application.log.error(e.toString())
         }

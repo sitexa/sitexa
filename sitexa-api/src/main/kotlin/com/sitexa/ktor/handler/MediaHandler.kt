@@ -41,7 +41,7 @@ class MediaData(val id: Int)
 @Location("/mediasBySweet/{refId}")
 class MediasBySweet(val refId: Int)
 
-fun Route.mediaHandler(dao: DAOFacade, hashFunction: (String) -> String) {
+fun Route.mediaHandler(dao: DAOFacade) {
     post<MediaNew> {
         var apiResult: ApiResult
         try {
