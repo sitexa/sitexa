@@ -12,12 +12,12 @@ import io.ktor.application.*
 import io.ktor.auth.UserHashedTableAuth
 import io.ktor.auth.authentication
 import io.ktor.auth.basicAuthentication
-import io.ktor.content.default
-import io.ktor.content.files
-import io.ktor.content.static
 import io.ktor.features.*
 import io.ktor.gson.gson
 import io.ktor.http.HttpHeaders
+import io.ktor.http.content.default
+import io.ktor.http.content.files
+import io.ktor.http.content.static
 import io.ktor.locations.Locations
 import io.ktor.request.header
 import io.ktor.request.host

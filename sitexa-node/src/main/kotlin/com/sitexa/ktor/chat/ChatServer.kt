@@ -1,9 +1,9 @@
 package com.sitexa.ktor.chat
 
-import io.ktor.websocket.CloseReason
-import io.ktor.websocket.Frame
-import io.ktor.websocket.WebSocketSession
-import io.ktor.websocket.close
+import io.ktor.http.cio.websocket.CloseReason
+import io.ktor.http.cio.websocket.Frame
+import io.ktor.http.cio.websocket.WebSocketSession
+import io.ktor.http.cio.websocket.close
 import kotlinx.coroutines.experimental.channels.ClosedSendChannelException
 import kotlinx.io.core.ByteReadPacket
 import kotlinx.io.core.buildPacket

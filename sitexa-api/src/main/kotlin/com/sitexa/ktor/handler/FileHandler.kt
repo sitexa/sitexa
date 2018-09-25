@@ -5,10 +5,11 @@ import com.sitexa.ktor.common.ApiResult
 import com.sitexa.ktor.dao.DAOFacade
 import com.sitexa.ktor.uploadDir
 import io.ktor.application.call
-import io.ktor.content.LocalFileContent
-import io.ktor.content.PartData
-import io.ktor.content.forEachPart
 import io.ktor.http.ContentType
+import io.ktor.http.content.LocalFileContent
+import io.ktor.http.content.PartData
+import io.ktor.http.content.forEachPart
+import io.ktor.http.content.streamProvider
 import io.ktor.http.fromFilePath
 import io.ktor.locations.Location
 import io.ktor.locations.get

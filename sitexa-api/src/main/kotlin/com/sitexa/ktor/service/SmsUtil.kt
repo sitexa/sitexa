@@ -5,7 +5,6 @@ import org.apache.commons.httpclient.NameValuePair
 import org.apache.commons.httpclient.methods.PostMethod
 import org.slf4j.LoggerFactory
 
-
 /**
  * Created by open on 05/05/2017.
  *
@@ -50,7 +49,7 @@ fun createRandomStr(onlyNumber: Boolean, length: Int): String {
     val strTable = if (onlyNumber) "1234567890" else "23456789abcdefghijkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ"
     val len = strTable.length
 
-    for (i in 0..length - 1) {
+    for (i in 0 until length) {
         val dblR = Math.random() * len
         val intR = Math.floor(dblR).toInt()
         resultStr.append(strTable[intR])

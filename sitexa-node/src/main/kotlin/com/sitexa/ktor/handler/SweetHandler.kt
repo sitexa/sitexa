@@ -4,12 +4,13 @@ import com.sitexa.ktor.*
 import com.sitexa.ktor.dao.DAOFacade
 import com.sitexa.ktor.model.Media
 import io.ktor.application.call
-import io.ktor.content.LocalFileContent
-import io.ktor.content.PartData
-import io.ktor.content.forEachPart
 import io.ktor.freemarker.FreeMarkerContent
 import io.ktor.http.ContentType
 import io.ktor.http.Parameters
+import io.ktor.http.content.LocalFileContent
+import io.ktor.http.content.PartData
+import io.ktor.http.content.forEachPart
+import io.ktor.http.content.streamProvider
 import io.ktor.http.fromFilePath
 import io.ktor.locations.Location
 import io.ktor.locations.get

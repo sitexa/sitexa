@@ -1,0 +1,10 @@
+INSERT INTO sitexa.Medias (id, ref_id, file_name, file_type, title, sort_order) VALUES (1, 1, '1494982927779-754444700.JPG', 'image', null, 0);
+INSERT INTO sitexa.Medias (id, ref_id, file_name, file_type, title, sort_order) VALUES (6, 8, '1497696519974-754444700.gif', 'image', null, 0);
+INSERT INTO sitexa.Medias (id, ref_id, file_name, file_type, title, sort_order) VALUES (10, 1, '1494982927779-754444700.JPG', 'image', null, 0);
+INSERT INTO sitexa.Medias (id, ref_id, file_name, file_type, title, sort_order) VALUES (11, 1, '1494982927779-754444700.JPG', 'image', null, 0);
+INSERT INTO sitexa.Medias (id, ref_id, file_name, file_type, title, sort_order) VALUES (12, 2, '1494602306353-754444700.png', 'image', null, 0);
+INSERT INTO sitexa.Medias (id, ref_id, file_name, file_type, title, sort_order) VALUES (13, 12, '1497867856586-754444700.png', 'image', null, 0);
+INSERT INTO sitexa.Medias (id, ref_id, file_name, file_type, title, sort_order) VALUES (18, 1, '1494982927779-754444700.JPG', 'image', null, 0);
+INSERT INTO sitexa.Medias (id, ref_id, file_name, file_type, title, sort_order) VALUES (19, 1, '1497696519974-754444700.gif', 'image', null, 0);
+INSERT INTO sitexa.Medias (id, ref_id, file_name, file_type, title, sort_order) VALUES (20, 1, '1494982927779-754444700.JPG', 'image', null, 0);
+INSERT INTO sitexa.Medias (id, ref_id, file_name, file_type, title, sort_order) VALUES (21, 1, '1494982927779-754444700.JPG', 'image', null, 0);

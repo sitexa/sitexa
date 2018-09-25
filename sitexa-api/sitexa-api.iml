@@ -6,6 +6,7 @@
         <compilerSettings />
         <compilerArguments>
           <option name="destination" value="$MODULE_DIR$/build/classes/kotlin/main" />
+          <option name="classpath" value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-server-netty/0.9.5/35f9da926235310b745d8598ce8dd7f2c26fdbe7/ktor-server-netty-0.9.5.jar:/Users/open/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-locations/0.9.5/79cca0a1571246226f9694f599a8846e8f8406b1/ktor-locations-0.9.5.jar:/Users/open/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-gson/0.9.5/b5048e55fb21aba83d574ef42cf8ca23fbc1cc7d/ktor-gson-0.9.5.jar:/Users/open/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-server-host-common/0.9.5/f4d9f7991945baef3157e3fb9549953ef9dd1e91/ktor-server-host-common-0.9.5.jar:/Users/open/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-auth/0.9.5/92e05d8c8c289ee0d88243070d3f810e73aa3074/ktor-auth-0.9.5.jar:/Users/open/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-server-core/0.9.5/dc1f6cf15348860a64fb07a649d5861a62f2425e/ktor-server-core-0.9.5.jar:/Users/open/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-client-core-jvm/0.9.5/57275a83c43a5c938aa1d8e227858e54ae6fed6f/ktor-client-core-jvm-0.9.5.jar:/Users/open/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-http-cio/0.9.5/ecb91cc6826b810e6e4ba9a91068691cbff187ae/ktor-http-cio-0.9.5.jar:/Users/open/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-http-jvm/0.9.5/d86ccaf6c55cb8ac47ad65a0c9bdd822dcfbeaaf/ktor-http-jvm-0.9.5.jar:/Users/open/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-network/0.9.5/3c148239650b03ca47f6626db662a5f927d5477a/ktor-network-0.9.5.jar:/Users/open/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-utils-jvm/0.9.5/ba1e36ba2dfdd8bf72149a99bfda7bc2122559d6/ktor-utils-jvm-0.9.5.jar:/Users/open/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-jdk8/1.2.71/5470d1f752cd342edb77e1062bac07e838d2cea4/kotlin-stdlib-jdk8-1.2.71.jar:/Users/open/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-coroutines-jdk8/0.25.0/8cb32ddf50480b58c3a1d4493c5731dcc3f9601/kotlinx-coroutines-jdk8-0.25.0.jar:/Users/open/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-coroutines-io-jvm/0.1.0-alpha-4/300fe330418af9c9d6046dbdc8b1c8fc29c43e31/kotlinx-coroutines-io-jvm-0.1.0-alpha-4.jar:/Users/open/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-client-core/0.9.5/4b44026e795df8ae1e4c4a5acd9c53d1cffe3ad4/ktor-client-core-0.9.5.jar:/Users/open/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-http/0.9.5/2c84eaf2b7621a8471113f71d564b4427c6771b5/ktor-http-0.9.5.jar:/Users/open/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-utils/0.9.5/97bbc432edc82bb856b1b90ccd1aed9859b7ff29/ktor-utils-0.9.5.jar:/Users/open/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-coroutines-io/0.22.2/3ce0f7f221387ef75e9e02c4a0c9f42e67597822/kotlinx-coroutines-io-0.22.2.jar:/Users/open/.gradle/caches/modules-2/files-2.1/ch.qos.logback/logback-classic/1.2.1/706a8b8206ead3683ec639dd270d11fd948fbb0e/logback-classic-1.2.1.jar:/Users/open/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/23.0/c947004bb13d18182be60077ade044099e4f26f1/guava-23.0.jar:/Users/open/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp3/okhttp/3.6.0/69edde9fc4b01c9fd51d25b83428837478c27254/okhttp-3.6.0.jar:/Users/open/.gradle/caches/modules-2/files-2.1/org.jetbrains.exposed/exposed/0.7.6/4abcbe9c83f8fde599e841e1d907fe596bc1cde7/exposed-0.7.6.jar:/Users/open/.gradle/caches/modules-2/files-2.1/org.mariadb.jdbc/mariadb-java-client/1.5.9/75d4d6e4cdb9a551a102e92a14c640768174e214/mariadb-java-client-1.5.9.jar:/Users/open/.gradle/caches/modules-2/files-2.1/com.zaxxer/HikariCP/2.4.7/48879ebd6f4e8374b8fc90f39e564358f9455096/HikariCP-2.4.7.jar:/Users/open/.gradle/caches/modules-2/files-2.1/org.ehcache/ehcache/3.0.0.m4/88545c8e2f694b1dba361177eae9e4331cf7c27/ehcache-3.0.0.m4.jar:/Users/open/.gradle/caches/modules-2/files-2.1/joda-time/joda-time/2.9.4/1c295b462f16702ebe720bbb08f62e1ba80da41b/joda-time-2.9.4.jar:/Users/open/.gradle/caches/modules-2/files-2.1/com.github.salomonbrys.kotson/kotson/2.5.0/40daf22108aa4436d46257e14cc48447cca542c3/kotson-2.5.0.jar:/Users/open/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.8.1/2a8e0aa38a2e21cb39e2f5a7d6704cbdc941da0/gson-2.8.1.jar:/Users/open/.gradle/caches/modules-2/files-2.1/com.squareup.moshi/moshi/1.4.0/d67ad038adfd55dc276488a54f4944dfae5ff8ec/moshi-1.4.0.jar:/Users/open/.gradle/caches/modules-2/files-2.1/commons-httpclient/commons-httpclient/3.1/964cd74171f427720480efdec40a7c7f6e58426a/commons-httpclient-3.1.jar:/Users/open/.gradle/caches/modules-2/files-2.1/javax.mail/mailapi/1.4.3/124600e35d9031da50e5f67661ffa741541f8f6a/mailapi-1.4.3.jar:/Users/open/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-jdk7/1.2.71/4ce93f539e2133f172f1167291a911f83400a5d0/kotlin-stdlib-jdk7-1.2.71.jar:/Users/open/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-coroutines-core/0.25.0/5664ba2d20c6dcc88c912cc9666baa7f03203bcd/kotlinx-coroutines-core-0.25.0.jar:/Users/open/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-reflect/1.2.70/895ff3421bed43cef31459dc9f2e9c0e6e0cb64b/kotlin-reflect-1.2.70.jar:/Users/open/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-io-jvm/0.1.0-alpha-4/5c2c83739e7c052c7e6e2ec3e940ea3d2b40d177/kotlinx-io-jvm-0.1.0-alpha-4.jar:/Users/open/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib/1.2.71/d9717625bb3c731561251f8dd2c67a1011d6764c/kotlin-stdlib-1.2.71.jar:/Users/open/.gradle/caches/modules-2/files-2.1/org.terracotta/offheap-store/2.1.2/62beac8f8c9497a5e2b622ffef755f0b15cca1b7/offheap-store-2.1.2.jar:/Users/open/.gradle/caches/modules-2/files-2.1/org.slf4j/slf4j-api/1.7.25/da76ca59f6a57ee3102f8f9bd9cee742973efa8a/slf4j-api-1.7.25.jar:/Users/open/.gradle/caches/modules-2/files-2.1/com.typesafe/config/1.3.1/2cf7a6cc79732e3bdf1647d7404279900ca63eb0/config-1.3.1.jar:/Users/open/.gradle/caches/modules-2/files-2.1/io.netty/netty-codec-http2/4.1.24.Final/c0c0d9d20402e4493083447052b59d5680e88b2e/netty-codec-http2-4.1.24.Final.jar:/Users/open/.gradle/caches/modules-2/files-2.1/org.eclipse.jetty.alpn/alpn-api/1.1.3.v20160715/a1bf3a937f91b4c953acd13e8c9552347adc2198/alpn-api-1.1.3.v20160715.jar:/Users/open/.gradle/caches/modules-2/files-2.1/ch.qos.logback/logback-core/1.2.1/378913dfc3c6c71e7e2a2853eff2c3e8ac27599/logback-core-1.2.1.jar:/Users/open/.gradle/caches/modules-2/files-2.1/com.google.code.findbugs/jsr305/1.3.9/40719ea6961c0cb6afaeb6a921eaa1f6afd4cfdf/jsr305-1.3.9.jar:/Users/open/.gradle/caches/modules-2/files-2.1/com.google.errorprone/error_prone_annotations/2.0.18/5f65affce1684999e2f4024983835efc3504012e/error_prone_annotations-2.0.18.jar:/Users/open/.gradle/caches/modules-2/files-2.1/com.google.j2objc/j2objc-annotations/1.1/976d8d30bebc251db406f2bdb3eb01962b5685b3/j2objc-annotations-1.1.jar:/Users/open/.gradle/caches/modules-2/files-2.1/org.codehaus.mojo/animal-sniffer-annotations/1.14/775b7e22fb10026eed3f86e8dc556dfafe35f2d5/animal-sniffer-annotations-1.14.jar:/Users/open/.gradle/caches/modules-2/files-2.1/com.squareup.okio/okio/1.11.0/840897fcd7223a8143f1d9b6f69714e7be34fd50/okio-1.11.0.jar:/Users/open/.gradle/caches/modules-2/files-2.1/commons-logging/commons-logging/1.0.4/f029a2aefe2b3e1517573c580f948caac31b1056/commons-logging-1.0.4.jar:/Users/open/.gradle/caches/modules-2/files-2.1/commons-codec/commons-codec/1.2/397f4731a9f9b6eb1907e224911c77ea3aa27a8b/commons-codec-1.2.jar:/Users/open/.gradle/caches/modules-2/files-2.1/javax.activation/activation/1.1/e6cb541461c2834bdea3eb920f1884d1eb508b50/activation-1.1.jar:/Users/open/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-io/0.1.0-alpha-4/abb7a001d058c057b299223365ab7382bb2405a6/kotlinx-io-0.1.0-alpha-4.jar:/Users/open/.gradle/caches/modules-2/files-2.1/io.netty/netty-codec-http/4.1.24.Final/8f20009953b2c7c3d860cef928007bc01aa58ac/netty-codec-http-4.1.24.Final.jar:/Users/open/.gradle/caches/modules-2/files-2.1/io.netty/netty-handler/4.1.24.Final/bad56e7da211c5ebe031ae155cb648b1065c7bb6/netty-handler-4.1.24.Final.jar:/Users/open/.gradle/caches/modules-2/files-2.1/com.googlecode.json-simple/json-simple/1.1.1/c9ad4a0850ab676c5c64461a05ca524cdfff59f1/json-simple-1.1.1.jar:/Users/open/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-coroutines-core-common/0.25.0/99f08d4693e6d5f2134dabcc440f6f0867018513/kotlinx-coroutines-core-common-0.25.0.jar:/Users/open/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/atomicfu-common/0.11.3/8f4a66dcd4f0413f828b4df51e736918e05dbd1e/atomicfu-common-0.11.3.jar:/Users/open/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-common/1.2.71/ba18ca1aa0e40eb6f1865b324af2f4cbb691c1ec/kotlin-stdlib-common-1.2.71.jar:/Users/open/.gradle/caches/modules-2/files-2.1/io.netty/netty-codec/4.1.24.Final/290857e5103956bbda11836e33245f2439226b77/netty-codec-4.1.24.Final.jar:/Users/open/.gradle/caches/modules-2/files-2.1/io.netty/netty-transport/4.1.24.Final/d37292c94d3a4cba48d9b6cfb6e8e55282035d0d/netty-transport-4.1.24.Final.jar:/Users/open/.gradle/caches/modules-2/files-2.1/io.netty/netty-buffer/4.1.24.Final/e354bed2e60b568307138e403f55ba241c1c16d2/netty-buffer-4.1.24.Final.jar:/Users/open/.gradle/caches/modules-2/files-2.1/junit/junit/4.10/e4f1766ce7404a08f45d859fb9c226fc9e41a861/junit-4.10.jar:/Users/open/.gradle/caches/modules-2/files-2.1/io.netty/netty-resolver/4.1.24.Final/dbc1e5b50d31aed883ea3beeb6489e1977d0687f/netty-resolver-4.1.24.Final.jar:/Users/open/.gradle/caches/modules-2/files-2.1/io.netty/netty-common/4.1.24.Final/7eeecd7906543214c3c1c984d275d3c6de10b99d/netty-common-4.1.24.Final.jar:/Users/open/.gradle/caches/modules-2/files-2.1/org.hamcrest/hamcrest-core/1.1/860340562250678d1a344907ac75754e259cdb14/hamcrest-core-1.1.jar:/Users/open/.gradle/caches/modules-2/files-2.1/org.jetbrains/annotations/13.0/919f0dfe192fb4e063e7dacadee7f8bb9a2672a9/annotations-13.0.jar" />
           <option name="noStdlib" value="true" />
           <option name="noReflect" value="true" />
           <option name="moduleName" value="sitexa-api" />
@@ -43,260 +44,72 @@
     </content>
     <orderEntry type="jdk" jdkName="JDK1.8_102" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: io.ktor:ktor-server-netty:0.9.1" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: io.ktor:ktor-locations:0.9.1" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: io.ktor:ktor-gson:0.9.1" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: io.ktor:ktor-auth:0.9.1" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: io.ktor:ktor-server-test-host:0.9.1" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: io.ktor:ktor-client-tests:0.9.1" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: io.ktor:ktor-server-jetty:0.9.1" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: io.ktor:ktor-server-servlet:0.9.1" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: io.ktor:ktor-server-host-common:0.9.1" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: io.ktor:ktor-server-core:0.9.1" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: io.ktor:ktor-client-apache:0.9.1" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: io.ktor:ktor-client-jetty:0.9.1" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: io.ktor:ktor-client-core:0.9.1" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: io.ktor:ktor-http-cio:0.9.1" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: io.ktor:ktor-http:0.9.1" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: io.ktor:ktor-utils:0.9.1" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: io.ktor:ktor-network:0.9.1" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.2.31" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:0.22.2" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-io:0.22.2" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: ch.qos.logback:logback-classic:1.2.1" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: com.google.guava:guava:23.0" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: com.squareup.okhttp3:okhttp:3.6.0" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.jetbrains.exposed:exposed:0.7.6" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.mariadb.jdbc:mariadb-java-client:1.5.9" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: com.zaxxer:HikariCP:2.4.7" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.ehcache:ehcache:3.0.0.m4" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: joda-time:joda-time:2.9.4" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: com.github.salomonbrys.kotson:kotson:2.5.0" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: com.google.code.gson:gson:2.8.1" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: com.squareup.moshi:moshi:1.4.0" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: commons-httpclient:commons-httpclient:3.1" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: javax.mail:mailapi:1.4.3" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.jetbrains.kotlin:kotlin-test-junit:1.2.21" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.jetbrains.kotlin:kotlin-test:1.2.21" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.2.31" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-core:0.22.2" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.jetbrains.kotlin:kotlin-reflect:1.2.21" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.2.31" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.terracotta:offheap-store:2.1.2" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.slf4j:slf4j-api:1.7.25" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: com.typesafe:config:1.3.1" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: io.netty:netty-codec-http2:4.1.19.Final" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.eclipse.jetty.alpn:alpn-api:1.1.3.v20160715" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: ch.qos.logback:logback-core:1.2.1" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: com.google.code.findbugs:jsr305:1.3.9" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: com.google.errorprone:error_prone_annotations:2.0.18" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: com.google.j2objc:j2objc-annotations:1.1" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.codehaus.mojo:animal-sniffer-annotations:1.14" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: com.squareup.okio:okio:1.11.0" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.apache.httpcomponents:httpasyncclient:4.1.3" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.apache.httpcomponents:httpclient:4.5.3" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: commons-logging:commons-logging:1.2" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: commons-codec:commons-codec:1.9" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: javax.activation:activation:1.1" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: io.netty:netty-codec-http:4.1.19.Final" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: io.netty:netty-handler:4.1.19.Final" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: com.googlecode.json-simple:json-simple:1.1.1" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: io.netty:netty-codec:4.1.19.Final" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: io.netty:netty-transport:4.1.19.Final" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: io.netty:netty-buffer:4.1.19.Final" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.eclipse.jetty.http2:http2-http-client-transport:9.4.6.v20170531" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.eclipse.jetty.http2:http2-client:9.4.6.v20170531" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.eclipse.jetty:jetty-client:9.4.6.v20170531" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.mortbay.jetty.alpn:alpn-boot:8.1.11.v20170118" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: junit:junit:4.12" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: io.netty:netty-resolver:4.1.19.Final" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: io.netty:netty-common:4.1.19.Final" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.apache.httpcomponents:httpcore-nio:4.4.6" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.apache.httpcomponents:httpcore:4.4.6" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.eclipse.jetty.http2:http2-server:9.4.6.v20170531" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.eclipse.jetty.http2:http2-common:9.4.6.v20170531" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.eclipse.jetty:jetty-alpn-client:9.4.6.v20170531" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.eclipse.jetty:jetty-alpn-server:9.4.6.v20170531" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.eclipse.jetty:jetty-server:9.4.6.v20170531" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.eclipse.jetty:jetty-servlets:9.4.6.v20170531" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.eclipse.jetty.http2:http2-hpack:9.4.6.v20170531" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.eclipse.jetty:jetty-http:9.4.6.v20170531" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.eclipse.jetty:jetty-io:9.4.6.v20170531" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.eclipse.jetty:jetty-util:9.4.6.v20170531" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: javax.servlet:javax.servlet-api:3.1.0" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.eclipse.jetty:jetty-continuation:9.4.6.v20170531" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.jetbrains:annotations:13.0" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.jetbrains.kotlinx:kotlinx-io-jvm:0.0.8" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.hamcrest:hamcrest-core:1.3" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: io.ktor:ktor-server-netty:0.9.1" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: io.ktor:ktor-locations:0.9.1" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: io.ktor:ktor-gson:0.9.1" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: io.ktor:ktor-auth:0.9.1" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: io.ktor:ktor-server-test-host:0.9.1" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: io.ktor:ktor-client-tests:0.9.1" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: io.ktor:ktor-server-jetty:0.9.1" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: io.ktor:ktor-server-servlet:0.9.1" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: io.ktor:ktor-server-host-common:0.9.1" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: io.ktor:ktor-server-core:0.9.1" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: io.ktor:ktor-client-apache:0.9.1" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: io.ktor:ktor-client-jetty:0.9.1" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: io.ktor:ktor-client-core:0.9.1" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: io.ktor:ktor-http-cio:0.9.1" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: io.ktor:ktor-http:0.9.1" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: io.ktor:ktor-utils:0.9.1" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: io.ktor:ktor-network:0.9.1" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.2.31" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:0.22.2" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-io:0.22.2" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: ch.qos.logback:logback-classic:1.2.1" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: com.google.guava:guava:23.0" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: com.squareup.okhttp3:okhttp:3.6.0" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.jetbrains.exposed:exposed:0.7.6" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.mariadb.jdbc:mariadb-java-client:1.5.9" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: com.zaxxer:HikariCP:2.4.7" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.ehcache:ehcache:3.0.0.m4" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: joda-time:joda-time:2.9.4" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: com.github.salomonbrys.kotson:kotson:2.5.0" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: com.google.code.gson:gson:2.8.1" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: com.squareup.moshi:moshi:1.4.0" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: commons-httpclient:commons-httpclient:3.1" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: javax.mail:mailapi:1.4.3" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.jetbrains.kotlin:kotlin-test-junit:1.2.21" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.jetbrains.kotlin:kotlin-test:1.2.21" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.2.31" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-core:0.22.2" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.jetbrains.kotlin:kotlin-reflect:1.2.21" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.2.31" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.terracotta:offheap-store:2.1.2" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.slf4j:slf4j-api:1.7.25" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: com.typesafe:config:1.3.1" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: io.netty:netty-codec-http2:4.1.19.Final" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.eclipse.jetty.alpn:alpn-api:1.1.3.v20160715" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: ch.qos.logback:logback-core:1.2.1" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: com.google.code.findbugs:jsr305:1.3.9" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: com.google.errorprone:error_prone_annotations:2.0.18" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: com.google.j2objc:j2objc-annotations:1.1" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.codehaus.mojo:animal-sniffer-annotations:1.14" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: com.squareup.okio:okio:1.11.0" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.apache.httpcomponents:httpasyncclient:4.1.3" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.apache.httpcomponents:httpclient:4.5.3" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: commons-logging:commons-logging:1.2" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: commons-codec:commons-codec:1.9" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: javax.activation:activation:1.1" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: io.netty:netty-codec-http:4.1.19.Final" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: io.netty:netty-handler:4.1.19.Final" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: com.googlecode.json-simple:json-simple:1.1.1" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: io.netty:netty-codec:4.1.19.Final" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: io.netty:netty-transport:4.1.19.Final" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: io.netty:netty-buffer:4.1.19.Final" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.eclipse.jetty.http2:http2-http-client-transport:9.4.6.v20170531" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.eclipse.jetty.http2:http2-client:9.4.6.v20170531" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.eclipse.jetty:jetty-client:9.4.6.v20170531" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.mortbay.jetty.alpn:alpn-boot:8.1.11.v20170118" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: junit:junit:4.12" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: io.netty:netty-resolver:4.1.19.Final" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: io.netty:netty-common:4.1.19.Final" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.apache.httpcomponents:httpcore-nio:4.4.6" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.apache.httpcomponents:httpcore:4.4.6" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.eclipse.jetty.http2:http2-server:9.4.6.v20170531" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.eclipse.jetty.http2:http2-common:9.4.6.v20170531" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.eclipse.jetty:jetty-alpn-client:9.4.6.v20170531" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.eclipse.jetty:jetty-alpn-server:9.4.6.v20170531" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.eclipse.jetty:jetty-server:9.4.6.v20170531" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.eclipse.jetty:jetty-servlets:9.4.6.v20170531" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.eclipse.jetty.http2:http2-hpack:9.4.6.v20170531" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.eclipse.jetty:jetty-http:9.4.6.v20170531" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.eclipse.jetty:jetty-io:9.4.6.v20170531" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.eclipse.jetty:jetty-util:9.4.6.v20170531" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: javax.servlet:javax.servlet-api:3.1.0" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.eclipse.jetty:jetty-continuation:9.4.6.v20170531" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.jetbrains:annotations:13.0" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.jetbrains.kotlinx:kotlinx-io-jvm:0.0.8" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.hamcrest:hamcrest-core:1.3" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: io.ktor:ktor-server-netty:0.9.1" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: io.ktor:ktor-locations:0.9.1" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: io.ktor:ktor-gson:0.9.1" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: io.ktor:ktor-auth:0.9.1" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: io.ktor:ktor-server-test-host:0.9.1" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: io.ktor:ktor-client-tests:0.9.1" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: io.ktor:ktor-server-jetty:0.9.1" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: io.ktor:ktor-server-servlet:0.9.1" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: io.ktor:ktor-server-host-common:0.9.1" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: io.ktor:ktor-server-core:0.9.1" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: io.ktor:ktor-client-apache:0.9.1" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: io.ktor:ktor-client-jetty:0.9.1" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: io.ktor:ktor-client-core:0.9.1" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: io.ktor:ktor-http-cio:0.9.1" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: io.ktor:ktor-http:0.9.1" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: io.ktor:ktor-utils:0.9.1" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: io.ktor:ktor-network:0.9.1" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.2.31" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:0.22.2" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-io:0.22.2" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: ch.qos.logback:logback-classic:1.2.1" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: com.google.guava:guava:23.0" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: com.squareup.okhttp3:okhttp:3.6.0" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.exposed:exposed:0.7.6" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: org.mariadb.jdbc:mariadb-java-client:1.5.9" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: com.zaxxer:HikariCP:2.4.7" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: org.ehcache:ehcache:3.0.0.m4" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: joda-time:joda-time:2.9.4" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: com.github.salomonbrys.kotson:kotson:2.5.0" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: com.google.code.gson:gson:2.8.1" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: com.squareup.moshi:moshi:1.4.0" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: commons-httpclient:commons-httpclient:3.1" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: javax.mail:mailapi:1.4.3" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: com.googlecode.json-simple:json-simple:1.1.1" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.kotlin:kotlin-test-junit:1.2.21" level="project" />
+    <orderEntry type="library" name="Gradle: io.ktor:ktor-server-netty:0.9.5" level="project" />
+    <orderEntry type="library" name="Gradle: io.ktor:ktor-locations:0.9.5" level="project" />
+    <orderEntry type="library" name="Gradle: io.ktor:ktor-gson:0.9.5" level="project" />
+    <orderEntry type="library" name="Gradle: io.ktor:ktor-server-host-common:0.9.5" level="project" />
+    <orderEntry type="library" name="Gradle: io.ktor:ktor-auth:0.9.5" level="project" />
+    <orderEntry type="library" name="Gradle: io.ktor:ktor-server-core:0.9.5" level="project" />
+    <orderEntry type="library" name="Gradle: io.ktor:ktor-client-core-jvm:0.9.5" level="project" />
+    <orderEntry type="library" name="Gradle: io.ktor:ktor-http-cio:0.9.5" level="project" />
+    <orderEntry type="library" name="Gradle: io.ktor:ktor-http-jvm:0.9.5" level="project" />
+    <orderEntry type="library" name="Gradle: io.ktor:ktor-network:0.9.5" level="project" />
+    <orderEntry type="library" name="Gradle: io.ktor:ktor-utils-jvm:0.9.5" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.2.71" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:0.25.0" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-io-jvm:0.1.0-alpha-4" level="project" />
+    <orderEntry type="library" name="Gradle: io.ktor:ktor-client-core:0.9.5" level="project" />
+    <orderEntry type="library" name="Gradle: io.ktor:ktor-http:0.9.5" level="project" />
+    <orderEntry type="library" name="Gradle: io.ktor:ktor-utils:0.9.5" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-io:0.22.2" level="project" />
+    <orderEntry type="library" name="Gradle: ch.qos.logback:logback-classic:1.2.1" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.guava:guava:23.0" level="project" />
+    <orderEntry type="library" name="Gradle: com.squareup.okhttp3:okhttp:3.6.0" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.exposed:exposed:0.7.6" level="project" />
+    <orderEntry type="library" name="Gradle: org.mariadb.jdbc:mariadb-java-client:1.5.9" level="project" />
+    <orderEntry type="library" name="Gradle: com.zaxxer:HikariCP:2.4.7" level="project" />
+    <orderEntry type="library" name="Gradle: org.ehcache:ehcache:3.0.0.m4" level="project" />
+    <orderEntry type="library" name="Gradle: joda-time:joda-time:2.9.4" level="project" />
+    <orderEntry type="library" name="Gradle: com.github.salomonbrys.kotson:kotson:2.5.0" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.code.gson:gson:2.8.1" level="project" />
+    <orderEntry type="library" name="Gradle: com.squareup.moshi:moshi:1.4.0" level="project" />
+    <orderEntry type="library" name="Gradle: commons-httpclient:commons-httpclient:3.1" level="project" />
+    <orderEntry type="library" name="Gradle: javax.mail:mailapi:1.4.3" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.2.71" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-core:0.25.0" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-reflect:1.2.70" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlinx:kotlinx-io-jvm:0.1.0-alpha-4" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.2.71" level="project" />
+    <orderEntry type="library" name="Gradle: org.terracotta:offheap-store:2.1.2" level="project" />
+    <orderEntry type="library" name="Gradle: org.slf4j:slf4j-api:1.7.25" level="project" />
+    <orderEntry type="library" name="Gradle: com.typesafe:config:1.3.1" level="project" />
+    <orderEntry type="library" name="Gradle: io.netty:netty-codec-http2:4.1.24.Final" level="project" />
+    <orderEntry type="library" name="Gradle: org.eclipse.jetty.alpn:alpn-api:1.1.3.v20160715" level="project" />
+    <orderEntry type="library" name="Gradle: ch.qos.logback:logback-core:1.2.1" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.code.findbugs:jsr305:1.3.9" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.errorprone:error_prone_annotations:2.0.18" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.j2objc:j2objc-annotations:1.1" level="project" />
+    <orderEntry type="library" name="Gradle: org.codehaus.mojo:animal-sniffer-annotations:1.14" level="project" />
+    <orderEntry type="library" name="Gradle: com.squareup.okio:okio:1.11.0" level="project" />
+    <orderEntry type="library" name="Gradle: commons-logging:commons-logging:1.0.4" level="project" />
+    <orderEntry type="library" name="Gradle: commons-codec:commons-codec:1.2" level="project" />
+    <orderEntry type="library" name="Gradle: javax.activation:activation:1.1" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlinx:kotlinx-io:0.1.0-alpha-4" level="project" />
+    <orderEntry type="library" name="Gradle: io.netty:netty-codec-http:4.1.24.Final" level="project" />
+    <orderEntry type="library" name="Gradle: io.netty:netty-handler:4.1.24.Final" level="project" />
+    <orderEntry type="library" name="Gradle: com.googlecode.json-simple:json-simple:1.1.1" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-core-common:0.25.0" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlinx:atomicfu-common:0.11.3" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-common:1.2.71" level="project" />
+    <orderEntry type="library" name="Gradle: io.netty:netty-codec:4.1.24.Final" level="project" />
+    <orderEntry type="library" name="Gradle: io.netty:netty-transport:4.1.24.Final" level="project" />
+    <orderEntry type="library" name="Gradle: io.netty:netty-buffer:4.1.24.Final" level="project" />
+    <orderEntry type="library" name="Gradle: junit:junit:4.10" level="project" />
+    <orderEntry type="library" name="Gradle: io.netty:netty-resolver:4.1.24.Final" level="project" />
+    <orderEntry type="library" name="Gradle: io.netty:netty-common:4.1.24.Final" level="project" />
+    <orderEntry type="library" name="Gradle: org.hamcrest:hamcrest-core:1.1" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains:annotations:13.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: junit:junit:4.12" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.kotlin:kotlin-test:1.2.21" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.2.31" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-core:0.22.2" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.kotlin:kotlin-reflect:1.2.21" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.2.31" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: org.terracotta:offheap-store:2.1.2" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: org.slf4j:slf4j-api:1.7.25" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: com.typesafe:config:1.3.1" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: io.netty:netty-codec-http2:4.1.19.Final" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: org.eclipse.jetty.alpn:alpn-api:1.1.3.v20160715" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: ch.qos.logback:logback-core:1.2.1" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: com.google.code.findbugs:jsr305:1.3.9" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: com.google.errorprone:error_prone_annotations:2.0.18" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: com.google.j2objc:j2objc-annotations:1.1" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: org.codehaus.mojo:animal-sniffer-annotations:1.14" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: com.squareup.okio:okio:1.11.0" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: org.apache.httpcomponents:httpasyncclient:4.1.3" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: org.apache.httpcomponents:httpclient:4.5.3" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: commons-logging:commons-logging:1.2" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: commons-codec:commons-codec:1.9" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: javax.activation:activation:1.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: org.hamcrest:hamcrest-core:1.3" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: io.netty:netty-codec-http:4.1.19.Final" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: io.netty:netty-handler:4.1.19.Final" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: io.netty:netty-codec:4.1.19.Final" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: io.netty:netty-transport:4.1.19.Final" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: io.netty:netty-buffer:4.1.19.Final" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: org.eclipse.jetty.http2:http2-http-client-transport:9.4.6.v20170531" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: org.eclipse.jetty.http2:http2-client:9.4.6.v20170531" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: org.eclipse.jetty:jetty-client:9.4.6.v20170531" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: org.mortbay.jetty.alpn:alpn-boot:8.1.11.v20170118" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: io.netty:netty-resolver:4.1.19.Final" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: io.netty:netty-common:4.1.19.Final" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: org.apache.httpcomponents:httpcore-nio:4.4.6" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: org.apache.httpcomponents:httpcore:4.4.6" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: org.eclipse.jetty.http2:http2-server:9.4.6.v20170531" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: org.eclipse.jetty.http2:http2-common:9.4.6.v20170531" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: org.eclipse.jetty:jetty-alpn-client:9.4.6.v20170531" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: org.eclipse.jetty:jetty-alpn-server:9.4.6.v20170531" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: org.eclipse.jetty:jetty-server:9.4.6.v20170531" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: org.eclipse.jetty:jetty-servlets:9.4.6.v20170531" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: org.eclipse.jetty.http2:http2-hpack:9.4.6.v20170531" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: org.eclipse.jetty:jetty-http:9.4.6.v20170531" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: org.eclipse.jetty:jetty-io:9.4.6.v20170531" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: org.eclipse.jetty:jetty-util:9.4.6.v20170531" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: javax.servlet:javax.servlet-api:3.1.0" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: org.eclipse.jetty:jetty-continuation:9.4.6.v20170531" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains:annotations:13.0" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.kotlinx:kotlinx-io-jvm:0.0.8" level="project" />
   </component>
 </module>

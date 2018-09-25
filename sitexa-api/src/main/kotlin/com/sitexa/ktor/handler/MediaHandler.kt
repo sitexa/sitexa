@@ -8,8 +8,8 @@ import com.sitexa.ktor.uploadDir
 import io.ktor.application.application
 import io.ktor.application.call
 import io.ktor.application.log
-import io.ktor.content.LocalFileContent
 import io.ktor.http.Parameters
+import io.ktor.http.content.LocalFileContent
 import io.ktor.locations.Location
 import io.ktor.locations.get
 import io.ktor.locations.post

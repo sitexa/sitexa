@@ -1,8 +1,8 @@
 package com.sitexa.ktor.handler
 
-import io.ktor.content.default
-import io.ktor.content.files
-import io.ktor.content.static
+import io.ktor.http.content.default
+import io.ktor.http.content.files
+import io.ktor.http.content.static
 import io.ktor.routing.Route
 
 /**

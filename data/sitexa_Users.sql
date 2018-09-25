@@ -1,0 +1,1 @@
+INSERT INTO sitexa.Users (id, mobile, email, display_name, password_hash) VALUES ('xnpeng', '18673107430', 'xnpeng@163.com', 'oscar peng', 'b1c038e59e11249bf04df664665cbf4254a4f3bf');

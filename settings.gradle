@@ -1,1 +1,3 @@
 rootProject.name = 'sitexa'
+//project(":sitexa-api").projectDir=file("sitexa-api")
+//project(":sitexa-node").projectDir=file("sitexa-node")

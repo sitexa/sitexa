@@ -110,8 +110,9 @@ class SweetService : ApiService() {
         var id: Int = -1
         val apiResult = sweetApi.createSweet(user, text, replyTo).execute().body()
         val code = apiResult.code
+        val data = apiResult.data
 
-        if (code == ApiCode.OK) id = apiResult.data.toString().toDouble().toInt()
+        if (code == ApiCode.OK) id = data!!.toString().toFloat().toInt()
         return id
     }
 
@@ -129,7 +130,7 @@ class SweetService : ApiService() {
         var id: Int = -1
         val apiResult = sweetApi.createMedia(refId, fileName, fileType, title, sortOrder).execute().body()
         val code = apiResult.code
-        if (code == ApiCode.OK) id = apiResult.data!! as Int
+        if (code == ApiCode.OK) id = apiResult.data!!.toString().toFloat().toInt()
         return id
     }
 
