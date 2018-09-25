@@ -13,7 +13,13 @@
       <module name="sitexa" target="1.8" />
       <module name="sitexa-api" target="1.8" />
       <module name="sitexa-api_main" target="1.8" />
+      <module name="sitexa-api_sitexa-api_main" target="1.8" />
+      <module name="sitexa-api_sitexa-api_test" target="1.8" />
       <module name="sitexa-api_test" target="1.8" />
+      <module name="sitexa-node_main" target="1.8" />
+      <module name="sitexa-node_sitexa-node_main" target="1.8" />
+      <module name="sitexa-node_sitexa-node_test" target="1.8" />
+      <module name="sitexa-node_test" target="1.8" />
       <module name="sitexa-sample" target="1.8" />
       <module name="sitexa-sample_main" target="1.8" />
       <module name="sitexa-sample_test" target="1.8" />
